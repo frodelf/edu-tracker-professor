@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="" lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="/static/"
+      data-template="vertical-menu-template-starter">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>Page 1 - Starter Kit | Vuexy - Bootstrap Admin Template</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="description" content=""/>
+    <link rel="icon" type="image/x-icon" th:href="@{/img/logo-max.png}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet"/>
+
+    <script th:inline="javascript">
+        const contextPath = '[[@{/}]]'.replaceAll("\"", "")
+    </script>
+
+
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/tabler-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/core.css}" class="template-customizer-core-css"/>
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css"/>
+    <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+    <link rel="stylesheet" th:href="@{/assets/css/demo.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/node-waves/node-waves.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/select2/select2.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/animate-css/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/sweetalert2/sweetalert2.css}">
+
+    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+    <script th:src="@{/assets/js/config.js}"></script>
+    <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/assets/vendor/libs/cleavejs/cleave.js}"></script>
+    <script th:src="@{/assets/vendor/libs/cleavejs/cleave-phone.js}"></script>
+    <script th:src="@{/assets/vendor/libs/select2/select2.js}"></script>
+    <script th:src="@{/assets/vendor/libs/block-ui/block-ui.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/spinkit/spinkit.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/animate-css/animate.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/toastr/toastr.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <script th:src="@{/js/global.js}"></script>
+    <script th:src="@{/js/pagination.js}"></script>
+</head>
+<body>
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <aside layout:insert="~{blocks/sidebar :: sidebar}"></aside>
+        <div class="layout-page">
+            <nav layout:insert="~{blocks/navbar :: navbar}"></nav>
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <section layout:fragment="content">
+                    </section>
+                </div>
+                <footer class="container-fluid content-footer footer bg-footer-theme mt-5">
+                    <div class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column">
+                        <div>
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            , Created by Derkach Denys, a student of TР-12 group
+                        </div>
+                        <div>
+                            <a href="https://osvita.kpi.ua/122_OPPB_CTE" target="_blank">KPI 122 HHIATE</a>
+                        </div>
+                    </div>
+                </footer>
+                <div class="content-backdrop fade"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <div class="drag-target"></div>
+</div>
+<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/assets/vendor/libs/node-waves/node-waves.js}"></script>
+<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/assets/vendor/js/menu.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:src="@{/assets/vendor/libs/toastr/toastr.js}"></script>
+
+</body>
+</html>

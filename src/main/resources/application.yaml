@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: edu-tracker-professor
+  datasource:
+    url: jdbc:mysql://localhost:3306/edutracker
+    username: root
+    password: 1234
+  jpa:
+    generate-ddl: true
+    show-sql: true
+
+server:
+  servlet:
+    context-path: /edu-tracker/teach/
+
+minio:
+  accessKey: admin
+  secretKey: password
+  endpoint: http://localhost:4401

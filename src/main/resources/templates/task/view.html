@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      layout:decorate="~{blocks/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${task.name}]]</title>
+
+    <script th:inline="javascript">
+        var csrf_token = /*[[${_csrf.token}]]*/ {};
+        var task = /*[[${task}]]*/ {};
+    </script>
+    <script th:src="@{/js/task/view.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="d-flex justify-content-between mt-2">
+        <h4>[[${task.name}]]</h4>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/task}">Завдання</a></li>
+                <li class="breadcrumb-item active" aria-current="page">[[${task.name}]]</li>
+            </ol>
+        </nav>
+    </div>
+    <hr style="margin-top: 0"/>
+    <h2 id="course">
+    </h2>
+    <div class="row mt-4">
+        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6" th:inline="javascript">
+            <h3>Файл з завданням</h3>
+            <button class="btn" onclick="downloadFileFrom()">
+                <img th:src="@{/img/default-file-download.png}" alt="" class="mb-4">
+            </button>
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-7 col-sm-6"></div>
+    </div>
+    <center><h2>Студенти</h2></center>
+    <hr style="margin-top: 0"/>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped linkedRow" id="userTable"
+                       style="    table-layout: fixed;">
+                    <thead>
+                    <tr>
+                        <th style="width: 100px">Група</th>
+                        <th style="width: 200px">Студент</th>
+                        <th style="width: 200px">Телеграм</th>
+                        <th style="width: 200px">Статус</th>
+                        <th style="width: 100px">Оцінка</th>
+                    </tr>
+                    <tr>
+                        <th><input class="form-control for-filter"></th>
+                        <th><input class="form-control for-filter"></th>
+                        <th><input class="form-control for-filter"></th>
+                        <th>
+                            <select id="statusEl" class="for-filter">
+                                <option></option>
+                                <option value="IN_PROCESS">В процесі</option>
+                                <option value="GRANTED">Здано</option>
+                                <option value="EVALUATED">Оцінено</option>
+                            </select>
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                id="pagination_container">
+            </ul>
+        </div>
+    </div>
+</section>
+</body>
+</html>

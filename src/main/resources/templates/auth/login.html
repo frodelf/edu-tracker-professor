@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default"
+      data-assets-path="/static/" data-template="vertical-menu-template" data-style="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>EduTracker</title>
+    <meta name="description" content="Start your development with a Dashboard for Bootstrap 5">
+    <meta name="keywords" content="dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5">
+    <link rel="canonical" href="https://1.envato.market/vuexy_admin">
+    <script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-5J3LMKC"></script>
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5J3LMKC');</script>
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;ampdisplay=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/fontawesome.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/tabler-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/flag-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/demo.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/node-waves/node-waves.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/pages/page-auth.css}">
+    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+
+    <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
+
+    <script th:src="@{/assets/js/config.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/core.css}"
+          class="template-customizer-core-css">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/theme-default.css}"
+          class="template-customizer-theme-css">
+
+</head>
+
+<body>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5J3LMKC" height="0" width="0"
+            style="display: none; visibility: hidden"></iframe>
+</noscript>
+<div class="authentication-wrapper authentication-cover">
+    <div class="authentication-inner row m-0">
+        <div class="d-none d-lg-flex col-lg-8 p-0">
+            <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+                <img th:src="@{/assets/img/illustrations/auth-register-illustration-light.png}" alt="auth-register-cover"
+                     class="my-5 auth-illustration"
+                     data-app-light-img="illustrations/auth-register-illustration-light.png"
+                     data-app-dark-img="illustrations/auth-register-illustration-dark.png">
+                <img th:src="@{/assets/img/illustrations/bg-shape-image-light.png}" alt="auth-register-cover"
+                     class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png"
+                     data-app-dark-img="illustrations/bg-shape-image-dark.png">
+            </div>
+        </div>
+        <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
+            <div class="w-px-400 mx-auto mt-12 pt-5">
+                <h4 class="mb-1 text-center">Edu Tracker Teach</h4>
+                <form id="formAuthentication" class="mb-6 fv-plugins-bootstrap5 fv-plugins-framework"
+                      th:action="@{/process_login}" method="POST" novalidate="novalidate">
+                    <input type="hidden" th:value="${_csrf}" name="_csrf">
+                    <div class="mb-6 fv-plugins-icon-container">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Enter your username" autofocus="">
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                    </div>
+                    <div class="mb-6 form-password-toggle fv-plugins-icon-container">
+                        <label class="form-label" for="password">Password</label>
+                        <div class="input-group input-group-merge has-validation">
+                            <input type="password" id="password" class="form-control" name="password"
+                                   placeholder="············" aria-describedby="password">
+                            <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                        </div>
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                    </div>
+                    <button class="btn btn-primary d-grid w-100 waves-effect waves-light">
+                        Увійти
+                    </button>
+                    <input type="hidden"></form>
+                <p class="text-center">
+                    <span>Вперше на нашому сайті?</span>
+                    <a href="auth-login-cover.html">
+                        <span>Зареєструватись</span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/assets/vendor/libs/node-waves/node-waves.js}"></script>
+<script th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
+<script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
+<script th:src="@{/assets/vendor/js/menu.js}"></script>
+
+<script th:src="@{/assets/js/main.js}"></script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    $("#username").val("professor@gmail.com")
+    $("#password").val("professor")
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      layout:decorate="~{blocks/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${student.groupName}]] [[${student.lastName}]]</title>
+
+    <script th:inline="javascript">
+        var csrf_token = /*[[${_csrf.token}]]*/ {};
+        var student = /*[[${student}]]*/ {};
+    </script>
+    <script th:src="@{/js/student/view.js}"></script>
+    <style>
+        h4 {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="d-flex justify-content-between mt-2">
+        <h4>[[${student.lastName}]] [[${student.name}]] [[${student.middleName}]]</h4>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/student}">Студенти</a></li>
+                <li class="breadcrumb-item active" aria-current="page">[[${student.lastName}]] [[${student.name}]]</li>
+            </ol>
+        </nav>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="row mt-4">
+        <img th:src="@{/img/default.png}" alt="" class="mb-4" style="max-width: 40%">
+        <h2>[[${student.groupName}]] [[${student.lastName}]] [[${student.name}]] [[${student.middleName}]]</h2>
+        <h4>telegram: [[${student.telegram}]]</h4>
+        <h4>e-mail: [[${student.email}]]</h4>
+        <h4>Телефон: [[${student.phone}]]</h4>
+    </div>
+    <center><h2>Статистика</h2></center>
+    <hr style="margin-top: 0"/>
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-9 col-md-8 col-sm-6"></div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <select id="coursesEl" class="float-end for-filter form-control"></select>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <div id="statistic"></div>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+</section>
+</body>
+</html>

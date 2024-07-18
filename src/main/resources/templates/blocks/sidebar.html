@@ -1,0 +1,69 @@
+<aside layout:fragment="sidebar" id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" xmlns:layout="">
+    <div class="app-brand demo">
+        <a  th:href="@{/}" class="app-brand-link">
+            <span class="app-brand-logo demo" style="height: 100%">
+                <img id="sidebar-logo" th:src="@{/img/logo-max.png}" alt="Logo" width="42" height="42">
+            </span>
+            <span class="app-brand-text demo menu-text fw-bold">Edu Tracker</span>
+        </a>
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto" onclick="toggleSidebar()">
+            <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"></i>
+            <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <li th:class="'menu-item ' + ${statisticActive != null ? 'active' : ''}">
+            <a th:href="@{/}" class="menu-link">
+                <i class="menu-icon fa-solid fa-chart-simple"></i>
+                <div>Статистика</div>
+            </a>
+        </li>
+        <li th:class="'menu-item ' + ${courseActive != null ? 'active' : ''}">
+            <a th:href="@{/course}" class="menu-link">
+                <i class="menu-icon fa-regular fa-clipboard"></i>
+                <div>Курси</div>
+            </a>
+        </li>
+        <li th:class="'menu-item ' + ${studentActive != null ? 'active' : ''}">
+            <a th:href="@{/student}" class="menu-link">
+                <i class="menu-icon fa-regular fa-user"></i>
+                <div>Студенти</div>
+            </a>
+        </li>
+        <li th:class="'menu-item ' + ${taskActive != null ? 'active' : ''}">
+            <a th:href="@{/task}" class="menu-link">
+                <i class="menu-icon fa-solid fa-list-check"></i>
+                <div>Завдання</div>
+            </a>
+        </li>
+        <li th:class="'menu-item ' + ${literatureActive != null ? 'active' : ''}">
+            <a th:href="@{/literature}" class="menu-link">
+                <i class="menu-icon fa-solid fa-book"></i>
+                <div>Література</div>
+            </a>
+        </li>
+        <li th:class="'menu-item ' + ${lessonActive != null ? 'active' : ''}">
+            <a th:href="@{/lesson}" class="menu-link">
+                <i class="menu-icon fa-solid fa-person-chalkboard"></i>
+                <div>Заняття</div>
+            </a>
+        </li>
+    </ul>
+</aside>
+<script>
+    function toggleSidebar() {
+        var sidebar = document.getElementById('layout-menu');
+        var logo = document.getElementById('sidebar-logo');
+
+        sidebar.classList.toggle('collapsed');
+
+        if (sidebar.classList.contains('collapsed')) {
+            logo.src = '/img/logo-max.png';
+        } else {
+            logo.src = '/img/logo-max.png';
+        }
+    }
+</script>

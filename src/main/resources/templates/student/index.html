@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      layout:decorate="~{blocks/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Студенти</title>
+
+    <script th:inline="javascript">
+        var csrf_token = /*[[${_csrf.token}]]*/ {};
+    </script>
+    <script th:src="@{/js/student/index.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="d-flex justify-content-between mt-2">
+        <h4>Студенти</h4>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Студенти</li>
+            </ol>
+        </nav>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="text-end">
+        <button onclick="showModalForAddStudentStepFirst()" class="btn btn-primary mb-4">Додати студента</button>
+        <div id="toast-container" class="toast-top-right"></div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped linkedRow" id="userTable"
+                       style="    table-layout: fixed;">
+                    <thead>
+                    <tr>
+                        <th style="width: 100px">Група</th>
+                        <th style="width: 200px">Студент</th>
+                        <th style="width: 200px">Курс</th>
+                        <th style="width: 200px">Телеграм</th>
+                        <th style="width: 200px">Телефон</th>
+                        <th style="width: 160px"></th>
+                    </tr>
+                    <tr>
+                        <th><input class="form-control for-filter"></th>
+                        <th><input class="form-control for-filter"></th>
+                        <th><select id="coursesEl" class="for-filter"></select></th>
+                        <th><input class="form-control for-filter"></th>
+                        <th><input class="form-control for-filter onlyNumber"></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                id="pagination_container">
+            </ul>
+        </div>
+    </div>
+</section>
+</body>
+</html>
