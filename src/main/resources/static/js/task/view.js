@@ -53,11 +53,16 @@ function getPageWithFilter(page) {
                     cell4.innerHTML = ``
                 } else if(object.status == 'GRANTED') {
                     cell4.style.padding = '0px';
-                    cell4.innerHTML = `<button class="btn mt-2" onclick="downloadFileFrom('${object.myWork}')" style="padding: 0px">
-                        <img src="${contextPath}img/default-file-download.png" alt="" width="40%">
-                    </button>`
+                    cell4.innerHTML = `
+<button class="btn mt-2 d-flex align-items-center justify-content-center" style="padding: 0; width: 100%; height: 100%;">
+    <i class="fa-solid fa-arrow-down" onclick="downloadFileFrom('${object.myWork}')" style="margin-right: 10px"></i>
+    <i class="fa-regular fa-star" onclick="showModalForEvaluate('${object.id}')"></i>
+</button>`;
                 } else {
-                    cell4.innerHTML = `<center>${object.mark}</center>`
+                    cell4.innerHTML = `<center>
+                                        <a href="javascript:void(0)" onclick="downloadFileFrom('${object.myWork}')">${object.mark}</a>
+                                        <i class="fa-solid fa-ban" onclick="cancelMark('${object.id}')"></i>
+                                    </center>`
                 }
             }
             if (objects.totalPages > 1) updatePagination(page, objects.totalPages, 'pagination_container')
@@ -96,4 +101,83 @@ function downloadFileFrom(fileName) {
             console.log("Помилка завантаження файлу");
         }
     });
+}
+function cancelMark(studentTaskId){
+    $.ajax({
+        url: contextPath + 'student-task/cancel-mark',
+        type: 'PUT',
+        headers: {'X-XSRF-TOKEN': csrf_token},
+        data: {
+            studentTaskId: studentTaskId
+        },
+        success: function (request) {
+            getPageWithFilter(page)
+            showToastForDelete()
+        },
+    })
+}
+function showModalForEvaluate(studentTaskId){
+    if ($('#modalForEvaluate').html()) $('#modalForEvaluate').remove()
+
+    var modalBlock = document.createElement('div');
+    modalBlock.innerHTML = `
+        <div class="modal fade" id="modalForEvaluate" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Оцінка за роботу</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Оцінка
+                        <input class="form-control onlyNumberTo100" id="mark">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="float-end btn btn-primary" onclick="toEvaluate(${studentTaskId})">Оцінити</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+    document.body.appendChild(modalBlock)
+    $('#modalForEvaluate').modal('show')
+    $('.onlyNumberTo100').on('input', function () {
+        $(this).val(function (_, value) {
+            value = value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');
+            if (parseFloat(value) > 100) {
+                return '100';
+            }
+            return value;
+        });
+    });
+
+}
+
+function toEvaluate(studentTaskId){
+    showLoader("modalForEvaluate")
+    $.ajax({
+        url: contextPath + 'student-task/evaluate',
+        type: 'PUT',
+        headers: {'X-XSRF-TOKEN': csrf_token},
+        data: {
+            studentTaskId: studentTaskId,
+            mark: $("#mark").val()
+        },
+        success: function (request) {
+            cleanInputs()
+            showToastForSave()
+            getPageWithFilter(page)
+            $('#modalForEvaluate').modal('hide')
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 400) {
+                validDataFromResponse(xhr.responseJSON)
+            } else {
+                console.error('Помилка відправки файлів на сервер:', error);
+            }
+        },
+        complete: function (xhr, status) {
+            hideLoader("modalForEvaluate")
+        }
+    })
 }

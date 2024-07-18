@@ -44,7 +44,7 @@ public class MinioServiceImpl implements MinioService {
         log.info("MinioServiceImpl-getPhoto successfully");
         return photoBytes;
     }
-    public void deleteImg(String objectName, String directory) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
+    public void deleteImg(String objectName) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
         log.info("MinioServiceImpl-deleteImg start");
         minioClient.removeObject(RemoveObjectArgs.builder()
                 .bucket(bucketName)

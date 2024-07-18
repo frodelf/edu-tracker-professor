@@ -1,5 +1,8 @@
 package ua.kpi.edutrackerprofessor.service.impl;
 
+import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskRequestForFilter;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForViewAll;
@@ -16,6 +19,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -56,5 +62,32 @@ public class StudentsTaskServiceImpl implements StudentsTaskService {
         Pageable pageable = PageRequest.of(studentTaskRequestForFilter.getPage(), studentTaskRequestForFilter.getPageSize(), Sort.by(Sort.Order.desc("id")));
         Specification<StudentsTask> specification = new StudentsTaskSpecification(studentTaskRequestForFilter);
         return studentTaskMapper.toDtoListForViewAll(studentsTaskRepository.findAll(specification, pageable));
+    }
+    @Override
+    @Transactional
+    public void cancelMark(Long studentTaskId) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        StudentsTask studentsTask = getById(studentTaskId);
+        studentsTask.setStatus(StatusStudentsTask.GRANTED);
+        studentsTask.setMark(null);
+        save(studentsTask);
+    }
+    @Override
+    public StudentsTask getById(Long id) {
+        return studentsTaskRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("StudentTask with id = "+id+" not found")
+        );
+    }
+    @Override
+    @Transactional
+    public StudentsTask save(StudentsTask studentsTask) {
+        return studentsTaskRepository.save(studentsTask);
+    }
+    @Override
+    @Transactional
+    public void evaluate(Long studentTaskId, Double mark) {
+        StudentsTask studentsTask = getById(studentTaskId);
+        studentsTask.setMark(mark);
+        studentsTask.setStatus(StatusStudentsTask.EVALUATED);
+        save(studentsTask);
     }
 }

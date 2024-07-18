@@ -194,6 +194,7 @@ function addTask(taskId){
             cleanInputs()
             showToastForSave()
             getPageWithFilter(page)
+            $('#modalForAdd').modal('hide')
         },
         error: function (xhr, status, error) {
             if (xhr.status === 400) {

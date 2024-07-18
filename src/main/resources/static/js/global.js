@@ -15,6 +15,18 @@ $(document).ready(function () {
     $('.for-filter').on('change', function () {
         getPageWithFilter(0)
     })
+    $(".phone").each(function (index, element) {
+        new Cleave("#" + element.id, {
+            blocks: [13],
+            numericOnly: true,
+            prefix: "+380"
+        })
+    })
+    $('.onlyNumber').on('input', function () {
+        $(this).val(function (_, value) {
+            return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1')
+        })
+    })
 })
 function showLoader(blockId) {
     $("#" + blockId).block({
@@ -183,20 +195,6 @@ function cleanInputs() {
     $("#goal").css("border", "")
 }
 
-$(document).ready(function () {
-    $(".phone").each(function (index, element) {
-        new Cleave("#" + element.id, {
-            blocks: [13],
-            numericOnly: true,
-            prefix: "+380"
-        })
-    });
-    $('.onlyNumber').on('input', function () {
-        $(this).val(function (_, value) {
-            return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');
-        });
-    });
-})
 function toSelect2(selectId){
     $(selectId).select2({
         placeholder: "Виберіть об'єкт",
