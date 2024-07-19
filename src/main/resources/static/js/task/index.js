@@ -217,7 +217,6 @@ function addTask(taskId){
     formData.append('name', $("#name").val())
     if($("#courseId").val())formData.append('courseId', $("#courseId").val())
     formData.append('deadline', $("#deadline").val())
-    console.log($("#courseId").val())
     $.ajax({
         url: contextPath + 'task/add',
         type: 'POST',
