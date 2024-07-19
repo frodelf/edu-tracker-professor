@@ -1,3 +1,4 @@
+//TODO: доробити функції для додавання і закривання різних тасок у курсах
 var courseId
 const snowEditor = new Quill('#goal', {
     bounds: '#goal',

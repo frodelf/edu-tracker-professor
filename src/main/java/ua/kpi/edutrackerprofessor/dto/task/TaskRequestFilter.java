@@ -2,7 +2,10 @@ package ua.kpi.edutrackerprofessor.dto.task;
 
 import jakarta.validation.constraints.Min;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import ua.kpi.edutrackerentity.entity.enums.StatusTask;
+
+import java.time.LocalDateTime;
 
 @Data
 public class TaskRequestFilter {
@@ -13,4 +16,6 @@ public class TaskRequestFilter {
     private String name;
     private Long courseId;
     private StatusTask status;
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
+    private LocalDateTime deadline;
 }

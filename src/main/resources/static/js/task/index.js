@@ -3,6 +3,11 @@ $(document).ready(function () {
     forSelect2(".coursesForFilter", contextPath + "course/get-for-select")
     forSelect2(".statusForFilter", contextPath + "enum/get-task-status")
     getPageWithFilter(page)
+    document.querySelector(".flatpickr-for-filter").flatpickr({
+        weekNumbers: true,
+        enableTime: true,
+        dateFormat: "d.m.Y H:i"
+    })
 })
 
 function getPageWithFilter(page) {
@@ -17,7 +22,8 @@ function getPageWithFilter(page) {
             pageSize: pageSize,
             name: filterElements[0].value,
             courseId: filterElements[1].value,
-            status: filterElements[2].value
+            deadline: filterElements[2].value,
+            status: filterElements[3].value
         },
         success: function (objects) {
             var table = document.getElementById("taskTable");
@@ -45,13 +51,17 @@ function getPageWithFilter(page) {
                 }
                 cell1.innerHTML = courses;
                 var cell2 = newRow.insertCell(2);
+                if(object.status != 'OPEN')cell2.innerHTML = `—————`
+                else if(object.deadline)cell2.innerHTML = `${changeFormatDate(object.deadline)}`
+                else cell2.innerHTML = `Немає обмежень по часу`
+                var cell3 = newRow.insertCell(3)
                 if (object.status == 'OPEN') {
-                    cell2.innerHTML = `<span class="badge bg-label-success">Відкрите</span>`
+                    cell3.innerHTML = `<span class="badge bg-label-success">Відкрите</span>`
                 } else {
-                    cell2.innerHTML = `<span class="badge bg-label-danger">Закрите</span>`
+                    cell3.innerHTML = `<span class="badge bg-label-danger">Закрите</span>`
                 }
-                var cell3 = newRow.insertCell(3);
-                cell3.innerHTML = `
+                var cell4 = newRow.insertCell(4)
+                cell4.innerHTML = `
 <button onclick="modalForRemove(${object.id})" class="btn btn-outline-danger float-end" style="margin-left: 10px"><i class="fa-solid fa-trash"></i></button>
 <button onclick="modalForAdd(${object.id})" class="btn btn-outline-primary float-end" style="margin-left: 10px"><i class="fa-solid fa-pencil"></i></button>
 <a href="${contextPath}task/${object.id}" class="btn btn-outline-secondary float-end"><i class="fa-regular fa-eye"></i></a>
@@ -129,7 +139,11 @@ function modalForAdd(taskId) {
                         <div class="mt-3">Назва завдання</div>
                         <input id="name" class="form-control">
                         <div class="mt-3">Курс</div>
-                        <select id="courseForAdd" class="coursesForFilter"></select>
+                        <select id="courseId" class="coursesForFilter"></select>
+                        <div class="mt-3">
+                            Дедлайн
+                        </div>
+                        <input id="deadline" class="form-control">
                     </div>
                     <div class="modal-footer">
                         <button class="float-end btn btn-primary" onclick="addTask(${task.id})">Зберегти</button>
@@ -139,10 +153,16 @@ function modalForAdd(taskId) {
         </div>
     `
                 document.body.appendChild(modalBlock)
-
-                $('#modalForAdd').modal('show')
+                document.querySelector("#deadline").flatpickr({
+                    weekNumbers: true,
+                    enableTime: true,
+                    dateFormat: "d.m.Y H:i",
+                    defaultDate: changeFormatDate(task.deadline)
+                })
                 $("#name").val(task.name)
-                forSelect2("#courseForAdd", contextPath + "course/get-for-select", task.courseId, task.courseName)
+                
+                forSelect2("#courseId", contextPath + "course/get-for-select", task.courseId, task.courseName)
+                $('#modalForAdd').modal('show')
             },
         })
     } else {
@@ -158,11 +178,19 @@ function modalForAdd(taskId) {
                     </div>
                     <div class="modal-body">
                         Файл з завданням
-                        <input id="file" type="file" class="form-control mb-3">
+                        <input id="file" type="file" class="form-control">
+                        <div class="mt-3">
                         Назва завдання
-                        <input id="name" class="form-control mb-3">
+                        </div>
+                        <input id="name" class="form-control">
+                        <div class="mt-3">
                         Курс
-                        <select id="courseForAdd" class="coursesForFilter"></select>
+                        </div>
+                        <select id="courseId" class="coursesForFilter"></select>
+                        <div class="mt-3">
+                            Дедлайн
+                        </div>
+                        <input id="deadline" class="form-control">
                     </div>
                     <div class="modal-footer">
                         <button class="float-end btn btn-primary" onclick="addTask()">Зберегти</button>
@@ -174,7 +202,12 @@ function modalForAdd(taskId) {
         document.body.appendChild(modalBlock)
 
         $('#modalForAdd').modal('show')
-        forSelect2("#courseForAdd", contextPath + "course/get-for-select")
+        document.querySelector("#deadline").flatpickr({
+            weekNumbers: true,
+            enableTime: true,
+            dateFormat: "d.m.Y H:i"
+        })
+        forSelect2("#courseId", contextPath + "course/get-for-select")
     }
 }
 function addTask(taskId){
@@ -182,7 +215,9 @@ function addTask(taskId){
     let formData = new FormData()
     if(taskId)formData.append('id', taskId)
     formData.append('name', $("#name").val())
-    formData.append('courseId', $("#courseForAdd").val())
+    if($("#courseId").val())formData.append('courseId', $("#courseId").val())
+    formData.append('deadline', $("#deadline").val())
+    console.log($("#courseId").val())
     $.ajax({
         url: contextPath + 'task/add',
         type: 'POST',

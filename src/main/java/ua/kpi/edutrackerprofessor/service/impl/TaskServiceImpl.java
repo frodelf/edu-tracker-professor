@@ -50,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Page<TaskResponseViewAll> getAll(TaskRequestFilter taskRequestFilter) {
         Pageable pageable = PageRequest.of(taskRequestFilter.getPage(), taskRequestFilter.getPageSize(), Sort.by(Sort.Order.desc("id")));
-        if(nonNull(taskRequestFilter.getCourseId()) || !taskRequestFilter.getName().isBlank() || nonNull(taskRequestFilter.getStatus())) {
+        if(nonNull(taskRequestFilter.getCourseId()) || !taskRequestFilter.getName().isBlank() || nonNull(taskRequestFilter.getStatus()) || nonNull(taskRequestFilter.getDeadline())) {
             TaskSpecification taskSpecification = new TaskSpecification(taskRequestFilter);
             return taskMapper.toDtoListForViewAll(taskRepository.findAll(taskSpecification, pageable));
         }

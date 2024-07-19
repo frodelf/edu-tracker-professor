@@ -27,6 +27,9 @@ $(document).ready(function () {
             return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1')
         })
     })
+    $('.flatpickr').flatpickr({
+        dateFormat: "d.m.Y"
+    })
 })
 function showLoader(blockId) {
     $("#" + blockId).block({
@@ -134,15 +137,20 @@ function scrollToElement($element) {
     }
 }
 
-function addText(inputId, message) {
+function addText(input, message) {
     message = translateError(message)
     var icon = $('<p class="text-for-validating" style="color: #ff0000;">' + message + '</p>')
     icon.tooltip({
         content: message,
         position: {my: "left+15 center", at: "right center"}
     })
-    inputId.after(icon);
-    inputId.css("border-color", "#ff0000")
+    if (input.is('select')){
+        input.next().find(".select2-selection").css("border", "1px solid #ff0000")
+        addText(input.next().find(".select2-selection"), "Елемент має бути вибрано")
+        return
+    }
+    input.after(icon);
+    input.css("border-color", "#ff0000")
 }
 
 function modalForLogoutModal() {
@@ -274,4 +282,16 @@ function translateTest(text){
     if(text=="CLOSE")text="Закрите"
     if(text=="OPEN")text="Відкрите"
     return text
+}
+function changeFormatDate(inputDate) {
+    if(!inputDate)return inputDate
+    const date = new Date(inputDate);
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Місяці нумеруються з 0, тому додаємо 1
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
 }

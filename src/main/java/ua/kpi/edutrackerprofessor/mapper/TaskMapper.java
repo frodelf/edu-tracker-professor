@@ -1,5 +1,6 @@
 package ua.kpi.edutrackerprofessor.mapper;
 
+import ua.kpi.edutrackerentity.entity.enums.StatusTask;
 import ua.kpi.edutrackerprofessor.dto.task.TaskRequestForAdd;
 import ua.kpi.edutrackerprofessor.dto.task.TaskResponseForAdd;
 import ua.kpi.edutrackerprofessor.dto.task.TaskResponseForView;
@@ -29,6 +30,7 @@ public class TaskMapper {
         taskResponseViewAll.setName(task.getName());
         taskResponseViewAll.setStatus(task.getStatus());
         taskResponseViewAll.setCourse(Collections.singletonMap(task.getCourse().getId().toString(), task.getCourse().getName()));
+        taskResponseViewAll.setDeadline(task.getDeadline());
         return taskResponseViewAll;
     }
     public TaskResponseForAdd toDtoForAdd(Task task) {
@@ -37,13 +39,18 @@ public class TaskMapper {
         taskResponseForAdd.setName(task.getName());
         taskResponseForAdd.setCourseId(task.getCourse().getId());
         taskResponseForAdd.setCourseName(task.getCourse().getName());
+        taskResponseForAdd.setDeadline(task.getDeadline());
         return taskResponseForAdd;
     }
     public Task toEntityForAdd(TaskRequestForAdd taskRequestForAdd, TaskService taskService, CourseService courseService) {
         Task task = new Task();
-        if(taskRequestForAdd.getId() != null)task = taskService.getById(taskRequestForAdd.getId());
+        if(taskRequestForAdd.getId() != null) {
+            task = taskService.getById(taskRequestForAdd.getId());
+        }
+        else task.setStatus(StatusTask.CLOSE);
         task.setName(taskRequestForAdd.getName());
         task.setCourse(courseService.getById(taskRequestForAdd.getCourseId()));
+        task.setDeadline(taskRequestForAdd.getDeadline());
         return task;
     }
     public TaskResponseForView toDtoForViewPage(Task task) {
