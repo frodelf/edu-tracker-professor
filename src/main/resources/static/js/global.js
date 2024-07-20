@@ -31,6 +31,7 @@ $(document).ready(function () {
     $('.flatpickr').flatpickr({
         dateFormat: "d.m.Y"
     })
+    autosize($(".autosize"))
 })
 
 function showLoader(blockId) {
@@ -148,7 +149,8 @@ function addText(input, message) {
     })
     if (input.is('select')) {
         input.next().find(".select2-selection").css("border", "1px solid #ff0000")
-        addText(input.next().find(".select2-selection"), "Елемент має бути вибрано")
+        if(message == 'Please fill in the field!')addText(input.next().find(".select2-selection"), "Елемент має бути вибрано")
+        addText(input.next().find(".select2-selection"), message)
         return
     }
     input.after(icon);
@@ -246,7 +248,7 @@ function forSelect2WithSearchAndPageable(selectId, url, selectedItemId) {
             dataType: 'json',
             delay: 1500,
             data: function (params) {
-                var number = params.page > 0 ? params.page - 1 : 0;
+                var number = params.page > 0 ? params.page - 1 : 0
                 return {
                     query: params.term || '',
                     page: number,

@@ -51,6 +51,12 @@
                 <div>Заняття</div>
             </a>
         </li>
+        <li th:class="'menu-item ' + ${emailActive != null ? 'active' : ''}">
+            <a th:href="@{/email}" class="menu-link">
+                <i class="menu-icon fa-regular fa-envelope"></i>
+                <div>Розсилка</div>
+            </a>
+        </li>
     </ul>
 </aside>
 <script>

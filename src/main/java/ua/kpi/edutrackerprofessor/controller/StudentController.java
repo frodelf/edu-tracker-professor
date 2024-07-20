@@ -42,6 +42,7 @@ public class StudentController {
 
     @GetMapping("/get-group-for-select")
     public ResponseEntity<Page<Map<String, String>>> getGroupForSelect(@ModelAttribute ForSelect2Dto forSelect2Dto) {
+        Page<Map<String, String>> s = studentService.getAllByGroupForSelect(forSelect2Dto);
         return ResponseEntity.ok(studentService.getAllByGroupForSelect(forSelect2Dto));
     }
 
