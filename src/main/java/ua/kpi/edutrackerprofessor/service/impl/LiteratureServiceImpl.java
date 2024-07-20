@@ -7,6 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import ua.kpi.edutrackerprofessor.dto.literature.LiteratureRequestForAdd;
 import ua.kpi.edutrackerprofessor.dto.literature.LiteratureRequestForFilter;
 import ua.kpi.edutrackerentity.entity.Literature;
+import ua.kpi.edutrackerprofessor.dto.literature.LiteratureResponseForAdd;
 import ua.kpi.edutrackerprofessor.dto.literature.LiteratureResponseForViewAll;
 import ua.kpi.edutrackerprofessor.mapper.LiteratureMapper;
 import ua.kpi.edutrackerprofessor.repository.LiteratureRepository;
@@ -38,7 +39,7 @@ public class LiteratureServiceImpl implements LiteratureService {
     @Override
     @Transactional
     public long add(LiteratureRequestForAdd literatureRequestForAdd) {
-        return save(literatureMapper.toDtoForAdd(literatureRequestForAdd, this, courseService)).getId();
+        return save(literatureMapper.toEntityForAdd(literatureRequestForAdd, this, courseService)).getId();
     }
     @Override
     @Transactional
@@ -58,5 +59,13 @@ public class LiteratureServiceImpl implements LiteratureService {
                 () -> new EntityNotFoundException("Literature with id = "+literatureId+" not found")
         );
         if (literature.getCourse()==null  || !Objects.equals(literature.getCourse().getProfessor().getId(), professorService.getAuthProfessor().getId())) throw new AccessDeniedException("You don't have access to this page");
+    }
+    @Override
+    public void deleteById(Long id) {
+        literatureRepository.deleteById(id);
+    }
+    @Override
+    public LiteratureResponseForAdd getByIdForAdd(Long id) {
+        return literatureMapper.toDtoForAdd(getById(id));
     }
 }

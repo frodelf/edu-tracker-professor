@@ -37,6 +37,7 @@ public class CourseController {
     public ModelAndView add() {
         return new ModelAndView("course/edit");
     }
+    //TODO: Вирізати функціонал по додаванню/редагуванню курса і перенести його в адмінку
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable Long id) {
         return new ModelAndView("course/edit", "course", courseService.getByIdForAdd(id));

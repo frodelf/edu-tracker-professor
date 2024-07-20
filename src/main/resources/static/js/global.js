@@ -1,6 +1,7 @@
+var fullContextPath = 'http://localhost:8080/edu-tracker/teach/';
 var messageForDelete = "Об'єкт успішно видалено"
 var messageForSave = "Об'єкт успішно збережено"
-var pageSize = 10.
+var pageSize = 10
 $(document).ready(function () {
     const inputs = document.querySelectorAll('.for-filter');
     let timeout = null;
@@ -31,6 +32,7 @@ $(document).ready(function () {
         dateFormat: "d.m.Y"
     })
 })
+
 function showLoader(blockId) {
     $("#" + blockId).block({
         message: `
@@ -144,7 +146,7 @@ function addText(input, message) {
         content: message,
         position: {my: "left+15 center", at: "right center"}
     })
-    if (input.is('select')){
+    if (input.is('select')) {
         input.next().find(".select2-selection").css("border", "1px solid #ff0000")
         addText(input.next().find(".select2-selection"), "Елемент має бути вибрано")
         return
@@ -203,12 +205,13 @@ function cleanInputs() {
     $("#goal").css("border", "")
 }
 
-function toSelect2(selectId){
+function toSelect2(selectId) {
     $(selectId).select2({
         placeholder: "Виберіть об'єкт",
         minimumResultsForSearch: Infinity
     })
 }
+
 function forSelect2(selectId, url, id, text) {
     $(selectId).select2({
         placeholder: "виберіть об'єкт",
@@ -231,6 +234,7 @@ function forSelect2(selectId, url, id, text) {
         $(selectId).trigger('change');
     }
 }
+
 function forSelect2WithSearchAndPageable(selectId, url, selectedItemId) {
     $(selectId).select2({
         //TODO доробити пошук
@@ -278,13 +282,15 @@ function validSelect2(select) {
     }
     return true
 }
-function translateTest(text){
-    if(text=="CLOSE")text="Закрите"
-    if(text=="OPEN")text="Відкрите"
+
+function translateTest(text) {
+    if (text == "CLOSE") text = "Закрите"
+    if (text == "OPEN") text = "Відкрите"
     return text
 }
+
 function changeFormatDate(inputDate) {
-    if(!inputDate)return inputDate
+    if (!inputDate) return inputDate
     const date = new Date(inputDate);
 
     const day = String(date.getDate()).padStart(2, '0');
@@ -294,4 +300,79 @@ function changeFormatDate(inputDate) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
     return `${day}.${month}.${year} ${hours}:${minutes}`;
+}
+
+var isAuthenticated = false
+document.addEventListener('click', function (event) {
+    var currentUrl = window.location.href;
+    currentUrl = currentUrl.replace(fullContextPath, '')
+    var redirectUrl = contextPath + currentUrl
+    setCookie("redirectUrl", redirectUrl)
+    if (isAuthenticated) return
+    $.ajax({
+        url: fullContextPath + 'checkAuth',
+        method: 'GET',
+        success: function (response) {
+            if (response) {
+                isAuthenticated = true
+
+            } else {
+                window.location.href = fullContextPath + 'login';
+            }
+        },
+        error: function () {
+            $('#authStatus').text('Error checking authentication');
+        }
+    })
+})
+
+function setCookie(name, value) {
+    var expirationTime = 24 * 60 * 60 * 1000
+    var date = new Date()
+    date.setTime(date.getTime() + expirationTime)
+    var expires = "expires=" + date.toUTCString()
+    document.cookie = name + "=" + value + ";" + expires + ";path=/"
+}
+
+function modalForRemoveObject(objectId, urlForRemove) {
+    if ($('#modalForRemove').html()) $('#modalForRemove').remove()
+
+    var modalBlock = document.createElement('div');
+    modalBlock.innerHTML = `
+        <div class="modal fade" id="modalForRemove" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ви впевені що хочете видалити об'єкт</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="float-end btn btn-danger" onclick="removeObject(${objectId}, '${urlForRemove}')">Видалити</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+    document.body.appendChild(modalBlock)
+    $('#modalForRemove').modal('show')
+}
+
+function removeObject(objectId, urlForRemove) {
+    showLoader("modalForRemove")
+    $.ajax({
+        url: contextPath + urlForRemove,
+        type: 'DELETE',
+        headers: {'X-XSRF-TOKEN': csrf_token},
+        data: {
+            id: objectId
+        },
+        success: function (request) {
+            getPageWithFilter(page)
+            showToastForDelete()
+            $('#modalForRemove').modal('hide')
+        },
+        complete: function (xhr, status) {
+            hideLoader("modalForRemove")
+        }
+    })
 }

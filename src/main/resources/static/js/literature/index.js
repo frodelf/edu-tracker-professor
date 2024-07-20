@@ -38,7 +38,10 @@ function getPageWithFilter(page) {
                     return `<a href="${contextPath}course/edit/${key}">${value}</a>`
                 })
                 var cell2 = newRow.insertCell(2);
-                cell2.innerHTML = '';
+                cell2.innerHTML = `<button onclick="modalForRemoveObject(${object.id}, 'literature/delete')" class="btn btn-outline-danger float-end" style="margin-left: 10px"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="showModalForAddLiterature(${object.id})" class="btn btn-outline-primary float-end" style="margin-left: 10px"><i class="fa-solid fa-pencil"></i></button>
+                                <a href="${object.link}" class="btn btn-outline-secondary float-end"><i class="fa-regular fa-eye"></i></a>
+                                `;
             }
             $('#pagination_container').empty();
             if (objects.totalPages > 1) updatePagination(page, objects.totalPages, 'pagination_container')
@@ -48,7 +51,7 @@ function getPageWithFilter(page) {
         }
     })
 }
-function showModalForAddLiterature(){
+function showModalForAddLiterature(literatureId){
     if ($('#modal-for-add-literature').html()) $('#modal-for-add-literature').remove()
 
     var modalBlock = document.createElement('div');
@@ -73,7 +76,7 @@ function showModalForAddLiterature(){
                         <select id="course"></select>
                     </div>
                     <div class="modal-footer">
-                        <button class="float-end btn btn-primary" onclick="addLiterature()">Додати</button>
+                        <button class="float-end btn btn-primary" onclick="addLiterature(${literatureId})">Додати</button>
                     </div>
                 </div>
             </div>
@@ -81,16 +84,29 @@ function showModalForAddLiterature(){
     `;
     document.body.appendChild(modalBlock);
     $('#modal-for-add-literature').modal('show');
-    forSelect2("#course", contextPath + "course/get-for-select")
+    if(literatureId){
+        $.ajax({
+            type: "Get",
+            url: contextPath + 'literature/get-by-id',
+            data: {
+                id: literatureId
+            },
+            success: function (object) {
+                $("#name").val(object.name)
+                $("#link").val(object.link)
+                forSelect2("#course", contextPath + "course/get-for-select", object.courseId, object.courseName)
+            }
+        })
+    }
+    else forSelect2("#course", contextPath + "course/get-for-select")
 }
-function addLiterature(){
+function addLiterature(literatureId){
     showLoader("content-form")
     let formData = new FormData()
-    // if(taskId)formData.append('id', taskId)
-    // formData.append('name', $("#name").val())
-    // if($("#courseId").val())formData.append('courseId', $("#courseId").val())
-    // formData.append('deadline', $("#deadline").val())
-    // console.log($("#courseId").val())
+    if(literatureId)formData.append('id', literatureId)
+    formData.append('name', $("#name").val())
+    formData.append('link', $("#link").val())
+    formData.append('course', $("#course").val())
     $.ajax({
         url: contextPath + 'literature/add',
         type: 'POST',

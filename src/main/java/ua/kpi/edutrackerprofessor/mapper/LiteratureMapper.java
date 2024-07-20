@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import ua.kpi.edutrackerentity.entity.Literature;
 import ua.kpi.edutrackerprofessor.dto.literature.LiteratureRequestForAdd;
+import ua.kpi.edutrackerprofessor.dto.literature.LiteratureResponseForAdd;
 import ua.kpi.edutrackerprofessor.dto.literature.LiteratureResponseForViewAll;
 import ua.kpi.edutrackerprofessor.service.CourseService;
 import ua.kpi.edutrackerprofessor.service.LiteratureService;
@@ -25,15 +26,26 @@ public class LiteratureMapper {
         literatureResponseForViewAll.setId(literature.getId());
         literatureResponseForViewAll.setName(literature.getName());
         literatureResponseForViewAll.setLink(literature.getLink());
-        if(nonNull(literature.getCourse()))literatureResponseForViewAll.setCourse(Collections.singletonMap(String.valueOf(literature.getCourse().getId()), literature.getCourse().getName()));
+        if(nonNull(literature.getCourse())) literatureResponseForViewAll.setCourse(Collections.singletonMap(String.valueOf(literature.getCourse().getId()), literature.getCourse().getName()));
         return literatureResponseForViewAll;
     }
-    public Literature toDtoForAdd(LiteratureRequestForAdd literatureRequestForAdd, LiteratureService literatureService, CourseService courseService) {
+    public Literature toEntityForAdd(LiteratureRequestForAdd literatureRequestForAdd, LiteratureService literatureService, CourseService courseService) {
         Literature literature = new Literature();
         if(literatureRequestForAdd.getId()!=null)literature = literatureService.getById(literatureRequestForAdd.getId());
         if(literatureRequestForAdd.getName()!=null)literature.setName(literatureRequestForAdd.getName());
         if(literatureRequestForAdd.getLink()!=null)literature.setLink(literatureRequestForAdd.getLink());
         if(literatureRequestForAdd.getCourse()!=null)literature.setCourse(courseService.getById(literatureRequestForAdd.getCourse()));
         return literature;
+    }
+    public LiteratureResponseForAdd toDtoForAdd(Literature literature) {
+        LiteratureResponseForAdd literatureResponseForAdd = new LiteratureResponseForAdd();
+        literatureResponseForAdd.setId(literature.getId());
+        literatureResponseForAdd.setName(literature.getName());
+        literatureResponseForAdd.setLink(literature.getLink());
+        if(nonNull(literature.getCourse())){
+            literatureResponseForAdd.setCourseId(literature.getCourse().getId());
+            literatureResponseForAdd.setCourseName(literature.getCourse().getName());
+        }
+        return literatureResponseForAdd;
     }
 }

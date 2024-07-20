@@ -1,10 +1,15 @@
 package ua.kpi.edutrackerprofessor.config;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
+import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
@@ -22,8 +27,8 @@ public class SecurityConfig {
                 .formLogin(form ->
                         form.loginPage("/login")
                                 .loginProcessingUrl("/process_login")
-                                .defaultSuccessUrl("/", true)
-                                .failureUrl("/login?error")
+                                .successHandler(authenticationSuccessHandler())
+                                .failureHandler(authenticationFailureHandler())
                 )
                 .logout(logout ->
                         logout
@@ -31,5 +36,25 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/login")
                 );
         return http.build();
+    }
+    private AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            String redirectUrl = Arrays.stream(request.getCookies())
+                    .filter(cookie -> "redirectUrl".equals(cookie.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse("/edu-tracker/teach");
+            response.sendRedirect(redirectUrl);
+        };
+    }
+    private AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request, response, exception) -> {
+            String redirectUrl = Arrays.stream(request.getCookies())
+                    .filter(cookie -> "redirectUrl".equals(cookie.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse("/edu-tracker/teach/auth/login?error");
+            response.sendRedirect(redirectUrl);
+        };
     }
 }
