@@ -19,4 +19,5 @@ public interface StudentService {
     Page<Map<String, String>> getAllByGroupForSelect(ForSelect2Dto forSelect2Dto);
     StudentResponseViewOnePage getByIdForView(Long id);
     List<StudentResponseForAdd> getAllByGroupAndCourse(String group, Long courseId);
+    List<String> getAllByGroup(String group);
 }

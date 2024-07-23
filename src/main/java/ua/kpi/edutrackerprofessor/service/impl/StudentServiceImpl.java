@@ -81,4 +81,9 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentResponseForAdd> getAllByGroupAndCourse(String group, Long courseId) {
         return studentMapper.toDtoForAddList(studentRepository.findAllByGroupName(group), courseId);
     }
+    @Override
+    public List<String> getAllByGroup(String group) {
+        List<String> res = studentRepository.findAllEmailsByGroupName(group);
+        return res;
+    }
 }
