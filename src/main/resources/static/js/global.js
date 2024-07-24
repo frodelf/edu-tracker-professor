@@ -32,6 +32,30 @@ $(document).ready(function () {
         dateFormat: "d.m.Y"
     })
     autosize($(".autosize"))
+
+    var isAuthenticated = false
+    document.addEventListener('click', function (event) {
+        var currentUrl = window.location.href;
+        currentUrl = currentUrl.replace(fullContextPath, '')
+        var redirectUrl = contextPath + currentUrl
+        setCookie("redirectUrl", redirectUrl)
+        if (isAuthenticated) return
+        $.ajax({
+            url: fullContextPath + 'checkAuth',
+            method: 'GET',
+            success: function (response) {
+                if (response) {
+                    isAuthenticated = true
+
+                } else {
+                    window.location.href = fullContextPath + 'login';
+                }
+            },
+            error: function () {
+                $('#authStatus').text('Error checking authentication');
+            }
+        })
+    })
 })
 
 function showLoader(blockId) {
@@ -303,30 +327,6 @@ function changeFormatDate(inputDate) {
 
     return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
-
-var isAuthenticated = false
-document.addEventListener('click', function (event) {
-    var currentUrl = window.location.href;
-    currentUrl = currentUrl.replace(fullContextPath, '')
-    var redirectUrl = contextPath + currentUrl
-    setCookie("redirectUrl", redirectUrl)
-    if (isAuthenticated) return
-    $.ajax({
-        url: fullContextPath + 'checkAuth',
-        method: 'GET',
-        success: function (response) {
-            if (response) {
-                isAuthenticated = true
-
-            } else {
-                window.location.href = fullContextPath + 'login';
-            }
-        },
-        error: function () {
-            $('#authStatus').text('Error checking authentication');
-        }
-    })
-})
 
 function setCookie(name, value) {
     var expirationTime = 24 * 60 * 60 * 1000

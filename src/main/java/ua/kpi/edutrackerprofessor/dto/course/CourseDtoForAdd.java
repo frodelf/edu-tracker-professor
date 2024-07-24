@@ -3,7 +3,7 @@ package ua.kpi.edutrackerprofessor.dto.course;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-import ua.kpi.edutrackerprofessor.validation.ImageExtension;
+import ua.kpi.edutrackerprofessor.validation.annotation.ImageExtension;
 
 @Data
 public class CourseDtoForAdd {

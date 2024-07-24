@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorForRegistrationDto;
 import ua.kpi.edutrackerprofessor.service.AuthService;
 
 @Service
@@ -17,5 +18,10 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
         return !(authentication instanceof AnonymousAuthenticationToken);
+    }
+    @Override
+    public String registration(ProfessorForRegistrationDto professor) {
+        //TODO доробити реєстрацію
+        return "";
     }
 }

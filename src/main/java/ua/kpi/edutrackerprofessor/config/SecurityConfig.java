@@ -1,5 +1,6 @@
 package ua.kpi.edutrackerprofessor.config;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,7 @@ public class SecurityConfig {
                         form.loginPage("/login")
                                 .loginProcessingUrl("/process_login")
                                 .successHandler(authenticationSuccessHandler())
-                                .failureHandler(authenticationFailureHandler())
+                                .failureUrl("/login?error")
                 )
                 .logout(logout ->
                         logout
@@ -43,17 +44,8 @@ public class SecurityConfig {
                     .filter(cookie -> "redirectUrl".equals(cookie.getName()))
                     .findFirst()
                     .map(Cookie::getValue)
+                    .filter(value -> !StringUtils.isBlank(value))
                     .orElse("/edu-tracker/teach");
-            response.sendRedirect(redirectUrl);
-        };
-    }
-    private AuthenticationFailureHandler authenticationFailureHandler() {
-        return (request, response, exception) -> {
-            String redirectUrl = Arrays.stream(request.getCookies())
-                    .filter(cookie -> "redirectUrl".equals(cookie.getName()))
-                    .findFirst()
-                    .map(Cookie::getValue)
-                    .orElse("/edu-tracker/teach/auth/login?error");
             response.sendRedirect(redirectUrl);
         };
     }

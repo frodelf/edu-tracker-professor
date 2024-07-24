@@ -1,4 +1,4 @@
-package ua.kpi.edutrackerprofessor.validation;
+package ua.kpi.edutrackerprofessor.validation.annotation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

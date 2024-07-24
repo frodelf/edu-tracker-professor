@@ -6,6 +6,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>EduTracker</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 5">
     <meta name="keywords" content="dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5">
     <link rel="canonical" href="https://1.envato.market/vuexy_admin">
@@ -22,7 +23,12 @@
         j.src =
             'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-5J3LMKC');</script>
+    })(window, document, 'script', 'dataLayer', 'GTM-5J3LMKC');
+    </script>
+    <script th:inline="javascript">
+        const contextPath = '[[@{/}]]'.replaceAll("\"", "")
+        var csrf_token = /*[[${_csrf.token}]]*/ {};
+    </script>
     <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -36,15 +42,20 @@
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/typeahead-js/typeahead.css}">
     <link rel="stylesheet" th:href="@{/assets/vendor/css/pages/page-auth.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/flatpickr/flatpickr.css}" />
+
     <script th:src="@{/assets/vendor/js/helpers.js}"></script>
-
+    <script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/assets/vendor/libs/block-ui/block-ui.js}"></script>
+    <script th:src="@{/assets/vendor/libs/autosize/autosize.js}"></script>
     <script th:src="@{/assets/vendor/js/template-customizer.js}"></script>
-
     <script th:src="@{/assets/js/config.js}"></script>
+
     <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/core.css}"
           class="template-customizer-core-css">
     <link rel="stylesheet" type="text/css" th:href="@{/assets/vendor/css/rtl/theme-default.css}"
           class="template-customizer-theme-css">
+    <script th:src="@{/js/auth/login.js}"></script>
 
 </head>
 
@@ -80,10 +91,10 @@
                     </div>
                     <div class="mb-6 form-password-toggle fv-plugins-icon-container">
                         <label class="form-label" for="password">Password</label>
-                        <div class="input-group input-group-merge has-validation">
+                        <div id="password-block" class="input-group input-group-merge has-validation">
                             <input type="password" id="password" class="form-control" name="password"
                                    placeholder="············" aria-describedby="password">
-                            <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                            <span class="input-group-text cursor-pointer" id="password-eye"><i class="ti ti-eye-off"></i></span>
                         </div>
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                     </div>
@@ -93,7 +104,7 @@
                     <input type="hidden"></form>
                 <p class="text-center">
                     <span>Вперше на нашому сайті?</span>
-                    <a href="auth-login-cover.html">
+                    <a href="javascript:void(0)" onclick="modalForRegistration()">
                         <span>Зареєструватись</span>
                     </a>
                 </p>
@@ -102,7 +113,6 @@
     </div>
 </div>
 
-<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
 <script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
 <script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
 <script th:src="@{/assets/vendor/libs/node-waves/node-waves.js}"></script>
@@ -110,15 +120,9 @@
 <script th:src="@{/assets/vendor/libs/hammer/hammer.js}"></script>
 <script th:src="@{/assets/vendor/libs/typeahead-js/typeahead.js}"></script>
 <script th:src="@{/assets/vendor/js/menu.js}"></script>
+<script th:src="@{/assets/vendor/libs/flatpickr/flatpickr.js}"></script>
 
 <script th:src="@{/assets/js/main.js}"></script>
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    $("#username").val("professor@gmail.com")
-    $("#password").val("professor")
-})
-</script>
 </body>
 </html>
