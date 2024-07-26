@@ -25,8 +25,8 @@ public class ProfessorValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         ProfessorForRegistrationDto professor = (ProfessorForRegistrationDto) target;
-        if(!professor.getPassword().equals(professor.getPasswordRepeat()) && !professor.getPassword().isBlank()){
-            errors.rejectValue("password", "", getMessage("error.field.password.repeat"));
+        if(!professor.getPasswordForRegistration().equals(professor.getPasswordRepeat()) && !professor.getPasswordForRegistration().isBlank()){
+            errors.rejectValue("passwordForRegistration", "", getMessage("error.field.password.repeat"));
         }
     }
 }

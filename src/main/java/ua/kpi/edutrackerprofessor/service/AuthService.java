@@ -4,5 +4,5 @@ import ua.kpi.edutrackerprofessor.dto.professor.ProfessorForRegistrationDto;
 
 public interface AuthService {
     boolean isAuthenticated();
-    String registration(ProfessorForRegistrationDto professor);
+    void registration(ProfessorForRegistrationDto professor);
 }

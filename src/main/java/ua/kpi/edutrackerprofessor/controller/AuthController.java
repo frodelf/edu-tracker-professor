@@ -49,13 +49,14 @@ public class AuthController {
         return ResponseEntity.ok(authService.isAuthenticated());
     }
     @PostMapping("/registration")
-    public ResponseEntity<Map<String, String>> registrationForm(@ModelAttribute @Valid ProfessorForRegistrationDto professor, BindingResult bindingResult) throws NoSuchMethodException, MethodArgumentNotValidException {
+    public ResponseEntity<ProfessorForRegistrationDto> registrationForm(@ModelAttribute @Valid ProfessorForRegistrationDto professor, BindingResult bindingResult) throws NoSuchMethodException, MethodArgumentNotValidException {
         contactValidator.validate(professor, bindingResult);
         professorValidator.validate(professor, bindingResult);
         if (bindingResult.hasErrors()) {
             MethodParameter methodParameter = new MethodParameter(this.getClass().getDeclaredMethod("registrationForm", ProfessorForRegistrationDto.class, BindingResult.class), 0);
             throw new MethodArgumentNotValidException(methodParameter, bindingResult);
         }
-        return ResponseEntity.ok(Collections.singletonMap("id", authService.registration(professor)));
+        authService.registration(professor);
+        return ResponseEntity.ok(professor);
     }
 }

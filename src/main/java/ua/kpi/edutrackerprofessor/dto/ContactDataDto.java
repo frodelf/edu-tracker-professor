@@ -16,6 +16,6 @@ public class ContactDataDto {
     private String email;
     @PhoneFormat
     private String phone;
-//    @TelegramFormat
+    @TelegramFormat
     private String telegram;
 }

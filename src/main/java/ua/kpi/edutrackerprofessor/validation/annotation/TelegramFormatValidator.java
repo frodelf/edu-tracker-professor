@@ -9,10 +9,10 @@ public class TelegramFormatValidator implements ConstraintValidator<TelegramForm
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^@[a-zA-Z0-9_]{5,32}$");
 
     @Override
-    public boolean isValid(String username, ConstraintValidatorContext context) {
-        if (username == null) {
+    public boolean isValid(String telegram, ConstraintValidatorContext context) {
+        if (telegram == null || telegram.isBlank()) {
             return false;
         }
-        return USERNAME_PATTERN.matcher(username).matches();
+        return USERNAME_PATTERN.matcher(telegram).matches();
     }
 }

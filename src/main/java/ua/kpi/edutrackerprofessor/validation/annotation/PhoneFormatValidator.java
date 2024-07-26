@@ -11,7 +11,7 @@ public class PhoneFormatValidator implements ConstraintValidator<PhoneFormat, St
     );
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext context) {
-        if (phone == null) {
+        if (phone == null || phone.isBlank()) {
             return false;
         }
         return PHONE_PATTERN.matcher(phone).matches();

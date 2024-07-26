@@ -1,4 +1,6 @@
 //TODO Видалити це
+var fullContextPath = 'http://localhost:8080/edu-tracker/teach/';
+
 $(document).ready(function () {
     //TODO Видалити це///////////////////////////////
     $("#username").val("professor@gmail.com")
@@ -47,7 +49,7 @@ function modalForRegistration(taskId) {
                                     </div>
                                     <div class="col-lg-6 col-sm-12">
                                         telegram
-                                        <input id="telegram" class="form-control">
+                                        <input id="telegram" class="telegram form-control">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -63,18 +65,29 @@ function modalForRegistration(taskId) {
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-12">
                                         Пароль
-                                        <input id="password" class="form-control">
+                                        <div class="form-password-toggle">
+                                            <div id="passwordForRegistration" class="input-group input-group-merge">
+                                                <input type="password" class="form-control" id="password-value" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
+                                                <span id="basic-default-password2" class="input-group-text cursor-pointer"><i id="eye" class="ti ti-eye-off"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-6 col-sm-12">
                                         Повтор пароля
-                                        <input id="passwordRepeat" class="form-control">
+                                        <input id="passwordRepeat" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" type="password" class="form-control">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="float-end btn btn-primary" onclick="registration()">Зареєструватись</button>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12">
+                                Телефон
+                                <input id="phone" class="phone form-control">
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <button class="float-end btn btn-primary mt-4" onclick="registration()">Зареєструватись</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,6 +95,31 @@ function modalForRegistration(taskId) {
     `
     document.body.appendChild(modalBlock)
     $('#modalForRegistration').modal('show')
+
+    $(".phone").each(function (index, element) {
+        new Cleave("#" + element.id, {
+            blocks: [13],
+            numericOnly: true,
+            prefix: "+380"
+        })
+    })
+    $(".telegram").each(function (index, element) {
+        new Cleave("#" + element.id, {
+            prefix: "@"
+        })
+    })
+    const passwordInput = $('#password-value');
+    const eye = $('#eye');
+
+    eye.on('click', function() {
+        if (passwordInput.attr('type') === 'password') {
+            passwordInput.attr('type', 'text')
+            eye.removeClass('ti-eye-off').addClass('ti-eye')
+        } else if (passwordInput.attr('type') === 'text') {
+            passwordInput.attr('type', 'password')
+            eye.removeClass('ti-eye').addClass('ti-eye-off')
+        }
+    })
 }
 
 function registration(){
@@ -93,7 +131,8 @@ function registration(){
     formData.append("telegram", $("#telegram").val())
     formData.append("middleName", $("#middleName").val())
     formData.append("email", $("#email").val())
-    formData.append("password", $("#password").val())
+    formData.append("phone", $("#phone").val())
+    formData.append("passwordForRegistration", $("#password-value").val())
     formData.append("passwordRepeat", $("#passwordRepeat").val())
 
     $.ajax({
@@ -103,9 +142,21 @@ function registration(){
         data: formData,
         contentType: false,
         processData: false,
-        success: function (request) {
-            cleanInputs()
-            showToastForSave()
+        success: function (object) {
+            let formData = new FormData()
+            formData.append("username", object.email)
+            formData.append("password", object.passwordForRegistration)
+            $.ajax({
+                url: contextPath + 'process_login',
+                type: 'POST',
+                headers: {'X-XSRF-TOKEN': csrf_token},
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (object) {
+                    window.location.href=fullContextPath
+                }
+            })
         },
         error: function (xhr, status, error) {
             if (xhr.status === 400) {
@@ -145,6 +196,7 @@ function translateError(key) {
         .replace('The telegram already exists!', 'Телеграм уже існує')
         .replace('The email already exists!', 'E-mail уже існує')
         .replace('The phone already exists!', 'Телефон уже існує')
+        .replace('Passwords do not match!', ' Паролі не співпадають')
 }
 function showLoader(blockId) {
     $("#" + blockId).block({

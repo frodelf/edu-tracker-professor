@@ -22,6 +22,6 @@ public class ProfessorForRegistrationDto extends ContactDataDto {
     @Size(max = 100, message = "{error.field.size.max}")
     private String degree;
     @Size(min = 8, max = 20, message = "{error.field.size.between}")
-    private String password;
+    private String passwordForRegistration;
     private String passwordRepeat;
 }

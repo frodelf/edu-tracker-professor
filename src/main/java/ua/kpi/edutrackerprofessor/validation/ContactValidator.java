@@ -29,15 +29,15 @@ public class ContactValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ContactDataDto contactData = (ContactDataDto) target;
 
-        if (userService.validEmailByExist(contactData) && !contactData.getEmail().isBlank()) {
+        if (!userService.validEmailByExist(contactData) && !contactData.getEmail().isBlank()) {
             errors.rejectValue("email", "", getMessage("error.field.email.exist"));
         }
 
-        if (userService.validPhoneByExist(contactData)  && !contactData.getPhone().isBlank()) {
+        if (!userService.validPhoneByExist(contactData) && !contactData.getPhone().isBlank()) {
             errors.rejectValue("phone", "", getMessage("error.field.phone.exist"));
         }
 
-        if (userService.validTelegramByExist(contactData)  && !contactData.getTelegram().isBlank()) {
+        if (!userService.validTelegramByExist(contactData)  && !contactData.getTelegram().isBlank()) {
             errors.rejectValue("telegram", "", getMessage("error.field.telegram.exist"));
         }
     }

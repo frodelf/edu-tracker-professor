@@ -1,16 +1,22 @@
 package ua.kpi.edutrackerprofessor.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ua.kpi.edutrackerentity.entity.Professor;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorForRegistrationDto;
+import ua.kpi.edutrackerprofessor.mapper.ProfessorMapping;
 import ua.kpi.edutrackerprofessor.service.AuthService;
+import ua.kpi.edutrackerprofessor.service.ProfessorService;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+    private final ProfessorMapping professorMapping = new ProfessorMapping();
+    private final ProfessorService professorService;
     @Override
     public boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -20,8 +26,9 @@ public class AuthServiceImpl implements AuthService {
         return !(authentication instanceof AnonymousAuthenticationToken);
     }
     @Override
-    public String registration(ProfessorForRegistrationDto professor) {
-        //TODO доробити реєстрацію
-        return "";
+    @Transactional
+    public void registration(ProfessorForRegistrationDto professorForRegistrationDto) {
+        Professor professor = professorMapping.toEntityForRegistration(professorForRegistrationDto);
+        professorService.save(professor);
     }
 }

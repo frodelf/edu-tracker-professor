@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PhoneFormat {
-    String message() default "{error.field.telephone.format}";
+    String message() default "{error.field.phone.format}";
 
     Class<?>[] groups() default {};
 

@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO для кожної специфікації додати щоб відображалось тільки об'єкти які належать авторизованому професорі
 public class TaskSpecification implements Specification<Task> {
     private final TaskRequestFilter taskRequestFilter;
     public TaskSpecification(TaskRequestFilter taskRequestFilter) {
