@@ -51,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
     public Page<TaskResponseViewAll> getAll(TaskRequestFilter taskRequestFilter) {
         Pageable pageable = PageRequest.of(taskRequestFilter.getPage(), taskRequestFilter.getPageSize(), Sort.by(Sort.Order.desc("id")));
         if(nonNull(taskRequestFilter.getCourseId()) || !taskRequestFilter.getName().isBlank() || nonNull(taskRequestFilter.getStatus()) || nonNull(taskRequestFilter.getDeadline())) {
-            TaskSpecification taskSpecification = new TaskSpecification(taskRequestFilter);
+            TaskSpecification taskSpecification = new TaskSpecification(taskRequestFilter, professorService.getAuthProfessor().getCourses());
             return taskMapper.toDtoListForViewAll(taskRepository.findAll(taskSpecification, pageable));
         }
         return taskMapper.toDtoListForViewAll(taskRepository.findDistinctByCourseIn(professorService.getAuthProfessor().getCourses(), pageable));
