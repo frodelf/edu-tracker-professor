@@ -37,7 +37,8 @@ public class TaskSpecification implements Specification<Task> {
             predicates.add(criteriaBuilder.equal(root.get("status"), StatusTask.OPEN));
             Predicate condition1 = criteriaBuilder.lessThanOrEqualTo(root.get("deadline"), taskRequestFilter.getDeadline());
             Predicate condition2 = criteriaBuilder.isNull(root.get("deadline"));
-            predicates.add(criteriaBuilder.or(condition1, condition2));        }
+            predicates.add(criteriaBuilder.or(condition1, condition2));
+        }
         if(taskRequestFilter.getStatus()!=null){
             predicates.add(criteriaBuilder.equal(root.get("status"), taskRequestFilter.getStatus()));
         }

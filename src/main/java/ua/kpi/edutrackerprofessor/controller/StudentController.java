@@ -42,10 +42,12 @@ public class StudentController {
 
     @GetMapping("/get-group-for-select")
     public ResponseEntity<Page<Map<String, String>>> getGroupForSelect(@ModelAttribute ForSelect2Dto forSelect2Dto) {
-        Page<Map<String, String>> s = studentService.getAllByGroupForSelect(forSelect2Dto);
         return ResponseEntity.ok(studentService.getAllByGroupForSelect(forSelect2Dto));
     }
-
+    @GetMapping("/get-groups-by-course-for-select/{courseId}")
+    public ResponseEntity<Map<String, String>> getGroupsByCourseForSelect(@PathVariable Long courseId) {
+        return ResponseEntity.ok(studentService.getAllGroupByCourseId(courseId));
+    }
     @GetMapping("/statistic")
     public ResponseEntity<Map<String, String>> statistic(@RequestParam(required = false) Long courseId, @RequestParam Long studentId) {
         return ResponseEntity.ok(statisticService.getStatisticForStudent(courseId, studentId));

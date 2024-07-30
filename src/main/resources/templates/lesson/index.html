@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      layout:decorate="~{blocks/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Заняття</title>
+
+    <script th:inline="javascript">
+        var csrf_token = /*[[${_csrf.token}]]*/ {};
+    </script>
+    <script th:src="@{/js/lesson/index.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="d-flex justify-content-between mt-2">
+        <h4>Заняття</h4>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Заняття</li>
+            </ol>
+        </nav>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="text-end">
+        <button class="btn btn-primary mb-4" onclick="showModalForLessonStart()">Розпочати заняття</button>
+        <div id="toast-container" class="toast-top-right"></div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped linkedRow" id="lessonTable"
+                       style="table-layout: fixed;">
+                    <thead>
+                    <tr>
+                        <th style="width: 200px">Дата проведення</th>
+                        <th style="width: 200px">Курс</th>
+                        <th style="width: 200px">Кількість присутніх студентів</th>
+                        <th style="width: 200px">Статус</th>
+                        <th style="width: 210px"></th>
+                    </tr>
+                    <tr>
+                        <th><input class="form-control for-filter flatpickr-for-filter"></th>
+                        <th><select id="coursesForFilter" class="for-filter"></select></th>
+                        <th><input class="form-control for-filter"></th>
+                        <th><select id="selectForStatus" class="for-filter"></select></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                id="pagination_container">
+            </ul>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -5,6 +5,7 @@ $(document).ready(function () {
     //TODO Видалити це///////////////////////////////
     $("#username").val("professor@gmail.com")
     $("#password").val("professor")
+    $("#login").click()
     /////////////////////////////////////////////////
 
 

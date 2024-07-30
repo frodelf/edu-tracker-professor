@@ -79,11 +79,19 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     public List<StudentResponseForAdd> getAllByGroupAndCourse(String group, Long courseId) {
-        return studentMapper.toDtoForAddList(studentRepository.findAllByGroupName(group), courseId);
+        return studentMapper.toDtoForAddList(getAllByGroup(group), courseId);
     }
     @Override
-    public List<String> getAllByGroup(String group) {
-        List<String> res = studentRepository.findAllEmailsByGroupName(group);
-        return res;
+    public List<Student> getAllByGroup(String group) {
+        return studentRepository.findAllByGroupName(group);
+    }
+    @Override
+    public Map<String, String> getAllGroupByCourseId(Long courseId) {
+        List<String> groups = studentRepository.findAllGroupNamesByCourseId(courseId);
+        Map<String, String> list = new HashMap<>();
+        for (String group : groups) {
+            list.put(group, group);
+        }
+        return list;
     }
 }

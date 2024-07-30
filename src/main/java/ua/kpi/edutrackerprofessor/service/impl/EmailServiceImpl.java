@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
 //        Content content = new Content("text/plain", emailDto.getMessage());
 //
 //        Request request = new Request();
-//        for (String receiver : studentService.getAllByGroup(emailDto.getGroup())) {
+//        for (String receiver : studentService.getAllEmailsByGroup(emailDto.getGroup())) {
 //            Email toEmail = new Email(receiver);
 //            Mail mail = new Mail(from, emailDto.getTheme(), toEmail, content);
 
