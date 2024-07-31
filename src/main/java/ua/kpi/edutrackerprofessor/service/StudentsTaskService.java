@@ -3,12 +3,14 @@ package ua.kpi.edutrackerprofessor.service;
 import io.minio.errors.*;
 import ua.kpi.edutrackerentity.entity.StudentsTask;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskRequestForFilter;
+import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForLessonEdit;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForViewAll;
 import org.springframework.data.domain.Page;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public interface StudentsTaskService {
     long countAllByStudentId(Long studentId);
@@ -23,4 +25,5 @@ public interface StudentsTaskService {
     StudentsTask getById(Long id);
     StudentsTask save(StudentsTask studentsTask);
     void evaluate(Long studentTaskId, Double mark);
+    List<StudentTaskResponseForLessonEdit> getAllByStudentIdAndLessonId(Long studentId, Long lessonId);
 }

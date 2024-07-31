@@ -37,16 +37,16 @@ function getPageWithFilter(page) {
                 var cell0 = newRow.insertCell(0)
                 cell0.innerHTML = `${object.groupName}`
                 var cell1 = newRow.insertCell(1)
-                cell1.innerHTML = `<a href="${contextPath}/sudent/${object.id}">${object.fullName}</a>`
+                cell1.innerHTML = `<a href="${contextPath}student/${object.studentId}">${object.fullName}</a>`
                 var cell2 = newRow.insertCell(2)
                 cell2.innerHTML = `<a href="https://t.me/${object.telegram.replace("@", "")}">${object.telegram}</a>`
                 var cell3 = newRow.insertCell(3)
                 if (object.status == 'IN_PROCESS') {
-                    cell3.innerHTML = `<span class="badge bg-label-danger">В процесі</span>`
+                    cell3.innerHTML = `<center><span class="badge bg-label-danger">В процесі</span></center>`
                 } else if(object.status == 'GRANTED') {
-                    cell3.innerHTML = `<span class="badge bg-label-info">Здано</span>`
+                    cell3.innerHTML = `<center><span class="badge bg-label-info">Здано</span></center>`
                 } else {
-                    cell3.innerHTML = `<span class="badge bg-label-success">Оцінено</span>`
+                    cell3.innerHTML = `<center><span class="badge bg-label-success">Оцінено</span></center>`
                 }
                 var cell4 = newRow.insertCell(4);
                 if (object.status == 'IN_PROCESS') {

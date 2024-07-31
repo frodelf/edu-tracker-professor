@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskRequestForFilter;
+import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForLessonEdit;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForViewAll;
 import ua.kpi.edutrackerprofessor.service.StudentsTaskService;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,5 +35,9 @@ public class StudentTaskController {
     public ResponseEntity<String> evaluate(@RequestParam Long studentTaskId, @RequestParam Double mark){
         studentsTaskService.evaluate(studentTaskId, mark);
         return ResponseEntity.ok("updated");
+    }
+    @GetMapping("/get-all-for-lesson-edit")
+    public ResponseEntity<List<StudentTaskResponseForLessonEdit>> getAllForLessonEdit(@RequestParam Long studentId, @RequestParam Long lessonId){
+        return ResponseEntity.ok(studentsTaskService.getAllByStudentIdAndLessonId(studentId, lessonId));
     }
 }

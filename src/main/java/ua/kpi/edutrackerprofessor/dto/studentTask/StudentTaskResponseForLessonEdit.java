@@ -4,13 +4,12 @@ import lombok.Data;
 import ua.kpi.edutrackerentity.entity.enums.StatusStudentsTask;
 
 @Data
-public class StudentTaskResponseForViewAll {
+public class StudentTaskResponseForLessonEdit {
     private Long id;
+    private Long taskId;
     private Long studentId;
-    private String groupName;
-    private String fullName;
-    private String telegram;
     private StatusStudentsTask status;
     private Double mark;
     private String myWork;
+    private String taskName;
 }

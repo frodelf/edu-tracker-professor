@@ -2,6 +2,7 @@ package ua.kpi.edutrackerprofessor.dto.studentTask;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import ua.kpi.edutrackerentity.entity.enums.StatusStudentsTask;
 
@@ -13,8 +14,11 @@ public class StudentTaskRequestForFilter {
     private int pageSize;
     @NotNull(message = "{error.field.empty}")
     private Long taskId;
+    @Size(max = 100, message = "{error.field.size.max}")
     private String groupName;
+    @Size(max = 100, message = "{error.field.size.max}")
     private String fullName;
+    @Size(max = 100, message = "{error.field.size.max}")
     private String telegram;
     private StatusStudentsTask status;
 }

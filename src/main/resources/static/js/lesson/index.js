@@ -12,21 +12,16 @@ $(document).ready(function () {
 function getPageWithFilter(page) {
     showLoader('lessonTable')
     this.page = page
-    var filterElements = $('.for-filter');
-    console.log(filterElements[0].value)
-    console.log(filterElements[1].value)
-    console.log(filterElements[2].value)
-    console.log(filterElements[3].value)
+    var filterElements = $('.for-filter')
     $.ajax({
         type: "Get",
         url: contextPath + 'lesson/get-all',
         data: {
             page: page,
             pageSize: pageSize,
-            data: filterElements[0].value,
+            date: filterElements[0].value,
             courseId: filterElements[1].value,
-            presentStudents: filterElements[2].value,
-            statusLesson: filterElements[3].value
+            statusLesson: filterElements[2].value
         },
         success: function (objects) {
             var table = document.getElementById("lessonTable");
@@ -94,7 +89,7 @@ function showModalForLessonStart(){
                         Посилання на заняття
                         <input id="link" class="form-control ">
                         <div class="mt-3">Курс</div>
-                        <select id="courseForLessonStart" class="form-control "></select>
+                        <select id="courseId" class="form-control "></select>
                         <div class="mt-3">Групи</div>
                         <select id="groupForLessonStart" disabled class="form-control" ></select>
                         <button id="buttonForChooseGroup" class="float-end btn btn-primary mt-3" onclick="lessonStart()">Розпочати</button>
@@ -104,8 +99,8 @@ function showModalForLessonStart(){
         </div>
     `
     document.body.appendChild(modalBlock)
-    forSelect2("#courseForLessonStart", contextPath + "course/get-for-select")
-    $('#courseForLessonStart').change(function() {
+    forSelect2("#courseId", contextPath + "course/get-for-select")
+    $('#courseId').change(function() {
         $("#groupForLessonStart").prop("disabled", false)
         $("#groupForLessonStart").prop("multiple", true)
         forSelect2("#groupForLessonStart", contextPath + "student/get-groups-by-course-for-select/"+$(this).val())
@@ -130,6 +125,13 @@ function lessonStart(){
             getPageWithFilter(page)
             showSuccessToast()
             $('#modalForLessonStart').modal('hide')
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 400) {
+                validDataFromResponse(xhr.responseJSON)
+            } else {
+                console.error('Помилка відправки файлів на сервер:', error);
+            }
         },
         complete: function (xhr, status) {
             hideLoader("modalForLessonStart")

@@ -2,19 +2,24 @@ var fullContextPath = 'http://localhost:8080/edu-tracker/teach/';
 var messageForDelete = "Об'єкт успішно видалено"
 var messageForSave = "Об'єкт успішно збережено"
 var pageSize = 10
+
 $(document).ready(function () {
-    const inputs = document.querySelectorAll('.for-filter');
-    let timeout = null;
-    inputs.forEach(input => {
-        input.addEventListener('input', function () {
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                getPageWithFilter(0)
-            }, 1000)
-        })
-    })
-    $('.for-filter').on('change', function () {
+    var inputForFilter = $('.for-filter')
+    let timeout = null
+    $('#clean-all-input-for-filtering').click(function () {
+        inputForFilter.val('')
+        if (inputForFilter.is('[type="checkbox"]')) {
+            inputForFilter.prop('checked', false)
+        }
         getPageWithFilter(0)
+    })
+    inputForFilter.each(function() {
+        $(this).on('input', function () {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                getPageWithFilter(0);
+            }, 500);
+        });
     })
     $(".phone").each(function (index, element) {
         new Cleave("#" + element.id, {
@@ -214,6 +219,7 @@ function translateError(key) {
         .replace('Invalid email format', 'Невірний формат електронної пошти')
         .replace('Invalid phone format', 'Невірний формат телефону')
         .replace('File extension not valid', 'Тип файлу повиннен бути .jpeg, .png, .jpg')
+        .replace('Invalid url format!', 'Значення має бути посиланням')
 }
 
 function cleanInputs() {

@@ -16,6 +16,5 @@ public class LessonRequestForFilter {
     @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime date;
     private Long courseId;
-    private Long presentStudents;
     private StatusLesson statusLesson;
 }

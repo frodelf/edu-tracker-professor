@@ -4,12 +4,15 @@ import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import ua.kpi.edutrackerentity.entity.Lesson;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskRequestForFilter;
+import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForLessonEdit;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForViewAll;
 import ua.kpi.edutrackerentity.entity.StudentsTask;
 import ua.kpi.edutrackerentity.entity.enums.StatusStudentsTask;
 import ua.kpi.edutrackerprofessor.mapper.StudentTaskMapper;
 import ua.kpi.edutrackerprofessor.repository.StudentsTaskRepository;
+import ua.kpi.edutrackerprofessor.service.LessonService;
 import ua.kpi.edutrackerprofessor.service.ProfessorService;
 import ua.kpi.edutrackerprofessor.service.StudentsTaskService;
 import ua.kpi.edutrackerprofessor.specification.StudentsTaskSpecification;
@@ -30,6 +33,7 @@ import java.util.List;
 public class StudentsTaskServiceImpl implements StudentsTaskService {
     private final StudentsTaskRepository studentsTaskRepository;
     private final ProfessorService professorService;
+    private final LessonService lessonService;
     private final StudentTaskMapper studentTaskMapper = new StudentTaskMapper();
     @Override
     public long countAllByStudentId(Long studentId) {
@@ -91,5 +95,10 @@ public class StudentsTaskServiceImpl implements StudentsTaskService {
         studentsTask.setMark(mark);
         studentsTask.setStatus(StatusStudentsTask.EVALUATED);
         save(studentsTask);
+    }
+    @Override
+    public List<StudentTaskResponseForLessonEdit> getAllByStudentIdAndLessonId(Long studentId, Long lessonId) {
+        Lesson lesson = lessonService.getById(lessonId);
+        return studentTaskMapper.toDtoListForLessonAdd(studentsTaskRepository.findAllByStudentIdAndCourseId(studentId, lesson.getCourse().getId()));
     }
 }

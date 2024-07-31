@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 public class LessonSpecification implements Specification<Lesson> {
     private LessonRequestForFilter lessonRequestForFilter;
     private List<Course> courses;
@@ -25,12 +27,19 @@ public class LessonSpecification implements Specification<Lesson> {
     @Override
     public Predicate toPredicate(Root<Lesson> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-        if(lessonRequestForFilter.getDate()!=null){
+        if(nonNull(lessonRequestForFilter.getDate())){
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), lessonRequestForFilter.getDate()));
         }
-        predicates.add(root.get("course").get("id").in(courses.stream()
-                .map(Course::getId)
-                .collect(Collectors.toList())));
+        if(nonNull(lessonRequestForFilter.getCourseId())){
+            predicates.add(criteriaBuilder.equal(root.get("course").get("id"), lessonRequestForFilter.getCourseId()));
+        }else {
+            predicates.add(root.get("course").get("id").in(courses.stream()
+                    .map(Course::getId)
+                    .collect(Collectors.toList())));
+        }
+        if(nonNull(lessonRequestForFilter.getStatusLesson())){
+            predicates.add(criteriaBuilder.equal(root.get("status"), lessonRequestForFilter.getStatusLesson()));
+        }
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

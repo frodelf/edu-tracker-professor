@@ -19,7 +19,6 @@ import ua.kpi.edutrackerprofessor.repository.LessonRepository;
 import ua.kpi.edutrackerprofessor.service.*;
 import org.springframework.stereotype.Service;
 import ua.kpi.edutrackerprofessor.specification.LessonSpecification;
-import ua.kpi.edutrackerprofessor.specification.LiteratureSpecification;
 
 import java.util.HashMap;
 import java.util.Map;
