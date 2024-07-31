@@ -50,8 +50,6 @@ function addBlock(course) {
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-outline-danger float-end" onclick="remove(${course.id})"><i class="fa-solid fa-trash"></i></button>
-                    <a href="${contextPath}course/edit/${course.id}" class="btn btn-outline-primary float-end" style="margin-right: 10px"><i class="fa-solid fa-pencil"></i></a>
                     <button class="btn btn-outline-secondary float-end" style="margin-right: 10px" onclick="view(${course.id})"><i class="fa-regular fa-eye"></i></button>
                 </div>
             </div>
@@ -139,20 +137,6 @@ function view(id) {
     `;
             document.body.appendChild(modalBlock);
             $('#ModalForView').modal('show');
-        },
-    })
-}
-function remove(id){
-    $.ajax({
-        url: contextPath + 'course/remove',
-        type: 'DELETE',
-        headers: {'X-XSRF-TOKEN': csrf_token},
-        data: {
-            id: id,
-        },
-        success: function (request) {
-            getPageWithFilter(page)
-            showToastForDelete()
         },
     })
 }

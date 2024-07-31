@@ -33,28 +33,9 @@ public class CourseController {
     public ModelAndView index() {
         return new ModelAndView("course/index");
     }
-    @GetMapping("/add")
-    public ModelAndView add() {
-        return new ModelAndView("course/edit");
-    }
-    //TODO: Вирізати функціонал по додаванню/редагуванню курса і перенести його в адмінку
-    @GetMapping("/edit/{id}")
-    public ModelAndView edit(@PathVariable Long id) {
-        return new ModelAndView("course/edit", "course", courseService.getByIdForAdd(id));
-    }
     @GetMapping("/get-all")
     public ResponseEntity<Page<CourseResponseViewAll>> getAll(@RequestParam int page, @RequestParam int pageSize){
         return ResponseEntity.ok(courseService.getAll(page, pageSize));
-    }
-    @PostMapping("/add")
-    public ResponseEntity<?> add(@ModelAttribute @Valid CourseDtoForAdd courseDtoForAdd) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        return ResponseEntity.ok(courseService.add(courseDtoForAdd));
-    }
-    //TODO Багато помилок при видаленні
-    @DeleteMapping("/remove")
-    public ResponseEntity<String> remove(@RequestParam long id) {
-        courseService.removeById(id);
-        return ResponseEntity.ok("removed");
     }
     @GetMapping("/statistic")
     public ResponseEntity<Map<String, String>> statistic(@RequestParam long id){

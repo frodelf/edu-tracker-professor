@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//TODO для кожної специфікації додати щоб відображалось тільки об'єкти які належать авторизованому професорі
 public class TaskSpecification implements Specification<Task> {
     private final TaskRequestFilter taskRequestFilter;
     private List<Course> courses;
