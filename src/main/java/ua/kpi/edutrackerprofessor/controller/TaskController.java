@@ -2,8 +2,8 @@ package ua.kpi.edutrackerprofessor.controller;
 
 import io.minio.errors.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
 import ua.kpi.edutrackerprofessor.dto.task.TaskRequestFilter;
 import ua.kpi.edutrackerprofessor.dto.task.TaskRequestForAdd;
 import ua.kpi.edutrackerprofessor.dto.task.TaskResponseForAdd;
@@ -15,10 +15,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.kpi.edutrackerprofessor.dto.task.TaskRequestForOpen;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,6 +53,24 @@ public class TaskController {
     public ResponseEntity<String> add(@ModelAttribute @Valid TaskRequestForAdd taskRequestForAdd) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         taskService.add(taskRequestForAdd);
         return ResponseEntity.ok("saved");
+    }
+    @GetMapping("/get-all-close-for-select-by-course-id/{courseId}")
+    public ResponseEntity<Map<String, String>> getAllCloseForSelectByCourseId(@PathVariable Long courseId){
+        return ResponseEntity.ok(taskService.getAllCloseForSelectByCourseId(courseId));
+    }
+    @GetMapping("/get-all-open-for-select-by-course-id/{courseId}")
+    public ResponseEntity<Map<String, String>> getAllOpenForSelectByCourseId(@PathVariable Long courseId){
+        return ResponseEntity.ok(taskService.getAllOpenForSelectByCourseId(courseId));
+    }
+    @PostMapping("/open")
+    public ResponseEntity<String> open(@ModelAttribute @Valid TaskRequestForOpen taskRequestForOpen){
+        taskService.open(taskRequestForOpen);
+        return ResponseEntity.ok("opened");
+    }
+    @PostMapping("/close")
+    public ResponseEntity<String> close(@RequestParam @NotNull(message = "{error.field.empty}") List<Long> taskForClose){
+        taskService.close(taskForClose);
+        return ResponseEntity.ok("opened");
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

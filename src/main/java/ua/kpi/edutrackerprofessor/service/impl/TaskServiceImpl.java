@@ -4,6 +4,7 @@ import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import ua.kpi.edutrackerentity.entity.enums.StatusTask;
 import ua.kpi.edutrackerprofessor.dto.task.*;
 import ua.kpi.edutrackerentity.entity.Task;
 import ua.kpi.edutrackerprofessor.mapper.TaskMapper;
@@ -22,6 +23,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
@@ -34,18 +38,17 @@ public class TaskServiceImpl implements TaskService {
     private final ProfessorService professorService;
     private final MinioService minioService;
     private final TaskMapper taskMapper = new TaskMapper();
-    //TODO доробити методи
     @Override
     public long countAllTasksByCourseId(long courseId) {
-        return 0;
+        return taskRepository.countAllByCourseId(courseId);
     }
     @Override
     public long countAllOpenTasksByCourseId(long courseId) {
-        return 0;
+        return taskRepository.countAllByCourseIdAndStatus(courseId, StatusTask.OPEN);
     }
     @Override
     public long countAllCloseTasksByCourseId(long courseId) {
-        return 0;
+        return taskRepository.countAllByCourseIdAndStatus(courseId, StatusTask.CLOSE);
     }
     @Override
     public Page<TaskResponseViewAll> getAll(TaskRequestFilter taskRequestFilter) {
@@ -87,5 +90,36 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseForView getByIdForView(Long id) {
         return taskMapper.toDtoForViewPage(getById(id));
+    }
+    @Override
+    public Map<String, String> getAllCloseForSelectByCourseId(Long courseId) {
+        Map<String, String> forSelect = new HashMap<>();
+        for (Task task : taskRepository.findAllByCourseIdAndStatus(courseId, StatusTask.CLOSE)) {
+            forSelect.put(task.getId().toString(), task.getName());
+        }
+        return forSelect;
+    }
+    @Override
+    @Transactional
+    public void open(TaskRequestForOpen taskRequestForOpen) {
+        save(taskMapper.toEntityForOpen(taskRequestForOpen, this));
+    }
+    @Override
+    @Transactional
+    public void close(List<Long> taskId) {
+        for (Long id : taskId) {
+            Task task = getById(id);
+            task.setStatus(StatusTask.CLOSE);
+            task.setDeadline(null);
+            save(task);
+        }
+    }
+    @Override
+    public Map<String, String> getAllOpenForSelectByCourseId(Long courseId) {
+        Map<String, String> forSelect = new HashMap<>();
+        for (Task task : taskRepository.findAllByCourseIdAndStatus(courseId, StatusTask.OPEN)) {
+            forSelect.put(task.getId().toString(), task.getName());
+        }
+        return forSelect;
     }
 }

@@ -10,6 +10,7 @@ import ua.kpi.edutrackerprofessor.service.CourseService;
 import ua.kpi.edutrackerprofessor.service.TaskService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import ua.kpi.edutrackerprofessor.dto.task.TaskRequestForOpen;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -50,7 +51,6 @@ public class TaskMapper {
         else task.setStatus(StatusTask.CLOSE);
         task.setName(taskRequestForAdd.getName());
         task.setCourse(courseService.getById(taskRequestForAdd.getCourseId()));
-        task.setDeadline(taskRequestForAdd.getDeadline());
         return task;
     }
     public TaskResponseForView toDtoForViewPage(Task task) {
@@ -60,5 +60,11 @@ public class TaskMapper {
         taskResponseForView.setFile(task.getFile());
         if(task.getCourse()!=null)taskResponseForView.setCourse(Collections.singletonMap(task.getCourse().getId().toString(), task.getCourse().getName()));
         return taskResponseForView;
+    }
+    public Task toEntityForOpen(TaskRequestForOpen taskRequestForOpen, TaskService taskService) {
+        Task task = taskService.getById(taskRequestForOpen.getTaskId());
+        task.setStatus(StatusTask.OPEN);
+        task.setDeadline(taskRequestForOpen.getDeadline());
+        return task;
     }
 }

@@ -187,10 +187,6 @@ function modalForAdd(taskId) {
                         Курс
                         </div>
                         <select id="courseId" class="coursesForFilter"></select>
-                        <div class="mt-3">
-                            Дедлайн
-                        </div>
-                        <input id="deadline" class="form-control">
                     </div>
                     <div class="modal-footer">
                         <button class="float-end btn btn-primary" onclick="addTask()">Зберегти</button>
@@ -202,11 +198,6 @@ function modalForAdd(taskId) {
         document.body.appendChild(modalBlock)
 
         $('#modalForAdd').modal('show')
-        document.querySelector("#deadline").flatpickr({
-            weekNumbers: true,
-            enableTime: true,
-            dateFormat: "d.m.Y H:i"
-        })
         forSelect2("#courseId", contextPath + "course/get-for-select")
     }
 }
@@ -216,7 +207,6 @@ function addTask(taskId){
     if(taskId)formData.append('id', taskId)
     formData.append('name', $("#name").val())
     if($("#courseId").val())formData.append('courseId', $("#courseId").val())
-    formData.append('deadline', $("#deadline").val())
     $.ajax({
         url: contextPath + 'task/add',
         type: 'POST',
