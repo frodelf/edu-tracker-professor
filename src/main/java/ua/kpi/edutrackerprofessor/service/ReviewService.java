@@ -12,4 +12,6 @@ public interface ReviewService {
     Review save(Review review);
     Long countByLessonAndPresentTrue(Lesson lesson);
     Page<ReviewDtoForEdit> getAllForLessonEdit(ReviewRequestForFilter reviewRequestForFilter);
+    void updatePresent(Long reviewId, Boolean checked);
+    Review getById(Long id);
 }

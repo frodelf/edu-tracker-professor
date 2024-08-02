@@ -10,11 +10,12 @@
     <script th:inline="javascript">
         var csrf_token = /*[[${_csrf.token}]]*/ {}
         var lessonId = /*[[${lessonId}]]*/ {}
+        var view = /*[[${view}]]*/ {}
     </script>
     <script th:src="@{/js/lesson/add.js}"></script>
 </head>
 <body>
-<section layout:fragment="content">
+<section layout:fragment="content" id="all-content">
     <div class="d-flex justify-content-between mt-2">
         <h4>Заняття розпочато</h4>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -54,7 +55,7 @@
             </ul>
         </div>
     </div>
-    <button class="btn btn-primary float-end mt-4">Завершити заняття</button>
+    <button id="finish-lesson-button" class="btn btn-primary float-end mt-4" onclick="lessonFinish()">Завершити заняття</button>
 </section>
 </body>
 </html>

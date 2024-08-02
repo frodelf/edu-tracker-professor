@@ -108,7 +108,7 @@ function showModalForLessonStart(){
     $('#modalForLessonStart').modal('show')
 }
 function modalForView(id){
-
+    window.location.href = fullContextPath + 'lesson/view/'+id;
 }
 function lessonStart(){
     showLoader("modalForLessonStart")

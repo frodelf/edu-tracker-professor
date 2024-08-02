@@ -6,6 +6,7 @@ import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForFilter;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
 
+import java.util.List;
 import java.util.Map;
 
 public interface LessonService {
@@ -15,4 +16,5 @@ public interface LessonService {
     Lesson save(Lesson lesson);
     Lesson getById(Long id);
     Page<LessonResponseForViewAll> getAll(LessonRequestForFilter lessonRequestForFilter);
+    void finish(Long lessonId);
 }

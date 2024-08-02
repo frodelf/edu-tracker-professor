@@ -1,5 +1,6 @@
 package ua.kpi.edutrackerprofessor.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,5 +44,18 @@ public class ReviewServiceImpl implements ReviewService {
         Pageable pageable = PageRequest.of(reviewRequestForFilter.getPage(), reviewRequestForFilter.getPageSize(), Sort.by(Sort.Order.desc("id")));
         ReviewSpecification reviewSpecification = new ReviewSpecification(reviewRequestForFilter);
         return reviewMapper.toDtoListForEdit(reviewRepository.findAll(reviewSpecification, pageable));
+    }
+    @Override
+    @Transactional
+    public void updatePresent(Long reviewId, Boolean checked) {
+        Review review = getById(reviewId);
+        review.setPresent(checked);
+        save(review);
+    }
+    @Override
+    public Review getById(Long id) {
+        return reviewRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id = "+id+" not found")
+        );
     }
 }

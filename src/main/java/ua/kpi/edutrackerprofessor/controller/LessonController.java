@@ -13,6 +13,7 @@ import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
 import ua.kpi.edutrackerprofessor.service.LessonService;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -39,6 +40,18 @@ public class LessonController {
     @GetMapping("/edit/{id}")
     public ModelAndView editLesson(@PathVariable Long id) {
         return new ModelAndView("lesson/add", "lessonId", id);
+    }
+    @GetMapping("/view/{id}")
+    public ModelAndView viewLesson(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView("lesson/add");
+        modelAndView.addObject("lessonId", id);
+        modelAndView.addObject("view", true);
+        return modelAndView;
+    }
+    @PostMapping("/finish")
+    public ResponseEntity<String> finish(@RequestParam Long lessonId){
+        lessonService.finish(lessonId);
+        return ResponseEntity.ok("finished");
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

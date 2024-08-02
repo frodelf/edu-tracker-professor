@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import ua.kpi.edutrackerprofessor.specification.LessonSpecification;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -76,5 +77,12 @@ public class LessonServiceImpl implements LessonService {
         Pageable pageable = PageRequest.of(lessonRequestForFilter.getPage(), lessonRequestForFilter.getPageSize(), Sort.by(Sort.Order.desc("id")));
         LessonSpecification lessonSpecification = new LessonSpecification(lessonRequestForFilter, professorService.getAuthProfessor().getCourses());
         return lessonMapper.toDtoListForViewAll(lessonRepository.findAll(lessonSpecification, pageable), reviewService);
+    }
+    @Override
+    @Transactional
+    public void finish(Long lessonId) {
+        Lesson lesson = getById(lessonId);
+        lesson.setStatus(StatusLesson.FINISHED);
+        save(lesson);
     }
 }

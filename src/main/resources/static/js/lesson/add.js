@@ -1,6 +1,7 @@
 var page = 0
 $(document).ready(function () {
     getPageWithFilter(page)
+    if(view)$('#finish-lesson-button').remove()
 })
 function getPageWithFilter(page) {
     showLoader('reviewTable')
@@ -30,7 +31,7 @@ function getPageWithFilter(page) {
                 cell0.innerHTML = `<a href="${contextPath}student/${object.studentId}">${object.fullName}</a>`
 
                 var cell1 = newRow.insertCell(1);
-                cell1.innerHTML = `<center><input type="checkbox" class="form-check-input " ${object.present?'checked':''}></center>`
+                cell1.innerHTML = `<center><input type="checkbox" class="form-check-input" id="review${object.id}" onclick="saveReview(${object.id})" ${object.present?'checked':''}></center>`
 
                 var cell2 = newRow.insertCell(2);
                 cell2.innerHTML = `<button class="btn float-end" type="button" onclick="showModalForTasks(${lessonId}, ${object.studentId})"><i class="fa-solid fa-list-check"></i></button>`
@@ -129,8 +130,6 @@ function showModalForTasks(lessonId, studentId){
         },
     })
 }
-
-
 function downloadFileFrom(fileName) {
     var file = fileName
     $.ajax({
@@ -161,6 +160,7 @@ function downloadFileFrom(fileName) {
     });
 }
 function cancelMark(studentTaskId, studentId){
+    if(view)return
     $.ajax({
         url: contextPath + 'student-task/cancel-mark',
         type: 'PUT',
@@ -174,6 +174,7 @@ function cancelMark(studentTaskId, studentId){
     })
 }
 function showModalForEvaluate(studentTaskId, studentId){
+    if(view)return
     if ($('#modalForEvaluate').html()) $('#modalForEvaluate').remove()
 
     var modalBlock = document.createElement('div');
@@ -209,8 +210,8 @@ function showModalForEvaluate(studentTaskId, studentId){
     });
 
 }
-
 function toEvaluate(studentTaskId, studentId){
+    if(view)return
     showLoader("modalForEvaluate")
     $.ajax({
         url: contextPath + 'student-task/evaluate',
@@ -233,6 +234,58 @@ function toEvaluate(studentTaskId, studentId){
         },
         complete: function (xhr, status) {
             hideLoader("modalForEvaluate")
+        }
+    })
+}
+function lessonFinish(){
+    if(view)return
+    showLoader("all-content")
+    $.ajax({
+        url: contextPath + 'lesson/finish',
+        type: 'POST',
+        headers: {'X-XSRF-TOKEN': csrf_token},
+        data: {
+            lessonId: lessonId
+        },
+        success: function (request) {
+
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 400) {
+                validDataFromResponse(xhr.responseJSON)
+            } else {
+                console.error('Помилка відправки файлів на сервер:', error);
+            }
+        },
+        complete: function (xhr, status) {
+            hideLoader("all-content")
+        }
+    })
+}
+
+function saveReview(reviewId){
+    if(view)return
+    showLoader("all-content")
+    $.ajax({
+        url: contextPath + 'review/update-present',
+        type: 'PUT',
+        headers: {'X-XSRF-TOKEN': csrf_token},
+        data: {
+            reviewId: reviewId,
+            checked: document.getElementById('review'+reviewId).checked
+        },
+        success: function (request) {
+            window.location.href = fullContextPath + 'lesson';
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 400) {
+                validDataFromResponse(xhr.responseJSON)
+            } else {
+                console.error('Помилка відправки файлів на сервер:', error);
+            }
+        },
+        complete: function (xhr, status) {
+            hideLoader("all-content")
         }
     })
 }
