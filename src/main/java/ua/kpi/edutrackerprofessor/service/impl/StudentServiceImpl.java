@@ -94,4 +94,12 @@ public class StudentServiceImpl implements StudentService {
         }
         return list;
     }
+    @Override
+    public Long getCountActiveStudent() {
+        return studentRepository.countAllByCoursesIn(professorService.getAuthProfessor().getCourses());
+    }
+    @Override
+    public List<Student> getAllByCourseId(Long courseId) {
+        return studentRepository.findAllByCourseId(courseId);
+    }
 }

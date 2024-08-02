@@ -13,6 +13,7 @@ function getPageWithFilter(page) {
         data: {
             page: page,
             pageSize: pageSize,
+            lessonId: lessonId,
             fullName: filterElements[0].value
         },
         success: function (objects) {
@@ -248,7 +249,7 @@ function lessonFinish(){
             lessonId: lessonId
         },
         success: function (request) {
-
+            window.location.href = fullContextPath + 'lesson';
         },
         error: function (xhr, status, error) {
             if (xhr.status === 400) {
@@ -275,7 +276,6 @@ function saveReview(reviewId){
             checked: document.getElementById('review'+reviewId).checked
         },
         success: function (request) {
-            window.location.href = fullContextPath + 'lesson';
         },
         error: function (xhr, status, error) {
             if (xhr.status === 400) {

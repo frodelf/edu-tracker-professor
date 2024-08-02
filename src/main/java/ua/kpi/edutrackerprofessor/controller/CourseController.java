@@ -61,6 +61,10 @@ public class CourseController {
     public ResponseEntity<Map<String, String>> getForSelect(@PathVariable Long studentId){
         return ResponseEntity.ok(courseService.getForSelectByStudent(studentId));
     }
+    @GetMapping("/get-count-course")
+    public ResponseEntity<Integer> getCountCourse(){
+        return ResponseEntity.ok(courseService.getCountCourse());
+    }
     @ModelAttribute
     public void activeMenuItem(Model model) {
         model.addAttribute("courseActive", true);

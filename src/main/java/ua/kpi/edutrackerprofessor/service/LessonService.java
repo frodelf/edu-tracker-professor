@@ -17,4 +17,6 @@ public interface LessonService {
     Lesson getById(Long id);
     Page<LessonResponseForViewAll> getAll(LessonRequestForFilter lessonRequestForFilter);
     void finish(Long lessonId);
+    Long countAll();
+    Map<String, String> getDateCountMap(Long courseId);
 }

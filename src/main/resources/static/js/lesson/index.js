@@ -118,7 +118,7 @@ function lessonStart(){
         headers: {'X-XSRF-TOKEN': csrf_token},
         data: {
             link: $("#link").val(),
-            courseId: $("#courseForLessonStart").val(),
+            courseId: $("#courseId").val(),
             groups: $("#groupForLessonStart").val()
         },
         success: function () {

@@ -6,10 +6,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Статистика</title>
+    <script th:inline="javascript">
+        var csrf_token = /*[[${_csrf.token}]]*/ {};
+    </script>
+    <script th:src="@{/js/statistic/index.js}"></script>
+
+    <link th:rel="stylesheet" th:href="@{assets/vendor/libs/apex-charts/apex-charts.css}" />
+    <script th:src="@{/assets/vendor/libs/apex-charts/apexcharts.js}"></script>
 </head>
 <body>
 <section layout:fragment="content">
-    <h1>Hello world!</h1>
+    <div class="row mt-4 mb-4">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content" id="active-student">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content" id="active-course">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-content" id="lesson-held">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card mb-4">
+                <div class="card-content" id="number-tasks">
+                </div>
+            </div>
+            <select id="course" class="mt-4"></select>
+        </div>
+    </div>
+
+    <div id="lineChart" class="mt-2"></div>
 </section>
 </body>
 </html>

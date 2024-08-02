@@ -43,6 +43,7 @@ public class ReviewSpecification implements Specification<Review> {
                     )
             );
         }
+        predicates.add(criteriaBuilder.equal(root.get("lesson").get("id"), reviewRequestForFilter.getLessonId()));
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

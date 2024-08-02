@@ -124,4 +124,9 @@ public class CourseServiceImpl implements CourseService {
             course.getStudents().removeIf(studentEl -> studentEl.getId().equals(studentId));
         save(course);
     }
+
+    @Override
+    public Integer getCountCourse() {
+        return professorService.getAuthProfessor().getCourses().size();
+    }
 }

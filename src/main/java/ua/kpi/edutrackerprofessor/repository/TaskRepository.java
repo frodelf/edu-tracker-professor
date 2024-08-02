@@ -14,5 +14,6 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     Page<Task> findDistinctByCourseIn(List<Course> courses, Pageable pageable);
     List<Task> findAllByCourseIdAndStatus(Long courseId, StatusTask status);
     Long countAllByCourseId(Long courseId);
+    Long countAllByCourseIn(List<Course> courses);
     Long countAllByCourseIdAndStatus(Long courseId, StatusTask status);
 }

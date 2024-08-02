@@ -20,9 +20,12 @@ import ua.kpi.edutrackerprofessor.service.*;
 import org.springframework.stereotype.Service;
 import ua.kpi.edutrackerprofessor.specification.LessonSpecification;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -50,8 +53,18 @@ public class LessonServiceImpl implements LessonService {
     public Long start(LessonRequestForStart lessonRequestForStart) {
         Lesson lesson = lessonMapper.toEntityForAdd(lessonRequestForStart, courseService);
         lesson = save(lesson);
-        for (String group : lessonRequestForStart.getGroups()) {
-            for (Student student : studentService.getAllByGroup(group)) {
+        if(nonNull(lessonRequestForStart.getGroups())){
+            for (String group : lessonRequestForStart.getGroups()) {
+                for (Student student : studentService.getAllByGroup(group)) {
+                    Review review = new Review();
+                    review.setLesson(lesson);
+                    review.setStudent(student);
+                    review.setPresent(false);
+                    reviewService.save(review);
+                }
+            }
+        }else {
+            for (Student student : studentService.getAllByCourseId(lessonRequestForStart.getCourseId())) {
                 Review review = new Review();
                 review.setLesson(lesson);
                 review.setStudent(student);
@@ -84,5 +97,25 @@ public class LessonServiceImpl implements LessonService {
         Lesson lesson = getById(lessonId);
         lesson.setStatus(StatusLesson.FINISHED);
         save(lesson);
+    }
+
+    @Override
+    public Long countAll() {
+        return lessonRepository.countAllByCourseIn(professorService.getAuthProfessor().getCourses());
+    }
+
+    @Override
+    public Map<String, String> getDateCountMap(Long courseId) {
+        List<Object[]> results = new ArrayList<>();
+        if(nonNull(courseId)) lessonRepository.countStudentsByDateAndCourseId(courseId);
+        else results = lessonRepository.countStudentsByDate();
+        Map<String, String> resultMap = new HashMap<>();
+
+        for (Object[] result : results) {
+            String date = result[0].toString();
+            String studentCount = result[1].toString();
+            resultMap.put(date, studentCount);
+        }
+        return resultMap;
     }
 }

@@ -122,4 +122,9 @@ public class TaskServiceImpl implements TaskService {
         }
         return forSelect;
     }
+
+    @Override
+    public Long countAllTask() {
+        return taskRepository.countAllByCourseIn(professorService.getAuthProfessor().getCourses());
+    }
 }

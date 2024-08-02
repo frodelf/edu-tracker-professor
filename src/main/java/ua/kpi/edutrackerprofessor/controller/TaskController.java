@@ -72,6 +72,10 @@ public class TaskController {
         taskService.close(taskForClose);
         return ResponseEntity.ok("opened");
     }
+    @GetMapping("/get-count-task")
+    public ResponseEntity<Long> getCountTask(){
+        return ResponseEntity.ok(taskService.countAllTask());
+    }
     @ModelAttribute
     public void activeMenuItem(Model model) {
         model.addAttribute("taskActive", true);

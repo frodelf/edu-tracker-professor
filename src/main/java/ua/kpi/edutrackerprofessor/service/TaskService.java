@@ -27,4 +27,5 @@ public interface TaskService {
     void open(TaskRequestForOpen taskRequestForOpen);
     void close(List<Long> taskId);
     Map<String, String> getAllOpenForSelectByCourseId(Long courseId);
+    Long countAllTask();
 }

@@ -21,4 +21,6 @@ public interface StudentService {
     List<StudentResponseForAdd> getAllByGroupAndCourse(String group, Long courseId);
     List<Student> getAllByGroup(String group);
     Map<String, String> getAllGroupByCourseId(Long courseId);
+    Long getCountActiveStudent();
+    List<Student> getAllByCourseId(Long courseId);
 }

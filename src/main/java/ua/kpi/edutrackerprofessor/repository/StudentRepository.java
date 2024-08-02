@@ -20,4 +20,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpec
     List<String> findAllEmailsByGroupName(String groupName);
     @Query("SELECT DISTINCT s.groupName FROM Student s JOIN s.courses c WHERE c.id = :courseId")
     List<String> findAllGroupNamesByCourseId(@Param("courseId") Long courseId);
+    Long countAllByCoursesIn(List<Course> courses);
+    @Query("SELECT s FROM Student s JOIN s.courses c WHERE c.id = :courseId")
+    List<Student> findAllByCourseId(@Param("courseId") Long courseId);
 }

@@ -23,4 +23,5 @@ public interface CourseService {
     Map<String, String> getForSelectByStudent(Long studentId);
     void addStudentToCourse(Map<String, String> students, Long courseId);
     void removeStudentFromCourse(Long studentId, Long courseId);
+    Integer getCountCourse();
 }

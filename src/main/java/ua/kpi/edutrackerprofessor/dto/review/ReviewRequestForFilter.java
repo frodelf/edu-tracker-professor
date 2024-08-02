@@ -12,4 +12,5 @@ public class ReviewRequestForFilter {
     private int pageSize;
     @Size(max = 100, message = "{error.field.size.max}")
     private String fullName;
+    private Long lessonId;
 }

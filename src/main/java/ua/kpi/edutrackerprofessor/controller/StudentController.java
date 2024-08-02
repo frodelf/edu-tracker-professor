@@ -70,7 +70,10 @@ public class StudentController {
         courseService.removeStudentFromCourse(studentId, courseId);
         return ResponseEntity.ok("deleted");
     }
-
+    @GetMapping("/get-count-active-student")
+    public ResponseEntity<Long> getCountActiveStudent(){
+        return ResponseEntity.ok(studentService.getCountActiveStudent());
+    }
     @ModelAttribute
     public void activeMenuItem(Model model) {
         model.addAttribute("studentActive", true);

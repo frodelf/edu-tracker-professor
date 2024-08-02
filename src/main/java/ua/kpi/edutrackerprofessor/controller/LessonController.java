@@ -53,6 +53,15 @@ public class LessonController {
         lessonService.finish(lessonId);
         return ResponseEntity.ok("finished");
     }
+    @GetMapping("/get-count-lesson-held")
+    public ResponseEntity<Long> getCountLessonHeld(){
+        return ResponseEntity.ok(lessonService.countAll());
+    }
+    @GetMapping("/get-date-count-map")
+    public ResponseEntity<Map<String, String>> getDateCountMap(@RequestParam(required = false) Long courseId){
+
+        return ResponseEntity.ok(lessonService.getDateCountMap(courseId));
+    }
     @ModelAttribute
     public void activeMenuItem(Model model) {
         model.addAttribute("lessonActive", true);
