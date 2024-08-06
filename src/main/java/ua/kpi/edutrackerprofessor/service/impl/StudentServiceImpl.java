@@ -4,20 +4,19 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import ua.kpi.edutrackerprofessor.dto.ForSelect2Dto;
-import ua.kpi.edutrackerprofessor.dto.student.StudentRequestFilter;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseForAdd;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseViewAll;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseViewOnePage;
+import ua.kpi.edutrackerprofessor.dto.student.*;
 import ua.kpi.edutrackerentity.entity.Course;
 import ua.kpi.edutrackerentity.entity.Student;
 import ua.kpi.edutrackerprofessor.mapper.StudentMapper;
 import ua.kpi.edutrackerprofessor.repository.StudentRepository;
 import ua.kpi.edutrackerprofessor.service.ProfessorService;
 import ua.kpi.edutrackerprofessor.service.StudentService;
+import ua.kpi.edutrackerprofessor.service.StudentsTaskService;
 import ua.kpi.edutrackerprofessor.specification.StudentSpecification;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ua.kpi.edutrackerprofessor.specification.StudentSpecificationForStatistic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +31,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper = new StudentMapper();
     private final ProfessorService professorService;
+    private final StudentsTaskService studentsTaskService;
 
     @Override
     @Transactional
@@ -101,5 +101,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getAllByCourseId(Long courseId) {
         return studentRepository.findAllByCourseId(courseId);
+    }
+
+    @Override
+    public Page<StudentResponseForStatistic> getAllForStatistic(StudentRequestFilterForStatistic studentRequestFilterForStatistic) {
+        Specification specification = new StudentSpecificationForStatistic(studentRequestFilterForStatistic, professorService.getAuthProfessor().getCourses());
+        Pageable pageable = PageRequest.of(studentRequestFilterForStatistic.getPage(), studentRequestFilterForStatistic.getPageSize(), Sort.by(Sort.Order.desc("id")));
+        return studentMapper.toDtoListForStatistic(studentRepository.findAll(specification, pageable), studentRequestFilterForStatistic.getCourseId(), studentsTaskService);
     }
 }

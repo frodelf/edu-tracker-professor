@@ -5,7 +5,6 @@ import ua.kpi.edutrackerentity.entity.enums.StatusStudentsTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForLessonEdit;
 
 import java.util.List;
 
@@ -22,4 +21,5 @@ public interface StudentsTaskRepository extends JpaRepository<StudentsTask, Long
     Long countMarkByStudentIdAndCourseId(Long studentId, Long courseId);
     @Query("SELECT st FROM StudentsTask st WHERE st.student.id = :studentId AND st.task.course.id = :courseId")
     List<StudentsTask> findAllByStudentIdAndCourseId(Long studentId, Long courseId);
+
 }

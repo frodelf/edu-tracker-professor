@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
-        class="light-style layout-navbar-fixed layout-menu-fixed"
-        layout:decorate="~{blocks/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
-        xmlns="http://www.w3.org/1999/html">
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      layout:decorate="~{blocks/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Статистика</title>
@@ -11,12 +11,12 @@
     </script>
     <script th:src="@{/js/statistic/index.js}"></script>
 
-    <link th:rel="stylesheet" th:href="@{assets/vendor/libs/apex-charts/apex-charts.css}" />
+    <link th:rel="stylesheet" th:href="@{assets/vendor/libs/apex-charts/apex-charts.css}"/>
     <script th:src="@{/assets/vendor/libs/apex-charts/apexcharts.js}"></script>
 </head>
 <body>
 <section layout:fragment="content">
-    <div class="row mt-4 mb-4">
+    <div class="row gy-4 mt-4 mb-4">
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-content" id="active-student">
@@ -45,6 +45,47 @@
     </div>
 
     <div id="lineChart" class="mt-2"></div>
+    <div class="row gy-4 mt-4">
+        <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end">
+            <input id="search" class="form-control for-filter">
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end d-none d-md-block">
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end d-none d-md-block">
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end">
+            <select id="courseForStudent" class="form-select"></select>
+        </div>
+    </div>
+
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped linkedRow" id="studentTable"
+                       style="table-layout: fixed;">
+                    <thead>
+                    <tr>
+                        <th style="width: 200px">Група</th>
+                        <th style="width: 200px">Студент</th>
+                        <th style="width: 200px">Telegram</th>
+                        <th style="width: 200px">К-сть невиконаних задач</th>
+                        <th style="width: 200px">Оцінка</th>
+                    </tr>
+                    <tr>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                id="pagination_container">
+            </ul>
+        </div>
+    </div>
 </section>
 </body>
 </html>

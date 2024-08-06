@@ -1,10 +1,7 @@
 package ua.kpi.edutrackerprofessor.service;
 
 import ua.kpi.edutrackerprofessor.dto.ForSelect2Dto;
-import ua.kpi.edutrackerprofessor.dto.student.StudentRequestFilter;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseForAdd;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseViewAll;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseViewOnePage;
+import ua.kpi.edutrackerprofessor.dto.student.*;
 import ua.kpi.edutrackerentity.entity.Student;
 import org.springframework.data.domain.Page;
 
@@ -23,4 +20,5 @@ public interface StudentService {
     Map<String, String> getAllGroupByCourseId(Long courseId);
     Long getCountActiveStudent();
     List<Student> getAllByCourseId(Long courseId);
+    Page<StudentResponseForStatistic> getAllForStatistic(StudentRequestFilterForStatistic studentRequestFilterForStatistic);
 }

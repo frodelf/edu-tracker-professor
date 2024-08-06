@@ -1,11 +1,11 @@
 package ua.kpi.edutrackerprofessor.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import ua.kpi.edutrackerprofessor.dto.ForSelect2Dto;
-import ua.kpi.edutrackerprofessor.dto.student.StudentRequestFilter;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseForAdd;
-import ua.kpi.edutrackerprofessor.dto.student.StudentResponseViewAll;
+import ua.kpi.edutrackerprofessor.dto.student.*;
 import ua.kpi.edutrackerprofessor.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +57,10 @@ public class StudentController {
     public ResponseEntity<List<StudentResponseForAdd>> getAllByGroupAndCourse(@RequestParam String group, @RequestParam Long courseId) {
         return ResponseEntity.ok(studentService.getAllByGroupAndCourse(group, courseId));
     }
-
+    @GetMapping("/get-all-for-statistic")
+    public ResponseEntity<Page<StudentResponseForStatistic>> getAllForStatistic(@ModelAttribute @Valid StudentRequestFilterForStatistic studentRequestFilterForStatistic) {
+        return ResponseEntity.ok(studentService.getAllForStatistic(studentRequestFilterForStatistic));
+    }
     @PostMapping("/add-to-course")
     public ResponseEntity<String> addToCourse(@RequestParam Map<String, String> students, @RequestParam Long courseId) {
         students.remove("courseId");

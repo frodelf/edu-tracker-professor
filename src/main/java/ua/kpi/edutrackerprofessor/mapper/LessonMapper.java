@@ -1,11 +1,13 @@
 package ua.kpi.edutrackerprofessor.mapper;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import ua.kpi.edutrackerentity.entity.Lesson;
 import ua.kpi.edutrackerentity.entity.enums.StatusLesson;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
+import ua.kpi.edutrackerprofessor.repository.CourseRepository;
 import ua.kpi.edutrackerprofessor.service.CourseService;
 import ua.kpi.edutrackerprofessor.service.ReviewService;
 
@@ -16,11 +18,13 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 
 public class LessonMapper {
-    public Lesson toEntityForAdd(LessonRequestForStart lessonRequestForStart, CourseService courseService) {
+    public Lesson toEntityForAdd(LessonRequestForStart lessonRequestForStart, CourseRepository courseRepository) {
         Lesson lesson = new Lesson();
         lesson.setStatus(StatusLesson.IN_PROGRESS);
         lesson.setDate(LocalDateTime.now());
-        lesson.setCourse(courseService.getById(lessonRequestForStart.getCourseId()));
+        lesson.setCourse(courseRepository.findById(lessonRequestForStart.getCourseId()).orElseThrow(
+                () -> new EntityNotFoundException("Course with id = "+lessonRequestForStart.getCourseId()+" not found")
+        ));
         return lesson;
     }
     private LessonResponseForViewAll toDtoForViewAll(Lesson lesson, ReviewService reviewService) {

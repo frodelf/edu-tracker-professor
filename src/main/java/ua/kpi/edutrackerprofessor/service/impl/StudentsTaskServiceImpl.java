@@ -11,8 +11,8 @@ import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForViewAll;
 import ua.kpi.edutrackerentity.entity.StudentsTask;
 import ua.kpi.edutrackerentity.entity.enums.StatusStudentsTask;
 import ua.kpi.edutrackerprofessor.mapper.StudentTaskMapper;
+import ua.kpi.edutrackerprofessor.repository.LessonRepository;
 import ua.kpi.edutrackerprofessor.repository.StudentsTaskRepository;
-import ua.kpi.edutrackerprofessor.service.LessonService;
 import ua.kpi.edutrackerprofessor.service.ProfessorService;
 import ua.kpi.edutrackerprofessor.service.StudentsTaskService;
 import ua.kpi.edutrackerprofessor.specification.StudentsTaskSpecification;
@@ -33,7 +33,12 @@ import java.util.List;
 public class StudentsTaskServiceImpl implements StudentsTaskService {
     private final StudentsTaskRepository studentsTaskRepository;
     private final ProfessorService professorService;
-    private final LessonService lessonService;
+    /*
+     * I use the repository itself, because if I use the service,
+     * an error is raised that indicates cyclic dependencies
+     */
+    private final LessonRepository lessonRepository;
+
     private final StudentTaskMapper studentTaskMapper = new StudentTaskMapper();
     @Override
     public long countAllByStudentId(Long studentId) {
@@ -98,7 +103,9 @@ public class StudentsTaskServiceImpl implements StudentsTaskService {
     }
     @Override
     public List<StudentTaskResponseForLessonEdit> getAllByStudentIdAndLessonId(Long studentId, Long lessonId) {
-        Lesson lesson = lessonService.getById(lessonId);
+        Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(
+                () -> new EntityNotFoundException("Lesson with id = "+lessonId+" not found")
+        );
         return studentTaskMapper.toDtoListForLessonAdd(studentsTaskRepository.findAllByStudentIdAndCourseId(studentId, lesson.getCourse().getId()));
     }
 }

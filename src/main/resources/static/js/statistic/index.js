@@ -57,8 +57,31 @@ $(document).ready(function () {
     })
     statisticByLesson()
     forSelect2("#course", contextPath + "course/get-for-select")
-
     $('#course').on('change', handleCourseChange)
+
+    var page = 0
+
+    $.ajax({
+        type: "Get",
+        url: contextPath + 'professor/get-first-course',
+        success: function (course) {
+            Object.entries(course).map(([key, value]) => {
+                forSelect2("#courseForStudent", contextPath + "course/get-for-select", key, value)
+                getPageWithFilter(page, key)
+            })
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 404) {
+                var table = document.getElementById("studentTable");
+                if ($("#message-about-empty")) $("#message-about-empty").remove()
+                table.insertAdjacentHTML('afterend', '<center><h1 id="message-about-empty">Немає даних для відображення</h1></center>')
+                $('#pagination_container').empty()
+            }
+        }
+    })
+    $('#courseForStudent').on('change', function() {
+        getPageWithFilter(page)
+    })
 })
 function handleCourseChange() {
     var selectedCourseId = $('#course').val()
@@ -75,7 +98,10 @@ function statisticByLesson(courseId){
         success: function (statistic) {
             const categories = Object.keys(statistic)
             const data = Object.values(statistic).map(Number)
-
+            if(categories.length<1){
+                $('#lineChart').html(`<center><h2>Недостатньо даних для статистики</h2></center>`)
+                return
+            }
             const background = config.colors.background
             const linkColor = '#8176f2'
             const lineChartEl = document.querySelector('#lineChart'),
@@ -122,7 +148,7 @@ function statisticByLesson(courseId){
                     },
                     tooltip: {
                         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-                            return '<div class="px-3 py-2">' + '<span>' + series[seriesIndex][dataPointIndex] + '%</span>' + '</div>';
+                            return '<div class="px-3 py-2">' + '<span>' + series[seriesIndex][dataPointIndex] + ' студ.</span>' + '</div>';
                         }
                     },
                     xaxis: {
@@ -153,6 +179,61 @@ function statisticByLesson(courseId){
                 const lineChart = new ApexCharts(lineChartEl, lineChartConfig);
                 lineChart.render();
             }
+        }
+    })
+}
+
+function getPageWithFilter(page, courseId) {
+    var tableId = 'studentTable'
+    showLoader(tableId)
+    this.page = page
+    var filterElements = $('.for-filter');
+    if($("#courseForStudent").val()){
+       courseId = $("#courseForStudent").val()
+    }
+    console.log(courseId)
+    $.ajax({
+        type: "Get",
+        url: contextPath + 'student/get-all-for-statistic',
+        data: {
+            page: page,
+            pageSize: 1,
+            search: filterElements[0].value,
+            courseId: courseId,
+        },
+        success: function (objects) {
+            var table = document.getElementById(tableId);
+            var tbody = table.querySelector("tbody");
+            $('#' + tableId + ' tbody').empty();
+            if ($("#message-about-empty")) $("#message-about-empty").remove()
+            if (objects.content.length == 0) {
+                table.insertAdjacentHTML('afterend', '<center><h1 id="message-about-empty">Немає даних для відображення</h1></center>')
+                $('#pagination_container').empty()
+                return
+            }
+            for (var object of objects.content) {
+                var newRow = tbody.insertRow();
+                var cell0 = newRow.insertCell(0);
+                cell0.innerHTML = `${object.groupName}`;
+
+                var cell1 = newRow.insertCell(1);
+                cell1.innerHTML = `<a href="${contextPath}student/${object.id}">${object.fullName}</a>`
+
+                var cell2 = newRow.insertCell(2);
+                cell2.innerHTML = `<a href="https://t.me/${object.telegram.replace("@", "")}">${object.telegram}</a>`
+
+                var cell3 = newRow.insertCell(3);
+                cell3.innerHTML = `${object.numberOfTasksNotDone}`
+
+                var cell4 = newRow.insertCell(4);
+                cell4.innerHTML = `${object.mark}`
+
+            }
+            $('#pagination_container').empty();
+            if (objects.totalPages > 1) updatePagination(page, objects.totalPages, 'pagination_container')
+        },
+        complete: function (xhr, status) {
+            hideLoader(tableId)
         }
     })
 }

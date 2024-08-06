@@ -15,12 +15,12 @@ import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForFilter;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
 import ua.kpi.edutrackerprofessor.mapper.LessonMapper;
+import ua.kpi.edutrackerprofessor.repository.CourseRepository;
 import ua.kpi.edutrackerprofessor.repository.LessonRepository;
 import ua.kpi.edutrackerprofessor.service.*;
 import org.springframework.stereotype.Service;
 import ua.kpi.edutrackerprofessor.specification.LessonSpecification;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,10 +32,16 @@ import static java.util.Objects.nonNull;
 public class LessonServiceImpl implements LessonService {
     private final LessonRepository lessonRepository;
     private final ReviewService reviewService;
-    private final CourseService courseService;
+    /*
+    * I use the repository itself, because if I use the service,
+    * an error is raised that indicates cyclic dependencies
+    */
+    private final CourseRepository courseRepository;
+
     private final StudentService studentService;
     private final ProfessorService professorService;
     private final LessonMapper lessonMapper = new LessonMapper();
+
     @Override
     public long countByCourseId(long courseId) {
         return lessonRepository.countByCourseId(courseId);
@@ -51,7 +57,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     @Transactional
     public Long start(LessonRequestForStart lessonRequestForStart) {
-        Lesson lesson = lessonMapper.toEntityForAdd(lessonRequestForStart, courseService);
+        Lesson lesson = lessonMapper.toEntityForAdd(lessonRequestForStart, courseRepository);
         lesson = save(lesson);
         if(nonNull(lessonRequestForStart.getGroups())){
             for (String group : lessonRequestForStart.getGroups()) {
@@ -106,8 +112,8 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public Map<String, String> getDateCountMap(Long courseId) {
-        List<Object[]> results = new ArrayList<>();
-        if(nonNull(courseId)) lessonRepository.countStudentsByDateAndCourseId(courseId);
+        List<Object[]> results;
+        if(nonNull(courseId)) results = lessonRepository.countStudentsByDateAndCourseId(courseId);
         else results = lessonRepository.countStudentsByDate();
         Map<String, String> resultMap = new HashMap<>();
 

@@ -13,7 +13,6 @@ import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
 import ua.kpi.edutrackerprofessor.service.LessonService;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -59,8 +58,8 @@ public class LessonController {
     }
     @GetMapping("/get-date-count-map")
     public ResponseEntity<Map<String, String>> getDateCountMap(@RequestParam(required = false) Long courseId){
-
-        return ResponseEntity.ok(lessonService.getDateCountMap(courseId));
+        Map<String, String> res = lessonService.getDateCountMap(courseId);
+        return ResponseEntity.ok(res);
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

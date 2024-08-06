@@ -1,14 +1,17 @@
 package ua.kpi.edutrackerprofessor.mapper;
 
 import ua.kpi.edutrackerprofessor.dto.student.StudentResponseForAdd;
+import ua.kpi.edutrackerprofessor.dto.student.StudentResponseForStatistic;
 import ua.kpi.edutrackerprofessor.dto.student.StudentResponseViewAll;
 import ua.kpi.edutrackerprofessor.dto.student.StudentResponseViewOnePage;
 import ua.kpi.edutrackerentity.entity.Course;
 import ua.kpi.edutrackerentity.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import ua.kpi.edutrackerprofessor.service.StudentsTaskService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,12 +53,9 @@ public class StudentMapper {
         if(student.getGroupName() != null)studentResponseViewOnePage.setGroupName(student.getGroupName());
         return studentResponseViewOnePage;
     }
+
     public List<StudentResponseForAdd> toDtoForAddList(List<Student> allByGroupName, Long courseId) {
-        List<StudentResponseForAdd> res = new ArrayList<>();
-        for (Student student : allByGroupName) {
-            res.add(toDtoForAdd(student, courseId));
-        }
-        return res;
+        return null;
     }
     public StudentResponseForAdd toDtoForAdd(Student student, Long courseId) {
         StudentResponseForAdd studentResponseForAdd = new StudentResponseForAdd();
@@ -65,5 +65,21 @@ public class StudentMapper {
         studentResponseForAdd.setFullName(student.getLastName()+" "+student.getName());
         studentResponseForAdd.setPresent(student.getCourses().stream().anyMatch(courseStudent -> courseStudent.getId().equals(courseId)));
         return studentResponseForAdd;
+    }
+
+    public Page<StudentResponseForStatistic> toDtoListForStatistic(Page<Student> students, Long courseId, StudentsTaskService studentsTaskService) {
+        return new PageImpl<>(students.getContent().stream()
+                .map(student -> toDtoForStatistic(student, courseId, studentsTaskService))
+                .collect(Collectors.toList()), students.getPageable(), students.getTotalElements());
+    }
+    private StudentResponseForStatistic toDtoForStatistic(Student student, Long courseId, StudentsTaskService studentsTaskService) {
+        StudentResponseForStatistic studentResponseForStatistic = new StudentResponseForStatistic();
+        studentResponseForStatistic.setId(student.getId());
+        studentResponseForStatistic.setGroupName(student.getGroupName());
+        studentResponseForStatistic.setFullName(student.getLastName() + " " + student.getName() + " " + student.getMiddleName());
+        studentResponseForStatistic.setTelegram(student.getTelegram());
+        studentResponseForStatistic.setNumberOfTasksNotDone(String.valueOf(studentsTaskService.countAllNotDoneTaskByStudentIdAndCourseId(student.getId(), courseId)));
+        studentResponseForStatistic.setMark(String.valueOf(studentsTaskService.countMarkByStudentIdAndCourseId(student.getId(), courseId)));
+        return studentResponseForStatistic;
     }
 }

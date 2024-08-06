@@ -14,6 +14,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Long>, JpaSpecif
     @Query(value = "SELECT DATE(l.date) AS date, COUNT(r.present) AS students FROM review r INNER JOIN lesson l ON r.lesson_id = l.id WHERE r.present = '1' GROUP BY DATE(l.date)", nativeQuery = true)
     List<Object[]> countStudentsByDate();
     //TODO не робить фільтрація
-    @Query(value = "SELECT DATE(l.date) AS date, COUNT(r.present) AS students FROM review r INNER JOIN lesson l ON r.lesson_id = l.id WHERE r.present = '1' AND l.course_id = '2' GROUP BY DATE(l.date)", nativeQuery = true)
+    @Query(value = "SELECT DATE(l.date) AS date, COUNT(r.present) AS students FROM review r INNER JOIN lesson l ON r.lesson_id = l.id WHERE r.present = '1' AND l.course_id = :courseId GROUP BY DATE(l.date)", nativeQuery = true)
     List<Object[]> countStudentsByDateAndCourseId(Long courseId);
 }
