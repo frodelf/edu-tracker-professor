@@ -1,8 +1,8 @@
 package ua.kpi.edutrackerprofessor.service;
 
-import ua.kpi.edutrackerprofessor.dto.professor.ProfessorForRegistrationDto;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorDtoForRegistration;
 
 public interface AuthService {
     boolean isAuthenticated();
-    void registration(ProfessorForRegistrationDto professor);
+    void registration(ProfessorDtoForRegistration professor);
 }

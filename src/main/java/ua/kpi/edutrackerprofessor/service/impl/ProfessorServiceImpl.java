@@ -3,8 +3,14 @@ package ua.kpi.edutrackerprofessor.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import ua.kpi.edutrackerentity.entity.Professor;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorRequestForPersonalData;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorResponseForGlobal;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorResponseForPersonalData;
+import ua.kpi.edutrackerprofessor.mapper.ProfessorMapper;
 import ua.kpi.edutrackerprofessor.repository.ProfessorRepository;
+import ua.kpi.edutrackerprofessor.service.MinioService;
 import ua.kpi.edutrackerprofessor.service.ProfessorService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -13,10 +19,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.nonNull;
+
 @Service
 @RequiredArgsConstructor
 public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorRepository professorRepository;
+    private final MinioService minioService;
+    private ProfessorMapper professorMapper = new ProfessorMapper();
     @Override
     @Transactional
     public Professor save(Professor professor) {
@@ -52,5 +62,28 @@ public class ProfessorServiceImpl implements ProfessorService {
             return getByEmail(currentUserName);
         }
         else throw new InsufficientAuthenticationException("The professor is not authorized");
+    }
+    @Override
+    public ProfessorResponseForGlobal getAuthProfessorForGlobal() {
+        try {
+            return professorMapper.toDtoForGlobal(getAuthProfessor());
+        }catch (InsufficientAuthenticationException e){
+            return null;
+        }
+    }
+    @Override
+    public ProfessorResponseForPersonalData getAuthProfessorForPersonalData() {
+        return professorMapper.toDtoForPersonalData(getAuthProfessor(), minioService);
+    }
+    @Override
+    @Transactional
+    @SneakyThrows
+    //TODO Доробити видалення файлу з мініо
+    public void updatePersonalData(ProfessorRequestForPersonalData personalData) {
+        Professor professor = professorMapper.toEntityFromPersonalDataDto(personalData, this);
+        if(nonNull(personalData.getImage())){
+            professor.setImage(minioService.putMultipartFile(personalData.getImage()));
+        }
+        save(professor);
     }
 }

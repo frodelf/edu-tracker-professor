@@ -11,7 +11,7 @@ public class TelegramFormatValidator implements ConstraintValidator<TelegramForm
     @Override
     public boolean isValid(String telegram, ConstraintValidatorContext context) {
         if (telegram == null || telegram.isBlank()) {
-            return false;
+            return true;
         }
         return USERNAME_PATTERN.matcher(telegram).matches();
     }

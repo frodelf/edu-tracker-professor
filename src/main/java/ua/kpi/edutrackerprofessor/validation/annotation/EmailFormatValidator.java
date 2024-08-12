@@ -12,7 +12,7 @@ public class EmailFormatValidator implements ConstraintValidator<EmailFormat, St
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
         if (email == null) {
-            return false;
+            return true;
         }
         return EMAIL_PATTERN.matcher(email).matches();
     }

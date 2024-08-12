@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      layout:decorate="~{blocks/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${professor != null} ? ${professor.lastName + ' ' + professor.name} : '']]</title>
+
+    <script th:inline="javascript">
+        var csrf_token = /*[[${_csrf.token}]]*/ {};
+    </script>
+    <script th:src="@{/js/professor/index.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="d-flex justify-content-between mt-2">
+        <h4>[[${professor != null} ? ${professor.lastName + ' ' + professor.name} : '']]</h4>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Персональний кабінет</li>
+            </ol>
+        </nav>
+    </div>
+    <hr style="margin-top: 0"/>
+    <div class="card" id="content-form">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row gy-4 mt-4">
+                    <div class="col-lg-6 col-sm-12">
+                        <center>
+                            <div class="avatar-preview mb-4">
+                                <div class="avatar avatar-xl me-2" style="width: 250px; height: 250px">
+                                    <span class="avatar-initial rounded-circle bg-primary" id="avatar-img"></span>
+                                </div>
+                            </div>
+                        </center>
+                        <input type="file" class="form-control" id="image" accept="image/jpg, image/jpeg, image/png">
+                    </div>
+                    <div class="col-lg-6 col-sm-12 d-flex justify-content-end align-items-start flex-column">
+                        Телефон
+                        <input class="form-control" id="phone">
+                    </div>
+
+                </div>
+                <div class="row gy-4 mt-4">
+                    <div class="col-lg-6 col-sm-12">
+                        Прізвище
+                        <input class="form-control" id="lastName">
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        Ступінь
+                        <input class="form-control" id="degree">
+                    </div>
+                </div>
+                <div class="row gy-4 mt-4">
+                    <div class="col-lg-6 col-sm-12">
+                        Ім'я
+                        <input class="form-control" id="name">
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        Телеграм
+                        <input class="form-control" id="telegram">
+                    </div>
+                </div>
+                <div class="row gy-4 mt-4">
+                    <div class="col-lg-6 col-sm-12">
+                        По батькові
+                        <input class="form-control" id="middleName">
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        E-mail
+                        <input class="form-control" id="email">
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary float-end mb-4" onclick="updatePersonalData()">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

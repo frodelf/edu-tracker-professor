@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(
-                                        "/course/**","/student/**","/task/**", "/literature/**", "/email/**"
+                                        "/course/**","/student/**","/task/**", "/literature/**", "/email/**", "/"
                                 ).authenticated()
                                 .anyRequest().permitAll()
                 )

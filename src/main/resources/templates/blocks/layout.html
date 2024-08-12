@@ -48,6 +48,9 @@
     <script th:src="@{/assets/vendor/libs/block-ui/block-ui.js}"></script>
     <script th:src="@{/assets/vendor/libs/autosize/autosize.js}"></script>
 
+    <script th:inline="javascript">
+        var professorAuth = /*[[${professor}]]*/ {};
+    </script>
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/spinkit/spinkit.css}" />
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/animate-css/animate.css}"/>
     <link rel="stylesheet" th:href="@{/assets/vendor/libs/toastr/toastr.css}"/>

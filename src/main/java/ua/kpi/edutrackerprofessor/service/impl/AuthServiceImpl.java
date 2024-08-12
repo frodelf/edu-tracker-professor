@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ua.kpi.edutrackerentity.entity.Professor;
-import ua.kpi.edutrackerprofessor.dto.professor.ProfessorForRegistrationDto;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorDtoForRegistration;
 import ua.kpi.edutrackerprofessor.mapper.ProfessorMapping;
 import ua.kpi.edutrackerprofessor.service.AuthService;
 import ua.kpi.edutrackerprofessor.service.ProfessorService;
@@ -27,8 +27,8 @@ public class AuthServiceImpl implements AuthService {
     }
     @Override
     @Transactional
-    public void registration(ProfessorForRegistrationDto professorForRegistrationDto) {
-        Professor professor = professorMapping.toEntityForRegistration(professorForRegistrationDto);
+    public void registration(ProfessorDtoForRegistration professorDtoForRegistration) {
+        Professor professor = professorMapping.toEntityForRegistration(professorDtoForRegistration);
         professorService.save(professor);
     }
 }

@@ -8,7 +8,7 @@ import ua.kpi.edutrackerprofessor.dto.ContactDataDto;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ProfessorForRegistrationDto extends ContactDataDto {
+public class ProfessorDtoForRegistration extends ContactDataDto {
     @NotBlank(message = "{error.field.empty}")
     @Size(max = 100, message = "{error.field.size.max}")
     private String lastName;

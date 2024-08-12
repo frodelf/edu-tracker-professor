@@ -21,6 +21,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.UUID;
 
+import static java.util.Objects.nonNull;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -72,7 +74,10 @@ public class MinioServiceImpl implements MinioService {
     }
     public String getUrl(String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("MinioServiceImpl-getUrl start");
-        String url = "data:image/jpeg;base64, " + Base64.getEncoder().encodeToString(getPhoto(fileName));
+        String url = null;
+        if(nonNull(fileName) && !fileName.isBlank()){
+            url = "data:image/jpeg;base64, " + Base64.getEncoder().encodeToString(getPhoto(fileName));
+        };
         log.info("MinioServiceImpl-getUrl successfully");
         return url;
     }

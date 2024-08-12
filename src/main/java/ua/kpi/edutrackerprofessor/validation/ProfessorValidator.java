@@ -5,7 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ua.kpi.edutrackerprofessor.dto.professor.ProfessorForRegistrationDto;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorDtoForRegistration;
 
 import java.util.Locale;
 
@@ -24,7 +24,7 @@ public class ProfessorValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ProfessorForRegistrationDto professor = (ProfessorForRegistrationDto) target;
+        ProfessorDtoForRegistration professor = (ProfessorDtoForRegistration) target;
         if(!professor.getPasswordForRegistration().equals(professor.getPasswordRepeat()) && !professor.getPasswordForRegistration().isBlank()){
             errors.rejectValue("passwordForRegistration", "", getMessage("error.field.password.repeat"));
         }

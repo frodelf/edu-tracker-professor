@@ -16,14 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import ua.kpi.edutrackerprofessor.dto.email.EmailDto;
-import ua.kpi.edutrackerprofessor.dto.professor.ProfessorForRegistrationDto;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorDtoForRegistration;
 import ua.kpi.edutrackerprofessor.service.AuthService;
 import ua.kpi.edutrackerprofessor.validation.ContactValidator;
 import ua.kpi.edutrackerprofessor.validation.ProfessorValidator;
-
-import java.util.Collections;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,11 +45,11 @@ public class AuthController {
         return ResponseEntity.ok(authService.isAuthenticated());
     }
     @PostMapping("/registration")
-    public ResponseEntity<ProfessorForRegistrationDto> registrationForm(@ModelAttribute @Valid ProfessorForRegistrationDto professor, BindingResult bindingResult) throws NoSuchMethodException, MethodArgumentNotValidException {
+    public ResponseEntity<ProfessorDtoForRegistration> registrationForm(@ModelAttribute @Valid ProfessorDtoForRegistration professor, BindingResult bindingResult) throws NoSuchMethodException, MethodArgumentNotValidException {
         contactValidator.validate(professor, bindingResult);
         professorValidator.validate(professor, bindingResult);
         if (bindingResult.hasErrors()) {
-            MethodParameter methodParameter = new MethodParameter(this.getClass().getDeclaredMethod("registrationForm", ProfessorForRegistrationDto.class, BindingResult.class), 0);
+            MethodParameter methodParameter = new MethodParameter(this.getClass().getDeclaredMethod("registrationForm", ProfessorDtoForRegistration.class, BindingResult.class), 0);
             throw new MethodArgumentNotValidException(methodParameter, bindingResult);
         }
         authService.registration(professor);

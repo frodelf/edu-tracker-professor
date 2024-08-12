@@ -2,6 +2,7 @@ var fullContextPath = 'http://localhost:8080/edu-tracker/teach/';
 var messageForDelete = "Об'єкт успішно видалено"
 var messageForSave = "Об'єкт успішно збережено"
 var pageSize = 10
+var nameForAvatar = professorAuth? professorAuth.lastName.charAt(0) + professorAuth.name.charAt(0) : null
 
 $(document).ready(function () {
     var inputForFilter = $('.for-filter')
@@ -60,6 +61,25 @@ $(document).ready(function () {
                 $('#authStatus').text('Error checking authentication');
             }
         })
+    })
+
+    $.ajax({
+        url: contextPath + 'minio/get-image',
+        method: 'GET',
+        data:{
+            imageName: professorAuth.image
+        },
+        success: function (response) {
+            console.log(response)
+            if(response){
+                $(".avatar-image").attr("src", response)
+            }
+            else {
+                $('.avatar').html(`
+                     <span class="avatar-initial rounded-circle bg-primary">${nameForAvatar}</span>
+                `)
+            }
+        },
     })
 })
 

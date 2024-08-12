@@ -197,7 +197,7 @@ function getPageWithFilter(page, courseId) {
         url: contextPath + 'student/get-all-for-statistic',
         data: {
             page: page,
-            pageSize: 1,
+            pageSize: 10,
             search: filterElements[0].value,
             courseId: courseId,
         },
