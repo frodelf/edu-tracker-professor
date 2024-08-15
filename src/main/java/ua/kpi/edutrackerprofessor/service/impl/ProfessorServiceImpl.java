@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import ua.kpi.edutrackerentity.entity.Professor;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorDtoForRegistration;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorRequestForPersonalData;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorResponseForGlobal;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorResponseForPersonalData;
@@ -84,6 +85,21 @@ public class ProfessorServiceImpl implements ProfessorService {
         if(nonNull(personalData.getImage())){
             professor.setImage(minioService.putMultipartFile(personalData.getImage()));
         }
+        save(professor);
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+        return !(authentication instanceof AnonymousAuthenticationToken);
+    }
+    @Override
+    @Transactional
+    public void registration(ProfessorDtoForRegistration professorDtoForRegistration) {
+        Professor professor = professorMapper.toEntityForRegistration(professorDtoForRegistration);
         save(professor);
     }
 }

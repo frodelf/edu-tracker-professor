@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorDtoForRegistration;
-import ua.kpi.edutrackerprofessor.service.AuthService;
+import ua.kpi.edutrackerprofessor.service.ProfessorService;
 import ua.kpi.edutrackerprofessor.validation.ContactValidator;
 import ua.kpi.edutrackerprofessor.validation.ProfessorValidator;
 
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthService authService;
+    private final ProfessorService professorService;
     private final ContactValidator contactValidator;
     private final ProfessorValidator professorValidator;
     @GetMapping("/login")
     public ModelAndView login() {
-        if(authService.isAuthenticated()) {return new ModelAndView("redirect:/");}
+        if(professorService.isAuthenticated()) {return new ModelAndView("redirect:/");}
         return new ModelAndView("auth/login");
     }
     @GetMapping("/logout")
@@ -42,7 +42,7 @@ public class AuthController {
     }
     @GetMapping("/checkAuth")
     public ResponseEntity<Boolean> checkAuthentication() {
-        return ResponseEntity.ok(authService.isAuthenticated());
+        return ResponseEntity.ok(professorService.isAuthenticated());
     }
     @PostMapping("/registration")
     public ResponseEntity<ProfessorDtoForRegistration> registrationForm(@ModelAttribute @Valid ProfessorDtoForRegistration professor, BindingResult bindingResult) throws NoSuchMethodException, MethodArgumentNotValidException {
@@ -52,7 +52,7 @@ public class AuthController {
             MethodParameter methodParameter = new MethodParameter(this.getClass().getDeclaredMethod("registrationForm", ProfessorDtoForRegistration.class, BindingResult.class), 0);
             throw new MethodArgumentNotValidException(methodParameter, bindingResult);
         }
-        authService.registration(professor);
+        professorService.registration(professor);
         return ResponseEntity.ok(professor);
     }
 }

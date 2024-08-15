@@ -1,6 +1,7 @@
 package ua.kpi.edutrackerprofessor.service;
 
 import ua.kpi.edutrackerentity.entity.Professor;
+import ua.kpi.edutrackerprofessor.dto.professor.ProfessorDtoForRegistration;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorRequestForPersonalData;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorResponseForGlobal;
 import ua.kpi.edutrackerprofessor.dto.professor.ProfessorResponseForPersonalData;
@@ -15,4 +16,6 @@ public interface ProfessorService {
     ProfessorResponseForGlobal getAuthProfessorForGlobal();
     ProfessorResponseForPersonalData getAuthProfessorForPersonalData();
     void updatePersonalData(ProfessorRequestForPersonalData personalData);
+    boolean isAuthenticated();
+    void registration(ProfessorDtoForRegistration professor);
 }
