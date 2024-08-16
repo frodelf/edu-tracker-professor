@@ -27,7 +27,7 @@ import static java.util.Objects.nonNull;
 public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorRepository professorRepository;
     private final MinioService minioService;
-    private ProfessorMapper professorMapper = new ProfessorMapper();
+    private final ProfessorMapper professorMapper = new ProfessorMapper();
     @Override
     @Transactional
     public Professor save(Professor professor) {

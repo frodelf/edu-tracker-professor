@@ -1,9 +1,6 @@
 package ua.kpi.edutrackerprofessor.controller;
 
-import io.minio.errors.*;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import ua.kpi.edutrackerprofessor.dto.course.CourseDtoForAdd;
 import ua.kpi.edutrackerprofessor.dto.course.CourseResponseViewAll;
 import ua.kpi.edutrackerentity.entity.Course;
 import ua.kpi.edutrackerprofessor.service.CourseService;
@@ -16,9 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 

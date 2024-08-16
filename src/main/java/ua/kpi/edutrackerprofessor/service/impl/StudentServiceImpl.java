@@ -3,6 +3,7 @@ package ua.kpi.edutrackerprofessor.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import ua.kpi.edutrackerprofessor.dto.ForSelect2Dto;
 import ua.kpi.edutrackerprofessor.dto.student.*;
 import ua.kpi.edutrackerentity.entity.Course;
@@ -44,6 +45,9 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     public Student getById(long id) {
+        if(!existsByStudentIdAndProfessorId(id, professorService.getAuthProfessor().getId())){
+            throw new AccessDeniedException("You don't have access to this page");
+        }
         return studentRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Student with id = "+id+" not found")
         );
@@ -108,5 +112,10 @@ public class StudentServiceImpl implements StudentService {
         Specification specification = new StudentSpecificationForStatistic(studentRequestFilterForStatistic, professorService.getAuthProfessor().getCourses());
         Pageable pageable = PageRequest.of(studentRequestFilterForStatistic.getPage(), studentRequestFilterForStatistic.getPageSize(), Sort.by(Sort.Order.desc("id")));
         return studentMapper.toDtoListForStatistic(studentRepository.findAll(specification, pageable), studentRequestFilterForStatistic.getCourseId(), studentsTaskService);
+    }
+
+    @Override
+    public boolean existsByStudentIdAndProfessorId(Long studentId, Long professorId){
+        return studentRepository.existsByStudentIdAndProfessorId(studentId, professorId);
     }
 }

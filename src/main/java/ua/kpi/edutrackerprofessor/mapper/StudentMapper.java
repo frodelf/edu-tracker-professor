@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageImpl;
 import ua.kpi.edutrackerprofessor.service.StudentsTaskService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,8 +53,12 @@ public class StudentMapper {
         return studentResponseViewOnePage;
     }
 
-    public List<StudentResponseForAdd> toDtoForAddList(List<Student> allByGroupName, Long courseId) {
-        return null;
+    public List<StudentResponseForAdd> toDtoForAddList(List<Student> students, Long courseId) {
+        List<StudentResponseForAdd> studentResponseForAddList = new ArrayList<>();
+        for (Student student : students) {
+            studentResponseForAddList.add(toDtoForAdd(student, courseId));
+        }
+        return studentResponseForAddList;
     }
     public StudentResponseForAdd toDtoForAdd(Student student, Long courseId) {
         StudentResponseForAdd studentResponseForAdd = new StudentResponseForAdd();

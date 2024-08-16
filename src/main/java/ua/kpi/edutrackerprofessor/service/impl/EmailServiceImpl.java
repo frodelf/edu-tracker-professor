@@ -21,6 +21,7 @@ import java.io.IOException;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+//TODO доробити розсилку
 public class EmailServiceImpl implements EmailService {
     @Value("${sendgrid.api.key}")
     private String apiKey;

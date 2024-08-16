@@ -6,7 +6,6 @@ import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForFilter;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
 
-import java.util.List;
 import java.util.Map;
 
 public interface LessonService {

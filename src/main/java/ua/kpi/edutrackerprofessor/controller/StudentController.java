@@ -1,8 +1,6 @@
 package ua.kpi.edutrackerprofessor.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import ua.kpi.edutrackerprofessor.dto.ForSelect2Dto;
 import ua.kpi.edutrackerprofessor.dto.student.*;

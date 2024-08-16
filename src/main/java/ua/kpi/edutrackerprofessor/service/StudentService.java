@@ -21,4 +21,5 @@ public interface StudentService {
     Long getCountActiveStudent();
     List<Student> getAllByCourseId(Long courseId);
     Page<StudentResponseForStatistic> getAllForStatistic(StudentRequestFilterForStatistic studentRequestFilterForStatistic);
+    boolean existsByStudentIdAndProfessorId(Long studentId, Long professorId);
 }

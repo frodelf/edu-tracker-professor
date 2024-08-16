@@ -1,6 +1,5 @@
 package ua.kpi.edutrackerprofessor.service.impl;
 
-import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -76,7 +72,7 @@ public class StudentsTaskServiceImpl implements StudentsTaskService {
     }
     @Override
     @Transactional
-    public void cancelMark(Long studentTaskId) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public void cancelMark(Long studentTaskId){
         StudentsTask studentsTask = getById(studentTaskId);
         studentsTask.setStatus(StatusStudentsTask.GRANTED);
         studentsTask.setMark(null);

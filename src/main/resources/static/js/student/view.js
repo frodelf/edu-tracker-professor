@@ -48,7 +48,7 @@ function addBlock(statistics){
                 <h2>
                     <i class="fa-solid fa-users" style="color: #B197FC;"></i>                                    
                 </h2>
-                <h4>${statistics.course}</h4>
+                <h4>${statistics.course || ''}</h4>
                 </div>
             </div>
         </div>
@@ -61,10 +61,10 @@ function addBlock(statistics){
                 <h4>Завдання</h4>
                 <h5>
                     <div style="display: flex; justify-content: center; align-items: center">
-                        <div>${statistics.allTasks}  (</div>
-                        <div style="color: green">${statistics.doneTasks}</div>
+                        <div>${statistics.allTasks || ''}  (</div>
+                        <div style="color: green">${statistics.doneTasks || ''}</div>
                         <div>-</div>
-                        <div style="color: red">${statistics.notDoneTasks}</div>
+                        <div style="color: red">${statistics.notDoneTasks || ''}</div>
                         <div>)</div>
                     </div>
                 </h5>
@@ -78,7 +78,7 @@ function addBlock(statistics){
                     <i class="fa-solid fa-users" style="color: #B197FC;"></i>                                    
                 </h2>
                 <h4>Відвідані заняття</h4>
-                <h5>${statistics.lessons}</h5>
+                <h5>${statistics.lessons || ''}</h5>
                 </div>
             </div>
         </div>
@@ -89,7 +89,7 @@ function addBlock(statistics){
                     <i class="fa-solid fa-users" style="color: #B197FC;"></i>                                    
                 </h2>
                 <h4>Оцінка</h4>
-                <h5>${statistics.mark}</h5>
+                <h5>${statistics.mark || ''}</h5>
                 </div>
             </div>
         </div>

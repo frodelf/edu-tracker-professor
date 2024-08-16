@@ -8,7 +8,6 @@ import ua.kpi.edutrackerentity.entity.enums.StatusLesson;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
 import ua.kpi.edutrackerprofessor.repository.CourseRepository;
-import ua.kpi.edutrackerprofessor.service.CourseService;
 import ua.kpi.edutrackerprofessor.service.ReviewService;
 
 import java.time.LocalDateTime;

@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -41,7 +40,7 @@ public class SecurityConfig {
     private AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, authentication) -> {
             String redirectUrl = Arrays.stream(request.getCookies())
-                    .filter(cookie -> "redirectUrl".equals(cookie.getName()))
+                    .filter(cookie -> "redirect-url-teach".equals(cookie.getName()))
                     .findFirst()
                     .map(Cookie::getValue)
                     .filter(value -> !StringUtils.isBlank(value))

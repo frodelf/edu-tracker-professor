@@ -44,7 +44,7 @@ $(document).ready(function () {
         var currentUrl = window.location.href;
         currentUrl = currentUrl.replace(fullContextPath, '')
         var redirectUrl = contextPath + currentUrl
-        setCookie("redirectUrl", redirectUrl)
+        setCookie("redirect-url-teach", redirectUrl)
         if (isAuthenticated) return
         $.ajax({
             url: fullContextPath + 'checkAuth',

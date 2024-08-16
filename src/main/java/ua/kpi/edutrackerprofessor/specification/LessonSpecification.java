@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 
 public class LessonSpecification implements Specification<Lesson> {
-    private LessonRequestForFilter lessonRequestForFilter;
-    private List<Course> courses;
+    private final LessonRequestForFilter lessonRequestForFilter;
+    private final List<Course> courses;
 
     public LessonSpecification(LessonRequestForFilter lessonRequestForFilter, List<Course> courses) {
         this.lessonRequestForFilter = lessonRequestForFilter;

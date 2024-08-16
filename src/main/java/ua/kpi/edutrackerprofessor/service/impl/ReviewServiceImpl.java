@@ -21,7 +21,7 @@ import ua.kpi.edutrackerprofessor.specification.ReviewSpecification;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
-    private ReviewMapper reviewMapper = new ReviewMapper();
+    private final ReviewMapper reviewMapper = new ReviewMapper();
     @Override
     public long countAllVisitedLessonByStudentIdAndCourseId(Long studentId, Long courseId) {
         return reviewRepository.countByStudentIdAndCourseId(studentId, courseId);

@@ -23,4 +23,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpec
     Long countAllByCoursesIn(List<Course> courses);
     @Query("SELECT s FROM Student s JOIN s.courses c WHERE c.id = :courseId")
     List<Student> findAllByCourseId(@Param("courseId") Long courseId);
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END FROM Student s JOIN s.courses c WHERE c.professor.id = :professorId AND s.id = :studentId")
+    boolean existsByStudentIdAndProfessorId(Long studentId, Long professorId);
 }
