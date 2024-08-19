@@ -4,6 +4,7 @@ import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import ua.kpi.edutrackerentity.entity.enums.StatusCourse;
 import ua.kpi.edutrackerprofessor.dto.course.CourseDtoForAdd;
 import ua.kpi.edutrackerprofessor.dto.course.CourseResponseViewAll;
 import ua.kpi.edutrackerentity.entity.Course;
@@ -40,7 +41,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<CourseResponseViewAll> getAll(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc("id")));
-        return new CourseMapper().toDtoListForView(courseRepository.findAllByProfessorId(professorService.getAuthProfessor().getId(), pageable), minioService);
+        return new CourseMapper().toDtoListForView(courseRepository.findAllByProfessorIdAndStatusCourse(professorService.getAuthProfessor().getId(), StatusCourse.ACTIVE, pageable), minioService);
     }
     @Override
     public void removeById(Long courseId) {
