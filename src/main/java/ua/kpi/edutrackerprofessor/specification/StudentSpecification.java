@@ -10,6 +10,9 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
+
 public class StudentSpecification implements Specification<Student> {
     private final StudentRequestFilter studentRequestFilter;
     private List<Course> courses;
@@ -29,7 +32,7 @@ public class StudentSpecification implements Specification<Student> {
         if (!studentRequestFilter.getGroup().isEmpty()) {
             predicates.add(criteriaBuilder.like(root.get("groupName"), "%" + studentRequestFilter.getGroup() + "%"));
         }
-        if (!studentRequestFilter.getFullName().isEmpty()) {
+        if (notNullAndBlank(studentRequestFilter.getFullName())) {
             predicates.add(
                     criteriaBuilder.like(
                             criteriaBuilder.concat(
@@ -49,13 +52,13 @@ public class StudentSpecification implements Specification<Student> {
                     )
             );
         }
-        if (!studentRequestFilter.getTelegram().isEmpty()) {
+        if (notNullAndBlank(studentRequestFilter.getTelegram())) {
             predicates.add(criteriaBuilder.like(root.get("telegram"), "%" + studentRequestFilter.getTelegram() + "%"));
         }
-        if (!studentRequestFilter.getPhone().isEmpty()) {
+        if (notNullAndBlank(studentRequestFilter.getPhone())) {
             predicates.add(criteriaBuilder.like(root.get("phone"), "%" + studentRequestFilter.getPhone() + "%"));
         }
-        if (studentRequestFilter.getCourse() != null) {
+        if (nonNull(studentRequestFilter.getCourse())) {
             Join<Student, Course> courseJoin = root.join("courses", JoinType.INNER);
             predicates.add(criteriaBuilder.equal(courseJoin.get("id"), studentRequestFilter.getCourse()));
         } else {

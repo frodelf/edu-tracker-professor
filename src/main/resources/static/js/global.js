@@ -240,6 +240,9 @@ function translateError(key) {
         .replace('Invalid phone format', 'Невірний формат телефону')
         .replace('File extension not valid', 'Тип файлу повиннен бути .jpeg, .png, .jpg')
         .replace('Invalid url format!', 'Значення має бути посиланням')
+        .replace('The phone already exists!', 'Такий телефон вже існує')
+        .replace('The telegram already exists!', 'Такий телеграм вже існує')
+        .replace('The email already exists!', 'Такий електроний адрес вже існує')
 }
 
 function cleanInputs() {

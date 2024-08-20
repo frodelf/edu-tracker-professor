@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean validTelegramByExist(ContactDataDto contactDataDto) {
-        Optional<User> user = getByTelegram(contactDataDto.getPhone());
+        Optional<User> user = getByTelegram(contactDataDto.getTelegram());
         return user.isEmpty() || user.get().getId().equals(contactDataDto.getId());
     }
 

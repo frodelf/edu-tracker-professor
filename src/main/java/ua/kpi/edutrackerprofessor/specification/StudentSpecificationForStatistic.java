@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
 
 public class StudentSpecificationForStatistic implements Specification {
     private StudentRequestFilterForStatistic studentRequestFilterForStatistic;
@@ -24,7 +25,7 @@ public class StudentSpecificationForStatistic implements Specification {
     public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if(nonNull(studentRequestFilterForStatistic.getSearch()) && !studentRequestFilterForStatistic.getSearch().isBlank()) {
+        if(notNullAndBlank(studentRequestFilterForStatistic.getSearch())) {
             studentRequestFilterForStatistic.setSearch("%" + studentRequestFilterForStatistic.getSearch() + "%");
             predicates.add(
                 criteriaBuilder.or(

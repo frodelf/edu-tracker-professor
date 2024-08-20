@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
+
 public class TaskSpecification implements Specification<Task> {
     private final TaskRequestFilter taskRequestFilter;
     private List<Course> courses;
@@ -26,19 +29,19 @@ public class TaskSpecification implements Specification<Task> {
     @Override
     public Predicate toPredicate(@NotNull Root<Task> root, @NotNull CriteriaQuery<?> query, @NotNull CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-        if(taskRequestFilter.getName()!=null){
+        if(notNullAndBlank(taskRequestFilter.getName())){
             predicates.add(criteriaBuilder.like(root.get("name"), "%" + taskRequestFilter.getName() + "%"));
         }
-        if(taskRequestFilter.getCourseId()!=null){
+        if(nonNull(taskRequestFilter.getCourseId())){
             predicates.add(criteriaBuilder.equal(root.get("course").get("id"), taskRequestFilter.getCourseId()));
         }
-        if(taskRequestFilter.getDeadline()!=null){
+        if(nonNull(taskRequestFilter.getDeadline())){
             predicates.add(criteriaBuilder.equal(root.get("status"), StatusTask.OPEN));
             Predicate condition1 = criteriaBuilder.lessThanOrEqualTo(root.get("deadline"), taskRequestFilter.getDeadline());
             Predicate condition2 = criteriaBuilder.isNull(root.get("deadline"));
             predicates.add(criteriaBuilder.or(condition1, condition2));
         }
-        if(taskRequestFilter.getStatus()!=null){
+        if(nonNull(taskRequestFilter.getStatus())){
             predicates.add(criteriaBuilder.equal(root.get("status"), taskRequestFilter.getStatus()));
         }
         predicates.add(root.get("course").get("id").in(courses.stream()

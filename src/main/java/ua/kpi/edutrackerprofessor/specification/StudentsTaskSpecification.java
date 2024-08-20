@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
+
 public class StudentsTaskSpecification implements Specification<StudentsTask> {
     private final StudentTaskRequestForFilter studentTaskRequestForFilter;
     private List<Course> courses;
@@ -26,13 +29,13 @@ public class StudentsTaskSpecification implements Specification<StudentsTask> {
     @Override
     public Predicate toPredicate(@NotNull Root<StudentsTask> root, @NotNull CriteriaQuery<?> query, @NotNull CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-        if (!studentTaskRequestForFilter.getGroupName().isEmpty()) {
+        if (notNullAndBlank(studentTaskRequestForFilter.getGroupName())) {
             predicates.add(criteriaBuilder.like(root.get("student").get("groupName"), "%" + studentTaskRequestForFilter.getGroupName() + "%"));
         }
-        if (studentTaskRequestForFilter.getTaskId()!=null) {
+        if (nonNull(studentTaskRequestForFilter.getTaskId())) {
             predicates.add(criteriaBuilder.equal(root.get("task").get("id"), studentTaskRequestForFilter.getTaskId()));
         }
-        if (!studentTaskRequestForFilter.getFullName().isEmpty()) {
+        if (notNullAndBlank(studentTaskRequestForFilter.getFullName())) {
             predicates.add(
                     criteriaBuilder.like(
                             criteriaBuilder.concat(
@@ -46,10 +49,10 @@ public class StudentsTaskSpecification implements Specification<StudentsTask> {
                     )
             );
         }
-        if (!studentTaskRequestForFilter.getTelegram().isEmpty()) {
+        if (notNullAndBlank(studentTaskRequestForFilter.getTelegram())) {
             predicates.add(criteriaBuilder.like(root.get("student").get("telegram"), "%" + studentTaskRequestForFilter.getTelegram() + "%"));
         }
-        if (studentTaskRequestForFilter.getStatus() != null) {
+        if (nonNull(studentTaskRequestForFilter.getStatus())) {
             predicates.add(criteriaBuilder.equal(root.get("status"), studentTaskRequestForFilter.getStatus()));
         }
         predicates.add(root.get("task").get("course").get("id").in(courses.stream()

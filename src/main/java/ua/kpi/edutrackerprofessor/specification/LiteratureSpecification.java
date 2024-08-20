@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
+
 public class LiteratureSpecification implements Specification<Literature> {
     private LiteratureRequestForFilter requestForFilter;
     private List<Course> courses;
@@ -22,10 +25,10 @@ public class LiteratureSpecification implements Specification<Literature> {
     @Override
     public Predicate toPredicate(Root<Literature> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-        if(requestForFilter.getName()!=null){
+        if(notNullAndBlank(requestForFilter.getName())){
             predicates.add(criteriaBuilder.like(root.get("name"), "%" + requestForFilter.getName() + "%"));
         }
-        if(requestForFilter.getCourse()!=null){
+        if(nonNull(requestForFilter.getCourse())){
             predicates.add(criteriaBuilder.equal(root.get("course").get("id"), requestForFilter.getCourse()));
         }
         else {

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
 
 
 @Service
@@ -53,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Page<TaskResponseViewAll> getAll(TaskRequestFilter taskRequestFilter) {
         Pageable pageable = PageRequest.of(taskRequestFilter.getPage(), taskRequestFilter.getPageSize(), Sort.by(Sort.Order.desc("id")));
-        if(nonNull(taskRequestFilter.getCourseId()) || !taskRequestFilter.getName().isBlank() || nonNull(taskRequestFilter.getStatus()) || nonNull(taskRequestFilter.getDeadline())) {
+        if(nonNull(taskRequestFilter.getCourseId()) || notNullAndBlank(taskRequestFilter.getName()) || nonNull(taskRequestFilter.getStatus()) || nonNull(taskRequestFilter.getDeadline())) {
             TaskSpecification taskSpecification = new TaskSpecification(taskRequestFilter, professorService.getAuthProfessor().getCourses());
             return taskMapper.toDtoListForViewAll(taskRepository.findAll(taskSpecification, pageable));
         }

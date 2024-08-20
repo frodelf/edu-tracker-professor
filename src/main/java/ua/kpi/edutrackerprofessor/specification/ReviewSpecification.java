@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
 
 public class ReviewSpecification implements Specification<Review> {
     private ReviewRequestForFilter reviewRequestForFilter;
@@ -23,7 +24,7 @@ public class ReviewSpecification implements Specification<Review> {
     @Override
     public Predicate toPredicate(Root<Review> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-        if(nonNull(reviewRequestForFilter.getFullName())){
+        if(notNullAndBlank(reviewRequestForFilter.getFullName())){
             predicates.add(
                     criteriaBuilder.like(
                             criteriaBuilder.concat(

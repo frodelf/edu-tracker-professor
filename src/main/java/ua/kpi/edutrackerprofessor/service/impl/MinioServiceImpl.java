@@ -22,6 +22,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 import static java.util.Objects.nonNull;
+import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
 
 @Log4j2
 @Service
@@ -75,7 +76,7 @@ public class MinioServiceImpl implements MinioService {
     public String getUrl(String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("MinioServiceImpl-getUrl start");
         String url = null;
-        if(nonNull(fileName) && !fileName.isBlank()){
+        if(notNullAndBlank(fileName)){
             url = "data:image/jpeg;base64, " + Base64.getEncoder().encodeToString(getPhoto(fileName));
         };
         log.info("MinioServiceImpl-getUrl successfully");
