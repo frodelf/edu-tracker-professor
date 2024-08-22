@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ua.kpi.edutrackerprofessor.dto.email.EmailDto;
 import ua.kpi.edutrackerprofessor.service.EmailService;
-import ua.kpi.edutrackerprofessor.service.ProfessorService;
 import ua.kpi.edutrackerprofessor.service.StudentService;
 
 import java.io.IOException;
@@ -21,42 +20,36 @@ import java.io.IOException;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-//TODO доробити розсилку
 public class EmailServiceImpl implements EmailService {
     @Value("${sendgrid.api.key}")
     private String apiKey;
+    @Value("${sendgrid.api.from}")
+    private String fromEmail;
     private final StudentService studentService;
-    private final ProfessorService professorService;
-    private SendGrid sendGrid = new SendGrid(apiKey);
 
     @Override
     public void sendEmail(EmailDto emailDto) {
-//        Email from = new Email("tymur.foshch@avada-media.com");
-//        Content content = new Content("text/plain", emailDto.getMessage());
-//
-//        Request request = new Request();
-//        for (String receiver : studentService.getAllEmailsByGroup(emailDto.getGroup())) {
-//            Email toEmail = new Email(receiver);
-//            Mail mail = new Mail(from, emailDto.getTheme(), toEmail, content);
+        Email from = new Email(fromEmail);
+        Content content = new Content("text/plain", emailDto.getMessage());
 
-//            try {
-//                request.setMethod(Method.POST);
-//                request.setEndpoint("mail/send");
-//                request.setBody(mail.build());
-//                request.setBaseUri("https://api.sendgrid.net/");
-//                Response response = sendGrid.api(request);
-//                String responseBody = response.getBody();
-//                int statusCode = response.getStatusCode();
-//                if (statusCode == 202) {
-//                    log.info("Email was sent successfully");
-//                    log.info("Response Body: " + responseBody);
-//                } else {
-//                    log.error("Error - email send");
-//                }
-//            } catch (IOException ex) {
-//                log.error("Error sending email.", ex);
-//                throw new RuntimeException("Error sending email.", ex);
-//            }
-//        }
+        for (String receiver : studentService.getAllEmailsByGroup(emailDto.getGroup())) {
+
+            Email to = new Email(receiver);
+            Mail mail = new Mail(from, emailDto.getTheme(), to, content);
+
+            SendGrid sendGrid = new SendGrid(apiKey);
+            Request request = new Request();
+            try {
+                request.setMethod(Method.POST);
+                request.setEndpoint("mail/send");
+                request.setBody(mail.build());
+                Response response = sendGrid.api(request);
+                int status = response.getStatusCode();
+                System.out.println(status);
+            } catch (IOException ex) {
+                log.error("Error sending email.", ex);
+                throw new RuntimeException("Error sending email.", ex);
+            }
+        }
     }
 }

@@ -106,16 +106,23 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAllByCourseId(Long courseId) {
         return studentRepository.findAllByCourseId(courseId);
     }
-
     @Override
     public Page<StudentResponseForStatistic> getAllForStatistic(StudentRequestFilterForStatistic studentRequestFilterForStatistic) {
         Specification specification = new StudentSpecificationForStatistic(studentRequestFilterForStatistic, professorService.getAuthProfessor().getCourses());
         Pageable pageable = PageRequest.of(studentRequestFilterForStatistic.getPage(), studentRequestFilterForStatistic.getPageSize(), Sort.by(Sort.Order.desc("id")));
         return studentMapper.toDtoListForStatistic(studentRepository.findAll(specification, pageable), studentRequestFilterForStatistic.getCourseId(), studentsTaskService);
     }
-
     @Override
     public boolean existsByStudentIdAndProfessorId(Long studentId, Long professorId){
         return studentRepository.existsByStudentIdAndProfessorId(studentId, professorId);
+    }
+    @Override
+    public List<String> getAllEmailsByGroup(String group) {
+        List<Student> students = studentRepository.findAllByGroupName(group);
+        List<String> result = new ArrayList<>();
+        for (Student student : students) {
+            result.add(student.getEmail());
+        }
+        return result;
     }
 }

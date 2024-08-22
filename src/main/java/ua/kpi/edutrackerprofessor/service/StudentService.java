@@ -22,4 +22,5 @@ public interface StudentService {
     List<Student> getAllByCourseId(Long courseId);
     Page<StudentResponseForStatistic> getAllForStatistic(StudentRequestFilterForStatistic studentRequestFilterForStatistic);
     boolean existsByStudentIdAndProfessorId(Long studentId, Long professorId);
+    List<String> getAllEmailsByGroup(String group);
 }
