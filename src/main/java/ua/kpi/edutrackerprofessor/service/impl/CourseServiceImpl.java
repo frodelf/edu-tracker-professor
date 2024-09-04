@@ -41,7 +41,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<CourseResponseViewAll> getAll(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc("id")));
-        return new CourseMapper().toDtoListForView(courseRepository.findAllByProfessorIdAndStatusCourse(professorService.getAuthProfessor().getId(), StatusCourse.ACTIVE, pageable), minioService);
+        return courseMapper.toDtoListForView(courseRepository.findAllByProfessorIdAndStatusCourse(professorService.getAuthProfessor().getId(), StatusCourse.ACTIVE, pageable), minioService);
     }
     @Override
     public void removeById(Long courseId) {
