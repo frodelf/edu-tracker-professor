@@ -19,6 +19,7 @@ import static java.util.Objects.nonNull;
 public class LessonMapper {
     public Lesson toEntityForAdd(LessonRequestForStart lessonRequestForStart, CourseRepository courseRepository) {
         Lesson lesson = new Lesson();
+        lesson.setLink(lessonRequestForStart.getLink());
         lesson.setStatus(StatusLesson.IN_PROGRESS);
         lesson.setDate(LocalDateTime.now());
         lesson.setCourse(courseRepository.findById(lessonRequestForStart.getCourseId()).orElseThrow(
