@@ -3,6 +3,19 @@ $(document).ready(function () {
     getPageWithFilter(page)
     if(view)$('#finish-lesson-button').remove()
 })
+
+var userStompClient = null
+var userSocket = new SockJS(contextPath+'ws')
+userStompClient = Stomp.over(userSocket)
+userStompClient.connect({}, function(frame) {
+    userStompClient.subscribe('/topic/lesson-' + lessonId, function(result) {
+        var userId = JSON.parse(result.body)
+        if(!document.getElementById('review'+userId).checked){
+            $('#review'+userId).click()
+        }
+    })
+})
+
 function getPageWithFilter(page) {
     showLoader('reviewTable')
     this.page = page
@@ -32,7 +45,7 @@ function getPageWithFilter(page) {
                 cell0.innerHTML = `<a href="${contextPath}student/${object.studentId}">${object.fullName}</a>`
 
                 var cell1 = newRow.insertCell(1);
-                cell1.innerHTML = `<center><input type="checkbox" class="form-check-input" id="review${object.id}" onclick="saveReview(${object.id})" ${object.present?'checked':''}></center>`
+                cell1.innerHTML = `<center><input type="checkbox" class="form-check-input" id="review${object.studentId}" onclick="saveReview(${object.id}, ${object.studentId})" ${object.present?'checked':''}></center>`
 
                 var cell2 = newRow.insertCell(2);
                 cell2.innerHTML = `<button class="btn float-end" type="button" onclick="showModalForTasks(${lessonId}, ${object.studentId})"><i class="fa-solid fa-list-check"></i></button>`
@@ -264,7 +277,7 @@ function lessonFinish(){
     })
 }
 
-function saveReview(reviewId){
+function saveReview(reviewId, studentId){
     if(view)return
     showLoader("all-content")
     $.ajax({
@@ -273,7 +286,7 @@ function saveReview(reviewId){
         headers: {'X-XSRF-TOKEN': csrf_token},
         data: {
             reviewId: reviewId,
-            checked: document.getElementById('review'+reviewId).checked
+            checked: document.getElementById('review'+studentId).checked
         },
         success: function (request) {
         },

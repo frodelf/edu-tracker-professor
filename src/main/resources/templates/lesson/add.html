@@ -6,7 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Заняття</title>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
     <script th:inline="javascript">
         var csrf_token = /*[[${_csrf.token}]]*/ {}
         var lessonId = /*[[${lessonId}]]*/ {}
