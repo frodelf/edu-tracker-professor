@@ -68,4 +68,4 @@ jobs:
               docker rm slj-edutracker-professor || true
             fi
             docker pull ${{ secrets.secret_name_docker_hub_lower_case }}/spacelab-students:latest
-            docker run -d -p 7656:8081 --name slj-edutracker-professor --network slj-edutracker-network ${{ secrets.secret_name_docker_hub_lower_case }}/spacelab-students:latest
+            docker run -d -p 7656:8080 --name slj-edutracker-professor --network slj-edutracker-network ${{ secrets.secret_name_docker_hub_lower_case }}/spacelab-students:latest
