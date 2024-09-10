@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class Initializer implements CommandLineRunner {
     private final ProfessorService professorService;
-    private final StudentService studentService;
 
     @Override
     @Transactional
@@ -29,17 +28,6 @@ public class Initializer implements CommandLineRunner {
             professor.setTelegram("@professor_tg");
             professor.setDegree("Старший викладач");
             professorService.save(professor);
-        }
-        if(studentService.count()==0){
-            Student student = new Student();
-            student.setLastName("Деркач");
-            student.setName("Денис");
-            student.setMiddleName("Денис");
-            student.setEmail("student@gmail.com");
-            student.setPassword(new BCryptPasswordEncoder().encode("student"));
-            student.setTelegram("@student_tg");
-            student.setGroupName("ТР-12");
-            studentService.save(student);
         }
     }
 }
