@@ -2,22 +2,28 @@ spring:
   application:
     name: edu-tracker-professor
   datasource:
-    url: #your DB url
-    username: #your DB username
-    password: #your DB password
+    url: ${DB_HOST}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     generate-ddl: true
     show-sql: true
+  rabbitmq:
+    host: slj.demodev.cc
+    port: 7653
+    username: root
+    password: 1234
 
 server:
   servlet:
     context-path: /edu-tracker/teach/
 
 minio:
-  accessKey: #your minio access key
-  secretKey: #your minio secret key
-  endpoint: #your minio endpoint
+  accessKey: admin
+  secretKey: password
+  endpoint: http://minio:9000
 
 sendgrid:
   api:
-    key: #your send grid api key
+    key: ${SG_KEY}
+    from: ${SG_FROM}

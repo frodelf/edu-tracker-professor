@@ -1,4 +1,4 @@
-var fullContextPath = 'http://localhost:8080/edu-tracker/teach/';
+var fullContextPath = 'http://slj.demodev.cc:7656/edu-tracker/teach/';
 var messageForDelete = "Об'єкт успішно видалено"
 var messageForSave = "Об'єкт успішно збережено"
 var pageSize = 10
