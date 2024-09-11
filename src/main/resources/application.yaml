@@ -9,8 +9,8 @@ spring:
     generate-ddl: true
     show-sql: true
   rabbitmq:
-    host: slj.demodev.cc
-    port: 7653
+    host: slj-edutracker-rabbit
+    port: 5672
     username: root
     password: 1234
 
