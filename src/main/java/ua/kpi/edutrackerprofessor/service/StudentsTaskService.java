@@ -2,6 +2,7 @@ package ua.kpi.edutrackerprofessor.service;
 
 import io.minio.errors.*;
 import ua.kpi.edutrackerentity.entity.StudentsTask;
+import ua.kpi.edutrackerentity.entity.Task;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskRequestForFilter;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForLessonEdit;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForViewAll;
@@ -26,4 +27,5 @@ public interface StudentsTaskService {
     StudentsTask save(StudentsTask studentsTask);
     void evaluate(Long studentTaskId, Double mark);
     List<StudentTaskResponseForLessonEdit> getAllByStudentIdAndLessonId(Long studentId, Long lessonId);
+    void triggerToOpenTask(Task task);
 }

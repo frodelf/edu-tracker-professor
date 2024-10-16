@@ -15,5 +15,6 @@ public class TaskRequestForAdd {
     private String name;
     @NotNull(message = "{error.field.empty}")
     private Long courseId;
+    @NotNull(message = "{error.field.empty}")
     private MultipartFile file;
 }

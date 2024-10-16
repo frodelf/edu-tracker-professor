@@ -9,10 +9,7 @@ import ua.kpi.edutrackerprofessor.dto.task.*;
 import ua.kpi.edutrackerentity.entity.Task;
 import ua.kpi.edutrackerprofessor.mapper.TaskMapper;
 import ua.kpi.edutrackerprofessor.repository.TaskRepository;
-import ua.kpi.edutrackerprofessor.service.CourseService;
-import ua.kpi.edutrackerprofessor.service.MinioService;
-import ua.kpi.edutrackerprofessor.service.ProfessorService;
-import ua.kpi.edutrackerprofessor.service.TaskService;
+import ua.kpi.edutrackerprofessor.service.*;
 import ua.kpi.edutrackerprofessor.specification.TaskSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,8 +33,9 @@ import static ua.kpi.edutrackerprofessor.validation.ValidUtil.notNullAndBlank;
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final CourseService courseService;
-    private final ProfessorService professorService;
     private final MinioService minioService;
+    private final ProfessorService professorService;
+    private final StudentsTaskService studentsTaskService;
     private final TaskMapper taskMapper = new TaskMapper();
     @Override
     public long countAllTasksByCourseId(long courseId) {
@@ -103,7 +101,9 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public void open(TaskRequestForOpen taskRequestForOpen) {
-        save(taskMapper.toEntityForOpen(taskRequestForOpen, this));
+        Task task = taskMapper.toEntityForOpen(taskRequestForOpen, this);
+        save(task);
+        studentsTaskService.triggerToOpenTask(task);
     }
     @Override
     @Transactional

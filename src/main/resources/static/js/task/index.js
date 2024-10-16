@@ -45,7 +45,7 @@ function getPageWithFilter(page) {
                 if (object.course) {
                     const entries = Object.entries(object.course);
                     const courseLinks = entries.map(([key, value]) => {
-                        return `<a href="${contextPath}course/edit/${key}">${value}</a>`
+                        return `${value}`
                     })
                     courses = courseLinks.join(', ')
                 }
@@ -206,6 +206,7 @@ function addTask(taskId){
     let formData = new FormData()
     if(taskId)formData.append('id', taskId)
     formData.append('name', $("#name").val())
+    formData.append('file',  $("#file")[0].files[0])
     if($("#courseId").val())formData.append('courseId', $("#courseId").val())
     $.ajax({
         url: contextPath + 'task/add',

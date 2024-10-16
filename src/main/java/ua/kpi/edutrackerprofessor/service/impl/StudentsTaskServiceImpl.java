@@ -4,6 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import ua.kpi.edutrackerentity.entity.Lesson;
+import ua.kpi.edutrackerentity.entity.Student;
+import ua.kpi.edutrackerentity.entity.Task;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskRequestForFilter;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForLessonEdit;
 import ua.kpi.edutrackerprofessor.dto.studentTask.StudentTaskResponseForViewAll;
@@ -103,5 +105,16 @@ public class StudentsTaskServiceImpl implements StudentsTaskService {
                 () -> new EntityNotFoundException("Lesson with id = "+lessonId+" not found")
         );
         return studentTaskMapper.toDtoListForLessonAdd(studentsTaskRepository.findAllByStudentIdAndCourseId(studentId, lesson.getCourse().getId()));
+    }
+    @Override
+    @Transactional
+    public void triggerToOpenTask(Task task) {
+        for (Student student : task.getCourse().getStudents()) {
+            StudentsTask studentsTask = new StudentsTask();
+            studentsTask.setStudent(student);
+            studentsTask.setTask(task);
+            studentsTask.setStatus(StatusStudentsTask.IN_PROCESS);
+            save(studentsTask);
+        }
     }
 }

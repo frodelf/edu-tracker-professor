@@ -223,7 +223,15 @@ function getPageWithFilter(page, courseId) {
                 cell2.innerHTML = `<a href="https://t.me/${object.telegram.replace("@", "")}">${object.telegram}</a>`
 
                 var cell3 = newRow.insertCell(3);
-                cell3.innerHTML = `${object.numberOfTasksNotDone}`
+                cell3.innerHTML = `<h5>
+                    <div style="display: flex; justify-content: center; align-items: center">
+                        <div>${object.numberOfTasks || ''}  (</div>
+                        <div style="color: green">${object.numberOfTasksDone || ''}</div>
+                        <div>-</div>
+                        <div style="color: red">${object.numberOfTasksNotDone || ''}</div>
+                        <div>)</div>
+                    </div>
+                </h5>`
 
                 var cell4 = newRow.insertCell(4);
                 cell4.innerHTML = `${object.mark}`

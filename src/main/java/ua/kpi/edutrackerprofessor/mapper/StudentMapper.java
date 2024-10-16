@@ -82,6 +82,8 @@ public class StudentMapper {
         studentResponseForStatistic.setFullName(student.getLastName() + " " + student.getName() + " " + student.getMiddleName());
         studentResponseForStatistic.setTelegram(student.getTelegram());
         studentResponseForStatistic.setNumberOfTasksNotDone(String.valueOf(studentsTaskService.countAllNotDoneTaskByStudentIdAndCourseId(student.getId(), courseId)));
+        studentResponseForStatistic.setNumberOfTasksDone(String.valueOf(studentsTaskService.countAllDoneTaskByStudentIdAndCourseId(student.getId(), courseId)));
+        studentResponseForStatistic.setNumberOfTasks(String.valueOf(studentsTaskService.countAllByStudentIdAndCourseId(student.getId(), courseId)));
         studentResponseForStatistic.setMark(String.valueOf(studentsTaskService.countMarkByStudentIdAndCourseId(student.getId(), courseId)));
         return studentResponseForStatistic;
     }
