@@ -206,7 +206,7 @@ function addTask(taskId){
     let formData = new FormData()
     if(taskId)formData.append('id', taskId)
     formData.append('name', $("#name").val())
-    formData.append('file',  $("#file")[0].files[0])
+    if($("#file")[0].files[0])formData.append('file',  $("#file")[0].files[0])
     if($("#courseId").val())formData.append('courseId', $("#courseId").val())
     $.ajax({
         url: contextPath + 'task/add',

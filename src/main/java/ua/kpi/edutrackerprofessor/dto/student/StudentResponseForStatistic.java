@@ -6,6 +6,7 @@ import lombok.Data;
 public class StudentResponseForStatistic {
     private Long id;
     private String groupName;
+    private String lastName;
     private String fullName;
     private String telegram;
     private String numberOfTasksNotDone;

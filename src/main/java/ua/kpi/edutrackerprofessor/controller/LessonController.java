@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.kpi.edutrackerentity.entity.enums.StatusLesson;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForFilter;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonRequestForStart;
 import ua.kpi.edutrackerprofessor.dto.lesson.LessonResponseForViewAll;
@@ -54,7 +55,7 @@ public class LessonController {
     }
     @GetMapping("/get-count-lesson-held")
     public ResponseEntity<Long> getCountLessonHeld(){
-        return ResponseEntity.ok(lessonService.countAll());
+        return ResponseEntity.ok(lessonService.countAllByStatus(StatusLesson.FINISHED));
     }
     @GetMapping("/get-date-count-map")
     public ResponseEntity<Map<String, String>> getDateCountMap(@RequestParam(required = false) Long courseId){

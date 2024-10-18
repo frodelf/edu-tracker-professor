@@ -1,5 +1,6 @@
 package ua.kpi.edutrackerprofessor.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -29,7 +30,7 @@ public class ProfessorController {
     @GetMapping("/get-first-course")
     public ResponseEntity<Map<String, String>> getFirstCourse() {
         List<Course> courses = professorService.getAuthProfessor().getCourses();
-        if(courses.isEmpty()) ResponseEntity.notFound();
+        if(courses.isEmpty()) throw new EntityNotFoundException("There are no courses in auth professor");
         return ResponseEntity.ok(Collections.singletonMap(courses.get(0).getId().toString(), courses.get(0).getName()));
     }
     @GetMapping("/personal-data")

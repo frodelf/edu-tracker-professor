@@ -85,6 +85,7 @@ public class StudentMapper {
         studentResponseForStatistic.setNumberOfTasksDone(String.valueOf(studentsTaskService.countAllDoneTaskByStudentIdAndCourseId(student.getId(), courseId)));
         studentResponseForStatistic.setNumberOfTasks(String.valueOf(studentsTaskService.countAllByStudentIdAndCourseId(student.getId(), courseId)));
         studentResponseForStatistic.setMark(String.valueOf(studentsTaskService.countMarkByStudentIdAndCourseId(student.getId(), courseId)));
+        studentResponseForStatistic.setLastName(student.getLastName());
         return studentResponseForStatistic;
     }
 }

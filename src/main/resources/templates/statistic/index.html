@@ -9,10 +9,13 @@
     <script th:inline="javascript">
         var csrf_token = /*[[${_csrf.token}]]*/ {};
     </script>
-    <script th:src="@{/js/statistic/index.js}"></script>
 
     <link th:rel="stylesheet" th:href="@{assets/vendor/libs/apex-charts/apex-charts.css}"/>
     <script th:src="@{/assets/vendor/libs/apex-charts/apexcharts.js}"></script>
+    <script th:src="@{/assets/vendor/libs/chartjs/chartjs.js}"></script>
+
+
+    <script th:src="@{/js/statistic/index.js}"></script>
 </head>
 <body>
 <section layout:fragment="content">
@@ -56,13 +59,29 @@
             <select id="course" class="mt-4"></select>
         </div>
     </div>
-
     <div id="lineChart" class="mt-2"></div>
+
+    <div class="row gy-4">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <h5 style="margin-top: 40px">Студенти і їх загальна оцінка</h5>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end d-none d-lg-block">
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end d-none d-lg-block">
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <select id="courseForStudentsMark" class="form-select"></select>
+        </div>
+    </div>
+    <div>
+        <div class="empty-block"></div>
+        <div id="block-student-mark-stats"></div>
+    </div>
 
     <h5 style="margin-top: 40px">Студенти з невиконаними завданнями</h5>
     <div class="row gy-4">
         <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end">
-            <input id="search" class="form-control for-filter">
+            <input id="search" class="form-control for-filter-student">
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-end d-none d-lg-block">
         </div>
@@ -72,7 +91,6 @@
             <select id="courseForStudent" class="form-select"></select>
         </div>
     </div>
-
     <div class="card mt-4">
         <div class="card-body">
             <div class="table-responsive">

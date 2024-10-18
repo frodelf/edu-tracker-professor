@@ -56,7 +56,6 @@ $(document).ready(function () {
         }
     })
     statisticByLesson()
-    forSelect2("#course", contextPath + "course/get-for-select")
     $('#course').on('change', handleCourseChange)
 
     var page = 0
@@ -68,21 +67,132 @@ $(document).ready(function () {
             Object.entries(course).map(([key, value]) => {
                 forSelect2("#courseForStudent", contextPath + "course/get-for-select", key, value)
                 getPageWithFilter(page, key)
+                studentMarkStats(key, value)
+
+                forSelect2("#course", contextPath + "course/get-for-select", key, value)
+                statisticByLesson(key)
             })
         },
         error: function (xhr, status, error) {
             if (xhr.status === 404) {
                 var table = document.getElementById("studentTable");
-                if ($("#message-about-empty")) $("#message-about-empty").remove()
-                table.insertAdjacentHTML('afterend', '<center><h1 id="message-about-empty">Немає даних для відображення</h1></center>')
+                if ($(".message-about-empty")) $(".message-about-empty").remove()
+                table.insertAdjacentHTML('afterend', '<center><h2 class="message-about-empty">Немає даних для відображення</h2></center>')
                 $('#pagination_container').empty()
+                $('.empty-block').html(`<center><h2>Немає даних для відображення</h2></center>`)
+                studentMarkStats()
             }
         }
     })
-    $('#courseForStudent').on('change', function() {
+    $('#courseForStudent').on('change', function () {
         getPageWithFilter(page)
     })
 })
+function studentMarkStats(key, value){
+    if(key && value)forSelect2("#courseForStudentsMark", contextPath + "course/get-for-select", key, value)
+// Color Variableslet cardColor, headingColor, labelColor, borderColor, legendColor;
+    if($("#block-student-mark-stats").html())$("#block-student-mark-stats").remove()
+    $("#block-student-mark-stats").html(`<canvas id="mark-stats" class="chartjs" data-height="400"></canvas>`)
+    showLoader("block-student-mark-stats")
+    $.ajax({
+        type: "Get",
+        url: contextPath + 'student/get-all-for-statistic',
+        data: {
+            page: 0,
+            pageSize: 10,
+            search: '',
+            courseId: key,
+        },
+        success: function (objects) {
+            var st = []
+            var mk = []
+            for (const el of objects.content) {
+                st.push(el.groupName +" "+ el.lastName)
+                mk.push(el.mark)
+            }
+            if (isDarkStyle) {
+                cardColor = config.colors_dark.cardColor;
+                headingColor = config.colors_dark.headingColor;
+                labelColor = config.colors_dark.textMuted;
+                legendColor = config.colors_dark.bodyColor;
+                borderColor = config.colors_dark.borderColor;
+            } else {
+                cardColor = config.colors.cardColor;
+                headingColor = config.colors.headingColor;
+                labelColor = config.colors.textMuted;
+                legendColor = config.colors.bodyColor;
+                borderColor = config.colors.borderColor;
+            }
+            const barChart = document.getElementById('mark-stats');
+            if (barChart) {
+                const barChartVar = new Chart(barChart, {
+                    type: 'bar',
+                    data: {
+                        labels: st,
+                        datasets: [
+                            {
+                                data: mk,
+                                backgroundColor: `#7367f0`,
+                                borderColor: 'transparent',
+                                maxBarThickness: 15,
+                                borderRadius: {
+                                    topRight: 15,
+                                    topLeft: 15
+                                }
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 500
+                        },
+                        plugins: {
+                            tooltip: {
+                                rtl: isRtl,
+                                backgroundColor: cardColor,
+                                titleColor: headingColor,
+                                bodyColor: legendColor,
+                                borderWidth: 1,
+                                borderColor: borderColor
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: borderColor,
+                                    drawBorder: false,
+                                    borderColor: borderColor
+                                },
+                                ticks: {
+                                    color: labelColor
+                                }
+                            },
+                            y: {
+                                min: 0,
+                                max: 100,
+                                grid: {
+                                    color: borderColor,
+                                    drawBorder: false,
+                                    borderColor: borderColor
+                                },
+                                ticks: {
+                                    stepSize: 20,
+                                    color: labelColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            hideLoader("block-student-mark-stats")
+        }
+    })
+}
 function handleCourseChange() {
     var selectedCourseId = $('#course').val()
     statisticByLesson(selectedCourseId)
@@ -187,11 +297,11 @@ function getPageWithFilter(page, courseId) {
     var tableId = 'studentTable'
     showLoader(tableId)
     this.page = page
-    var filterElements = $('.for-filter');
+    var filterElements = $('.for-filter-student');
     if($("#courseForStudent").val()){
        courseId = $("#courseForStudent").val()
     }
-    console.log(courseId)
+    console.log('sd')
     $.ajax({
         type: "Get",
         url: contextPath + 'student/get-all-for-statistic',

@@ -106,15 +106,13 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Long countAll() {
-        return lessonRepository.countAllByCourseIn(professorService.getAuthProfessor().getCourses());
+    public Long countAllByStatus(StatusLesson statusLesson) {
+        return lessonRepository.countAllByCourseInAndStatus(professorService.getAuthProfessor().getCourses(), statusLesson);
     }
 
     @Override
     public Map<String, String> getDateCountMap(Long courseId) {
-        List<Object[]> results;
-        if(nonNull(courseId)) results = lessonRepository.countStudentsByDateAndCourseId(courseId);
-        else results = lessonRepository.countStudentsByDate();
+        List<Object[]> results = lessonRepository.countStudentsByDateAndCourseId(courseId);
         Map<String, String> resultMap = new HashMap<>();
 
         for (Object[] result : results) {
