@@ -2,9 +2,9 @@ var fullContextPath = 'http://slj.demodev.cc:7656/edu-tracker/teach/';
 
 $(document).ready(function () {
 //TODO Видалити це///////////////////////////////
-    $("#username").val("kriptword@gmail.com")
-    $("#password").val("12345678")
-    $("#login").click()
+//     $("#username").val("kriptword@gmail.com")
+//     $("#password").val("12345678")
+//     $("#login").click()
     /////////////////////////////////////////////////
 
 
