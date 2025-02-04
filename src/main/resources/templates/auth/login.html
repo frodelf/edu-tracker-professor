@@ -27,7 +27,9 @@
     </script>
     <script th:inline="javascript">
         const contextPath = '[[@{/}]]'.replaceAll("\"", "")
-        var csrf_token = /*[[${_csrf.token}]]*/ {};
+        var csrf_token = /*[[${_csrf.token}]]*/ {}
+        var host = /*[[${host}]]*/ {}
+        var port = /*[[${port}]]*/ {}
     </script>
     <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}">
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -1,4 +1,4 @@
-var fullContextPath = 'http://slj.demodev.cc:7656/edu-tracker/teach/';
+var fullContextPath = 'http://'+host+':'+port+contextPath
 var messageForDelete = "Об'єкт успішно видалено"
 var messageForSave = "Об'єкт успішно збережено"
 var pageSize = 10
@@ -70,7 +70,6 @@ $(document).ready(function () {
             imageName: professorAuth.image
         },
         success: function (response) {
-            console.log(response)
             if(response){
                 $(".avatar-image").attr("src", response)
             }

@@ -21,6 +21,8 @@
 
     <script th:inline="javascript">
         const contextPath = '[[@{/}]]'.replaceAll("\"", "")
+        var host = /*[[${host}]]*/ {}
+        var port = /*[[${port}]]*/ {}
     </script>
 
 

@@ -1,4 +1,4 @@
-var fullContextPath = 'http://slj.demodev.cc:7656/edu-tracker/teach/';
+var fullContextPath = 'http://'+host+':'+port+contextPath
 
 $(document).ready(function () {
 //TODO Видалити це///////////////////////////////
