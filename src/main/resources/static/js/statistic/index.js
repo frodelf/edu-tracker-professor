@@ -80,7 +80,6 @@ $(document).ready(function () {
                 table.insertAdjacentHTML('afterend', '<center><h2 class="message-about-empty">Немає даних для відображення</h2></center>')
                 $('#pagination_container').empty()
                 $('.empty-block').html(`<center><h2>Немає даних для відображення</h2></center>`)
-                studentMarkStats()
             }
         }
     })
@@ -301,7 +300,6 @@ function getPageWithFilter(page, courseId) {
     if($("#courseForStudent").val()){
        courseId = $("#courseForStudent").val()
     }
-    console.log('sd')
     $.ajax({
         type: "Get",
         url: contextPath + 'student/get-all-for-statistic',
