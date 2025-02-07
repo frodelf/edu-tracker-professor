@@ -26,7 +26,7 @@ public class ExceptionHandler {
         return new ModelAndView("error/access_denied", "message", ex.getMessage());
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
-        return ResponseEntity.status(404).body(ex.getMessage());
+    public ModelAndView handleEntityNotFoundException(EntityNotFoundException ex) {
+        return new ModelAndView("error/not_found", "message", ex.getMessage());
     }
 }

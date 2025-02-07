@@ -52,9 +52,10 @@ public class ExceptionHandlerTest {
     @Test
     void handleEntityNotFoundException() {
         EntityNotFoundException ex = new EntityNotFoundException("Entity Not Found");
-        ResponseEntity<String> response = exceptionHandler.handleEntityNotFoundException(ex);
+        ModelAndView modelAndView = exceptionHandler.handleEntityNotFoundException(ex);
 
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Entity Not Found", response.getBody());
+        assertEquals("error/not_found", modelAndView.getViewName());
+        assertEquals("Entity Not Found", modelAndView.getModel().get("message"));
+
     }
 }
