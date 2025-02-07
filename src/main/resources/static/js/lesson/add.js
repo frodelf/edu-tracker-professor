@@ -157,7 +157,7 @@ function downloadFileFrom(fileName) {
         },
         success: function (data) {
             var blob = new Blob([data], {type: 'application/octet-stream'});
-            var filename = "file.pdf";
+            var filename = file.replace(/^[^.]*\./, '')
 
             if (window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveOrOpenBlob(blob, filename);
