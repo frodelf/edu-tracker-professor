@@ -3,6 +3,7 @@ package ua.kpi.edutrackerprofessor.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class LessonServiceImpl implements LessonService {
@@ -44,19 +46,27 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public long countByCourseId(long courseId) {
-        return lessonRepository.countByCourseId(courseId);
+        log.info("countByCourseId start");
+        long count = lessonRepository.countByCourseId(courseId);
+        log.info("countByCourseId finish");
+        return count;
     }
+
     @Override
     public Map<String, String> getStatusForSelect() {
+        log.info("getStatusForSelect start");
         Map<String, String> result = new HashMap<>();
         for (StatusLesson value : StatusLesson.values()) {
             result.put(value.name(), value.toString());
         }
+        log.info("getStatusForSelect finish");
         return result;
     }
+
     @Override
     @Transactional
     public Long start(LessonRequestForStart lessonRequestForStart) {
+        log.info("start start");
         Lesson lesson = lessonMapper.toEntityForAdd(lessonRequestForStart, courseRepository);
         lesson = save(lesson);
         if(nonNull(lessonRequestForStart.getGroups())){
@@ -78,48 +88,68 @@ public class LessonServiceImpl implements LessonService {
                 reviewService.save(review);
             }
         }
+        log.info("start finish");
         return lesson.getId();
     }
+
     @Override
     @Transactional
     public Lesson save(Lesson lesson) {
-        return lessonRepository.save(lesson);
+        log.info("save start");
+        Lesson savedLesson = lessonRepository.save(lesson);
+        log.info("save finish");
+        return savedLesson;
     }
+
     @Override
     public Lesson getById(Long id) {
-        return lessonRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Lesson with id = "+id+" not found")
+        log.info("getById start");
+        Lesson lesson = lessonRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Lesson with id = " + id + " not found")
         );
+        log.info("getById finish");
+        return lesson;
     }
+
     @Override
     public Page<LessonResponseForViewAll> getAll(LessonRequestForFilter lessonRequestForFilter) {
+        log.info("getAll start");
         Pageable pageable = PageRequest.of(lessonRequestForFilter.getPage(), lessonRequestForFilter.getPageSize(), Sort.by(Sort.Order.desc("id")));
         LessonSpecification lessonSpecification = new LessonSpecification(lessonRequestForFilter, professorService.getAuthProfessor().getCourses());
-        return lessonMapper.toDtoListForViewAll(lessonRepository.findAll(lessonSpecification, pageable), reviewService);
+        Page<LessonResponseForViewAll> result = lessonMapper.toDtoListForViewAll(lessonRepository.findAll(lessonSpecification, pageable), reviewService);
+        log.info("getAll finish");
+        return result;
     }
+
     @Override
     @Transactional
     public void finish(Long lessonId) {
+        log.info("finish start");
         Lesson lesson = getById(lessonId);
         lesson.setStatus(StatusLesson.FINISHED);
         save(lesson);
+        log.info("finish finish");
     }
 
     @Override
     public Long countAllByStatus(StatusLesson statusLesson) {
-        return lessonRepository.countAllByCourseInAndStatus(professorService.getAuthProfessor().getCourses(), statusLesson);
+        log.info("countAllByStatus start");
+        long count = lessonRepository.countAllByCourseInAndStatus(professorService.getAuthProfessor().getCourses(), statusLesson);
+        log.info("countAllByStatus finish");
+        return count;
     }
 
     @Override
     public Map<String, String> getDateCountMap(Long courseId) {
+        log.info("getDateCountMap start");
         List<Object[]> results = lessonRepository.countStudentsByDateAndCourseId(courseId);
         Map<String, String> resultMap = new HashMap<>();
-
         for (Object[] result : results) {
             String date = result[0].toString();
             String studentCount = result[1].toString();
             resultMap.put(date, studentCount);
         }
+        log.info("getDateCountMap finish");
         return resultMap;
     }
 }

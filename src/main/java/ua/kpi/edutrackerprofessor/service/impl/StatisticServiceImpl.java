@@ -1,6 +1,7 @@
 package ua.kpi.edutrackerprofessor.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import ua.kpi.edutrackerentity.entity.Course;
 import ua.kpi.edutrackerentity.entity.Student;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class StatisticServiceImpl implements StatisticService {
@@ -21,6 +23,7 @@ public class StatisticServiceImpl implements StatisticService {
     private final ReviewService reviewService;
     @Override
     public Map<String, String> getStatisticForStudent(Long courseId, Long studentId) {
+        log.info("StatisticServiceImpl getStatisticForStudent start");
         Map<String, String> map = new HashMap<>();
         Student student;
         Course course;
@@ -38,6 +41,7 @@ public class StatisticServiceImpl implements StatisticService {
         map.put("notDoneTasks", String.valueOf(studentsTaskService.countAllNotDoneTaskByStudentIdAndCourseId(studentId, courseId)));
         map.put("lessons", String.valueOf(reviewService.countAllVisitedLessonByStudentIdAndCourseId(studentId, courseId)));
         map.put("mark", String.valueOf(studentsTaskService.countMarkByStudentIdAndCourseId(studentId, courseId)));
+        log.info("StatisticServiceImpl getStatisticForStudent finish");
         return map;
     }
 }

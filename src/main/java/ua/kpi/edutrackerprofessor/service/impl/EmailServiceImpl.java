@@ -35,6 +35,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmail(EmailDto emailDto) {
+        log.info("EmailServiceImpl sendEmail start");
         Email from = new Email(fromEmail);
         Content content = new Content("text/plain", emailDto.getMessage());
         List<String> receivers = new ArrayList<>();
@@ -65,5 +66,6 @@ public class EmailServiceImpl implements EmailService {
                 throw new RuntimeException("Error sending email.", ex);
             }
         }
+        log.info("EmailServiceImpl sendEmail finish");
     }
 }

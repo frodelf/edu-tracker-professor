@@ -44,7 +44,7 @@ public class MinioServiceImpl implements MinioService {
 
         objectStream.close();
 
-        log.info("MinioServiceImpl-getPhoto successfully");
+        log.info("MinioServiceImpl-getPhoto finish");
         return photoBytes;
     }
     public void deleteImg(String objectName) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
@@ -53,7 +53,7 @@ public class MinioServiceImpl implements MinioService {
                 .bucket(bucketName)
                 .object("/" + objectName)
                 .build());
-        log.info("MinioServiceImpl-deleteImg successfully");
+        log.info("MinioServiceImpl-deleteImg finish");
     }
     public String putMultipartFile(MultipartFile multipartFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("MinioServiceImpl-putMultipartFile start");
@@ -70,7 +70,7 @@ public class MinioServiceImpl implements MinioService {
                 .build());
 
         tempFile.delete();
-        log.info("MinioServiceImpl-putMultipartFile successfully");
+        log.info("MinioServiceImpl-putMultipartFile finish");
         return nameFile;
     }
     public String getUrl(String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
@@ -79,7 +79,7 @@ public class MinioServiceImpl implements MinioService {
         if(notNullAndBlank(fileName)){
             url = "data:image/jpeg;base64, " + Base64.getEncoder().encodeToString(getPhoto(fileName));
         };
-        log.info("MinioServiceImpl-getUrl successfully");
+        log.info("MinioServiceImpl-getUrl finish");
         return url;
     }
 }
