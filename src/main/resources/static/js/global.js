@@ -2,6 +2,7 @@ var messageForDelete = "Об'єкт успішно видалено"
 var messageForSave = "Об'єкт успішно збережено"
 var pageSize = 10
 var nameForAvatar = professorAuth? professorAuth.lastName.charAt(0) + professorAuth.name.charAt(0) : null
+var fullContextPath
 
 $(document).ready(function () {
     var fullContextPath = 'http://'+host+':'+port+contextPath

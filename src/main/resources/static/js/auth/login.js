@@ -1,6 +1,7 @@
-var fullContextPath = 'http://'+host+':'+port+contextPath
-
+var fullContextPath
 $(document).ready(function () {
+    fullContextPath = 'http://'+host+':'+port+contextPath
+
 //TODO Видалити це///////////////////////////////
 //     $("#username").val("kriptword@gmail.com")
 //     $("#password").val("12345678")
