@@ -135,7 +135,7 @@ public class ProfessorServiceImpl implements ProfessorService {
             return false;
         }
         boolean result = !(authentication instanceof AnonymousAuthenticationToken);
-        log.info("ProfessorServiceImpl isAuthenticated start");
+        log.info("ProfessorServiceImpl isAuthenticated finish");
         return result;
     }
     @Override

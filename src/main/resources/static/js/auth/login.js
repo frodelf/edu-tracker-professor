@@ -192,6 +192,7 @@ function translateError(key) {
         .replace('characters', 'символів')
         .replace('Invalid email format', 'Невірний формат електронної пошти')
         .replace('Invalid phone format', 'Невірний формат телефону')
+        .replace('Invalid telegram format', 'Невірний формат телеграму')
         .replace('File extension not valid', 'Тип файлу повиннен бути .jpeg, .png, .jpg')
         .replace('The telegram already exists!', 'Телеграм уже існує')
         .replace('The email already exists!', 'E-mail уже існує')

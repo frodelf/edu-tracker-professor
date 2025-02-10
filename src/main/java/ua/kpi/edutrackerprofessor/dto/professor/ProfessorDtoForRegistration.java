@@ -18,7 +18,6 @@ public class ProfessorDtoForRegistration extends ContactDataDto {
     @NotBlank(message = "{error.field.empty}")
     @Size(max = 100, message = "{error.field.size.max}")
     private String middleName;
-    @NotBlank(message = "{error.field.empty}")
     @Size(max = 100, message = "{error.field.size.max}")
     private String degree;
     @Size(min = 8, max = 20, message = "{error.field.size.between}")

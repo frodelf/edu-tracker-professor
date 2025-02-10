@@ -94,21 +94,28 @@ function studentMarkStats(key, value){
     $("#block-student-mark-stats").html(`<canvas id="mark-stats" class="chartjs" data-height="400"></canvas>`)
     showLoader("block-student-mark-stats")
     $.ajax({
-        type: "Get",
+        type: "GET",
         url: contextPath + 'student/get-all-for-statistic',
         data: {
             page: 0,
-            pageSize: 10,
+            pageSize: 20,
             search: '',
             courseId: key,
         },
         success: function (objects) {
-            var st = []
-            var mk = []
+            var st = [];
+            var mk = [];
             for (const el of objects.content) {
-                st.push(el.groupName +" "+ el.lastName)
+                st.push(el.groupName + " " + el.lastName);
                 mk.push(el.mark)
             }
+            const hasNonZeroValue = mk.some(value => value != 0);
+            if (!hasNonZeroValue) {
+                $('#block-student-mark-stats').html(`<center><h2>Недостатньо даних для статистики</h2></center>`)
+                return
+            }
+
+
             if (isDarkStyle) {
                 cardColor = config.colors_dark.cardColor;
                 headingColor = config.colors_dark.headingColor;
@@ -122,9 +129,17 @@ function studentMarkStats(key, value){
                 legendColor = config.colors.bodyColor;
                 borderColor = config.colors.borderColor;
             }
+
             const barChart = document.getElementById('mark-stats');
             if (barChart) {
-                const barChartVar = new Chart(barChart, {
+                if (barChart.chartInstance) {
+                    barChart.chartInstance.destroy();
+                }
+
+                barChart.style.width = "100%";
+                barChart.style.height = "500px";
+
+                barChart.chartInstance = new Chart(barChart, {
                     type: 'bar',
                     data: {
                         labels: st,
@@ -142,7 +157,7 @@ function studentMarkStats(key, value){
                         ]
                     },
                     options: {
-                        responsive: true,
+                        responsive: false,
                         maintainAspectRatio: false,
                         animation: {
                             duration: 500
@@ -188,9 +203,10 @@ function studentMarkStats(key, value){
                     }
                 });
             }
-            hideLoader("block-student-mark-stats")
+
+            hideLoader("block-student-mark-stats");
         }
-    })
+    });
 }
 function handleCourseChange() {
     var selectedCourseId = $('#course').val()
@@ -296,7 +312,7 @@ function getPageWithFilter(page, courseId) {
     var tableId = 'studentTable'
     showLoader(tableId)
     this.page = page
-    var filterElements = $('.for-filter-student');
+    var filterElements = $('.for-filter');
     if($("#courseForStudent").val()){
        courseId = $("#courseForStudent").val()
     }
