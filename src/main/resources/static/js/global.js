@@ -5,7 +5,7 @@ var nameForAvatar = professorAuth? professorAuth.lastName.charAt(0) + professorA
 var fullContextPath
 
 $(document).ready(function () {
-    var fullContextPath = 'http://'+host+':'+port+contextPath
+    fullContextPath = 'http://'+host+':'+port+contextPath
     var inputForFilter = $('.for-filter')
     let timeout = null
     $('#clean-all-input-for-filtering').click(function () {
