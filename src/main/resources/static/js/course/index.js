@@ -288,7 +288,8 @@ function showModalForOpenTask(courseId){
     document.querySelector("#deadline").flatpickr({
         weekNumbers: true,
         enableTime: true,
-        dateFormat: "d.m.Y H:i"
+        dateFormat: "d.m.Y H:i",
+        minDate: "today"
     })
     $('#ModalForOpenTasks').modal('show')
 }

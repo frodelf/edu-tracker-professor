@@ -243,6 +243,7 @@ function translateError(key) {
         .replace('The phone already exists!', 'Такий телефон вже існує')
         .replace('The telegram already exists!', 'Такий телеграм вже існує')
         .replace('The email already exists!', 'Такий електроний адрес вже існує')
+        .replace('File must be selected', 'Файл повинен бути вибраний')
 }
 
 function cleanInputs() {

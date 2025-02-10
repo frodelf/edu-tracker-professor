@@ -123,7 +123,7 @@ function lessonStart(){
         },
         success: function () {
             getPageWithFilter(page)
-            showSuccessToast()
+            showSuccessToast("Заняття розпочалось")
             $('#modalForLessonStart').modal('hide')
         },
         error: function (xhr, status, error) {
