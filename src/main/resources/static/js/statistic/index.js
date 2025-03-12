@@ -55,7 +55,6 @@ $(document).ready(function () {
             `)
         }
     })
-    statisticByLesson()
     $('#course').on('change', handleCourseChange)
 
     var page = 0
@@ -212,100 +211,112 @@ function handleCourseChange() {
     var selectedCourseId = $('#course').val()
     statisticByLesson(selectedCourseId)
 }
-function statisticByLesson(courseId){
-    if($('#lineChart').html())$('#lineChart').html('')
+let lineChart = null
+
+function statisticByLesson(courseId) {
+    if ($('#lineChart').html()) $('#lineChart').html('');
+
     $.ajax({
-        type: "Get",
+        type: "GET",
         url: contextPath + 'lesson/get-date-count-map',
-        data:{
+        data: {
             courseId: courseId
         },
         success: function (statistic) {
-            const categories = Object.keys(statistic)
-            const data = Object.values(statistic).map(Number)
-            if(categories.length<1){
-                $('#lineChart').html(`<center><h2>Недостатньо даних для статистики</h2></center>`)
-                return
+            const categories = Object.keys(statistic);
+            const data = Object.values(statistic).map(Number);
+
+            if (categories.length < 1) {
+                $('#lineChart').html(`<center><h2>Недостатньо даних для статистики</h2></center>`);
+                return;
             }
-            const background = config.colors.background
-            const linkColor = '#8176f2'
-            const lineChartEl = document.querySelector('#lineChart'),
-                lineChartConfig = {
-                    chart: {
-                        height: 400,
-                        type: 'line',
-                        parentHeightOffset: 0,
-                        zoom: {
-                            enabled: false
-                        },
-                        toolbar: {
-                            show: false
-                        }
-                    },
-                    series: [
-                        {
-                            data: data
-                        }
-                    ],
-                    markers: {
-                        strokeWidth: 7,
-                        strokeOpacity: 1,
-                        strokeColors: [config.colors.white],
-                        colors: [config.colors.warning]
-                    },
-                    dataLabels: {
+
+            const background = config.colors.background;
+            const linkColor = '#8176f2';
+            const lineChartEl = document.querySelector('#lineChart');
+
+            // **Очищення попереднього графіка перед створенням нового**
+            if (lineChart !== null) {
+                lineChart.destroy();
+            }
+
+            const lineChartConfig = {
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    parentHeightOffset: 0,
+                    zoom: {
                         enabled: false
                     },
-                    stroke: {
-                        curve: 'straight'
-                    },
-                    colors: [config.colors.warning],
-                    grid: {
-                        borderColor: background,
-                        xaxis: {
-                            lines: {
-                                show: true
-                            }
-                        },
-                        padding: {
-                            top: -20
-                        }
-                    },
-                    tooltip: {
-                        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-                            return '<div class="px-3 py-2">' + '<span>' + series[seriesIndex][dataPointIndex] + ' студ.</span>' + '</div>';
-                        }
-                    },
+                    toolbar: {
+                        show: false
+                    }
+                },
+                series: [
+                    {
+                        data: data
+                    }
+                ],
+                markers: {
+                    strokeWidth: 7,
+                    strokeOpacity: 1,
+                    strokeColors: [config.colors.white],
+                    colors: [config.colors.warning]
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                colors: [config.colors.warning],
+                grid: {
+                    borderColor: background,
                     xaxis: {
-                        categories: categories,
-                        axisBorder: {
-                            show: false
-                        },
-                        axisTicks: {
-                            show: false
-                        },
-                        labels: {
-                            style: {
-                                colors: linkColor,
-                                fontSize: '13px'
-                            }
+                        lines: {
+                            show: true
                         }
                     },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                colors: linkColor,
-                                fontSize: '13px'
-                            }
+                    padding: {
+                        top: -20
+                    }
+                },
+                tooltip: {
+                    custom: function ({ series, seriesIndex, dataPointIndex }) {
+                        return '<div class="px-3 py-2">' + '<span>' + series[seriesIndex][dataPointIndex] + ' студ.</span>' + '</div>';
+                    }
+                },
+                xaxis: {
+                    categories: categories,
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    labels: {
+                        style: {
+                            colors: linkColor,
+                            fontSize: '13px'
                         }
                     }
-                };
-            if (typeof lineChartEl !== undefined && lineChartEl !== null) {
-                const lineChart = new ApexCharts(lineChartEl, lineChartConfig);
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: linkColor,
+                            fontSize: '13px'
+                        }
+                    }
+                }
+            };
+
+            if (lineChartEl !== null) {
+                lineChart = new ApexCharts(lineChartEl, lineChartConfig);
                 lineChart.render();
             }
         }
-    })
+    });
 }
 
 function getPageWithFilter(page, courseId) {
